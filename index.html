@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>SimTrade Academy | منصة المحاكاة التفاعلية للتداول</title>
+    <!-- Lightweight Charts CDN -->
+    <script src="https://unpkg.com/lightweight-charts@4.1.0/dist/lightweight-charts.standalone.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+        }
+
+        body {
+            background: #0b0f1c;
+            color: #eef2ff;
+            overflow-x: hidden;
+        }
+
+        /* Dark theme variables */
+        :root {
+            --bg-dark: #0a0c15;
+            --card-bg: #111827;
+            --border: #1f2a3e;
+            --accent-green: #00c48a;
+            --accent-red: #ff5a5f;
+            --accent-gold: #ffb347;
+            --primary-blue: #3b82f6;
+            --text-muted: #9ca3af;
+        }
+
+        /* Fullscreen Modal for Stage 1 */
+        .fullscreen-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(8, 12, 25, 0.98);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            overflow-y: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            transition: all 0.4s ease;
+        }
+
+        .modal-content {
+            max-width: 1300px;
+            width: 100%;
+            background: var(--card-bg);
+            border-radius: 2rem;
+            padding: 2rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 25px 40px rgba(0,0,0,0.5);
+        }
+
+        .section-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.8rem;
+            margin: 2rem 0;
+        }
+
+        .card-compare {
+            background: #0f172a;
+            border-radius: 1.2rem;
+            padding: 1.2rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            border-left: 4px solid var(--primary-blue);
+        }
+        .card-compare:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+            background: #1e293b;
+        }
+        .world-map {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .hotspot {
+            background: #1e293b;
+            padding: 0.8rem 1.2rem;
+            border-radius: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid var(--primary-blue);
+        }
+        .hotspot:hover { background: var(--primary-blue); transform: scale(1.02); }
+        .slider-container {
+            background: #0f172a;
+            padding: 1rem;
+            border-radius: 1rem;
+        }
+        .btn-primary {
+            background: var(--primary-blue);
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 3rem;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        /* Main Dashboard (Stage 3) */
+        .dashboard {
+            display: none;
+            padding: 1.5rem;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            background: var(--card-bg);
+            padding: 1rem 1.5rem;
+            border-radius: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .badge-container {
+            display: flex;
+            gap: 0.7rem;
+            flex-wrap: wrap;
+        }
+        .badge {
+            background: #2d3748;
+            padding: 0.3rem 0.8rem;
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: var(--accent-gold);
+        }
+        .trade-layout {
+            display: grid;
+            grid-template-columns: 1fr 360px;
+            gap: 1.5rem;
+        }
+        .chart-card, .order-card, .positions-card, .coach-card {
+            background: var(--card-bg);
+            border-radius: 1.2rem;
+            padding: 1rem;
+            border: 1px solid var(--border);
+        }
+        .order-form input, .order-form select, .order-form button {
+            width: 100%;
+            margin: 0.5rem 0;
+            padding: 0.7rem;
+            border-radius: 1rem;
+            background: #0f172a;
+            border: 1px solid var(--border);
+            color: white;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+        th, td {
+            padding: 0.5rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        .profit-positive { color: var(--accent-green); }
+        .profit-negative { color: var(--accent-red); }
+        .scenario-btn {
+            background: var(--accent-gold);
+            margin: 0.5rem 0;
+        }
+        .toast-notify {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: #1e293b;
+            border-left: 6px solid var(--accent-gold);
+            padding: 1rem;
+            border-radius: 1rem;
+            z-index: 1500;
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+            from { transform: translateX(400px); opacity: 0;}
+            to { transform: translateX(0); opacity: 1;}
+        }
+        @media (max-width: 900px) {
+            .trade-layout { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script>
+    // ---------- STATE MANAGEMENT & LOCALSTORAGE KEYS ----------
+    let state = {
+        stage1Completed: false,
+        stage2Completed: false,
+        userLevel: null,      // "مستكشف", "متعلم", "شبه جاهز"
+        balance: 100000,
+        openPositions: [],    // each: { id, type, quantity, entryPrice, currentPrice, stopLoss, takeProfit, pl }
+        badges: [],
+        totalTrades: 0,
+        tradesWithSL: 0,
+        scenariosPassed: 0,
+        lastPrice: 50000      // BTC/USD mock price
+    };
+
+    let chart = null;
+    let series = null;
+    let priceInterval = null;
+    let currentSymbol = "BTC/USD";
+    let interactiveStage1Flags = { chart: false, cards: false, map: false, leverage: false };
+
+    // Helper: save & load
+    function saveToLocal() {
+        const saveData = {
+            stage1Completed: state.stage1Completed,
+            stage2Completed: state.stage2Completed,
+            userLevel: state.userLevel,
+            balance: state.balance,
+            openPositions: state.openPositions,
+            badges: state.badges,
+            totalTrades: state.totalTrades,
+            tradesWithSL: state.tradesWithSL,
+            scenariosPassed: state.scenariosPassed
+        };
+        localStorage.setItem("SimTradeData", JSON.stringify(saveData));
+    }
+
+    function loadFromLocal() {
+        const raw = localStorage.getItem("SimTradeData");
+        if (!raw) return false;
+        try {
+            const data = JSON.parse(raw);
+            state.stage1Completed = data.stage1Completed || false;
+            state.stage2Completed = data.stage2Completed || false;
+            state.userLevel = data.userLevel || null;
+            state.balance = data.balance !== undefined ? data.balance : 100000;
+            state.openPositions = data.openPositions || [];
+            state.badges = data.badges || [];
+            state.totalTrades = data.totalTrades || 0;
+            state.tradesWithSL = data.tradesWithSL || 0;
+            state.scenariosPassed = data.scenariosPassed || 0;
+            return true;
+        } catch(e) { return false; }
+    }
+
+    // check stage access
+    function canAccessStage3() {
+        return state.stage1Completed && state.stage2Completed && state.userLevel !== null;
+    }
+
+    // Render engine
+    function renderApp() {
+        const app = document.getElementById("app");
+        if (!state.stage1Completed) {
+            app.innerHTML = renderStage1Modal();
+            attachStage1Events();
+        } 
+        else if (!state.stage2Completed) {
+            app.innerHTML = renderStage2Assessment();
+            attachStage2Events();
+        }
+        else if (canAccessStage3()) {
+            app.innerHTML = renderDashboard();
+            attachDashboardEvents();
+            initChartAndPriceFeed();
+        } else {
+            // fallback: reset
+            localStorage.clear();
+            location.reload();
+        }
+    }
+
+    // ---------- STAGE 1: FULL MODAL INTERACTIVE ----------
+    function renderStage1Modal() {
+        return `
+            <div class="fullscreen-modal" id="stage1Modal">
+                <div class="modal-content">
+                    <h1 style="text-align:center">📘 بوابة المعرفة الإلزامية</h1>
+                    <p style="text-align:center; color:var(--text-muted)">تفاعل مع الأقسام الأربعة لفتح بوابة التقييم</p>
+                    <div class="section-grid">
+                        <!-- 1. تعريف الاستثمار: رسم تفاعلي canvas -->
+                        <div class="card-compare" id="interactiveChartCard">
+                            <h3>📈 استثمار vs مضاربة</h3>
+                            <canvas id="storyCanvas" width="280" height="160" style="background:#0a0c15; border-radius:12px; width:100%; height:auto"></canvas>
+                            <p class="text-muted" style="font-size:12px">شجرة تنمو (استثمار) 📊 ومضاربون (تقلبات)</p>
+                            <div style="color:var(--accent-green); font-size:12px" id="chartHint">👆 اضغط على الرسم لفتح القصة</div>
+                        </div>
+                        <!-- 2. فهم المنصات 3 بطاقات -->
+                        <div class="card-compare" id="platformsCard">
+                            <h3>🏦 مقارنة المنصات</h3>
+                            <div id="platformDetails">اضغط لعرض ECN, Market Maker, MetaTrader, TradingView</div>
+                            <div class="platform-badge" style="display:none" id="platformExtra"></div>
+                        </div>
+                        <!-- 3. البورصات العالمية -->
+                        <div class="card-compare" id="worldMapCard">
+                            <h3>🌍 البورصات العالمية</h3>
+                            <div class="world-map">
+                                <div class="hotspot" data-exchange="NYSE">🇺🇸 نيويورك</div>
+                                <div class="hotspot" data-exchange="LSE">🇬🇧 لندن</div>
+                                <div class="hotspot" data-exchange="TADAWUL">🇸🇦 الرياض</div>
+                                <div class="hotspot" data-exchange="DFM">🇦🇪 دبي</div>
+                            </div>
+                            <p id="exchangeInfo" style="font-size:12px; margin-top:8px">انقر على أي بورصة لعرض التفاصيل</p>
+                        </div>
+                        <!-- 4. الرافعة المالية MiniSim -->
+                        <div class="card-compare" id="leverageCard">
+                            <h3>⚙️ الرافعة المالية</h3>
+                            <div class="slider-container">
+                                <label>الرافعة: <span id="levValue">1:1</span></label>
+                                <input type="range" id="leverageSlider" min="1" max="10" value="1" step="1">
+                                <p id="leverageEffect">استثمار 1000$، تحرك 1%: ربح/خسارة = 10$</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display:flex; justify-content:center; margin-top:1rem">
+                        <button id="completeStage1Btn" class="btn-primary" disabled>✅ تم، انتقل إلى التقييم</button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function attachStage1Events() {
+        // رسم القصة التفاعلية
+        const canvas = document.getElementById('storyCanvas');
+        if(canvas) {
+            const ctx = canvas.getContext('2d');
+            canvas.width = 280; canvas.height = 160;
+            function drawStory(highlight) {
+                ctx.fillStyle = "#0f172a";
+                ctx.fillRect(0,0,canvas.width,canvas.height);
+                // شجرة استثمار
+                ctx.fillStyle = "#2e7d32";
+                ctx.fillRect(40,80,20,60);
+                ctx.beginPath(); ctx.arc(50,70,15,0,Math.PI*2); ctx.fill();
+                ctx.fillStyle = "#ffb74d";
+                ctx.fillRect(180,100,12,40); // مضارب
+                ctx.beginPath(); ctx.moveTo(186,95); ctx.lineTo(200,105); ctx.lineTo(172,105); ctx.fill();
+                ctx.fillStyle = "#ffa270";
+                ctx.fillText("📈 نمو مستمر", 30, 40);
+                ctx.fillStyle = "#ff5a5f";
+                ctx.fillText("⚡ تقلبات", 170, 50);
+            }
+            drawStory();
+            canvas.addEventListener('click', () => {
+                interactiveStage1Flags.chart = true;
+                checkStage1Completion();
+                document.getElementById('chartHint').innerText = "✅ تم التفاعل مع الرسم!";
+            });
+        }
+        // المنصات: عرض تفاصيل إضافية عند النقر
+        const platCard = document.getElementById('platformsCard');
+        if(platCard) {
+            platCard.addEventListener('click', () => {
+                const detailDiv = document.getElementById('platformDetails');
+                detailDiv.innerHTML = `<strong>📌 ECN:</strong> شبكة اتصال مباشر، سبريد متغير.<br>
+                                        <strong>📌 Market Maker:</strong> صانع سوق، سيولة ثابتة.<br>
+                                        <strong>📌 MetaTrader:</strong> منصة شائعة للفوركس.<br>
+                                        <strong>📌 TradingView:</strong> رسوميات متقدمة.`;
+                interactiveStage1Flags.cards = true;
+                checkStage1Completion();
+            });
+        }
+        // خريطة البورصات
+        const hotspots = document.querySelectorAll('.hotspot');
+        hotspots.forEach(el => {
+            el.addEventListener('click', (e) => {
+                const exchange = el.getAttribute('data-exchange');
+                let info = "";
+                if(exchange === "NYSE") info = "🇺🇸 نيويورك: أسهم تقنية، عقود آجلة، التداول 15:30-22:00 بتوقيت مكة.";
+                if(exchange === "LSE") info = "🇬🇧 لندن: أسهم أوروبية، سيولة عالية، 10:00-18:30 بتوقيت مكة.";
+                if(exchange === "TADAWUL") info = "🇸🇦 الرياض: سوق السعودي، أسهم شركات كبرى، 10:00-15:00.";
+                if(exchange === "DFM") info = "🇦🇪 دبي: أسهم عقارية وبنوك، 10:00-14:00.";
+                document.getElementById('exchangeInfo').innerHTML = info;
+                interactiveStage1Flags.map = true;
+                checkStage1Completion();
+            });
+        });
+        // الرافعة المالية
+        const slider = document.getElementById('leverageSlider');
+        const levSpan = document.getElementById('levValue');
+        const effectP = document.getElementById('leverageEffect');
+        slider.addEventListener('input', () => {
+            const lev = slider.value;
+            levSpan.innerText = `1:${lev}`;
+            const profitLoss = (1000 * 0.01) * lev;
+            effectP.innerHTML = `💰 استثمار 1000$، تحرك 1%: ربح/خسارة = ${profitLoss.toFixed(2)}$ (رافعة 1:${lev})`;
+            interactiveStage1Flags.leverage = true;
+            checkStage1Completion();
+        });
+    }
+
+    function checkStage1Completion() {
+        const allDone = interactiveStage1Flags.chart && interactiveStage1Flags.cards && interactiveStage1Flags.map && interactiveStage1Flags.leverage;
+        const btn = document.getElementById('completeStage1Btn');
+        if(allDone && btn) {
+            btn.disabled = false;
+            btn.style.opacity = "1";
+        }
+        if(allDone) {
+            document.getElementById('completeStage1Btn').addEventListener('click', () => {
+                state.stage1Completed = true;
+                saveToLocal();
+                renderApp();
+            });
+        }
+    }
+
+    // ---------- STAGE 2: 5 سيناريوهات سلوكية ----------
+    function renderStage2Assessment() {
+        const scenarios = [
+            { q: "📉 السهم الذي تملكه ينخفض 5% فجأة دون أخبار سلبية. ماذا تفعل؟", options: ["أبيع فوراً", "أشتري المزيد", "أتوقف وأراجع التحليل"], correct: 2 },
+            { q: "⚠️ نسبة رافعة 1:10 على صفقة كبيرة، السعر يتجه ضدك..", options: ["أضاعف الرافعة", "أغلق الصفقة فوراً", "أستخدم وقف الخسارة مسبقاً"], correct: 2 },
+            { q: "💼 محفظتك بالكامل في سهم واحد فقط. ما الأفضل؟", options: ["أضيف المزيد لنفس السهم", "أبيع وأوزع على قطاعات مختلفة", "لا شيء"], correct: 1 },
+            { q: "🎢 السوق متقلب بشدة وأنت خائف.. سلوك صحيح؟", options: ["أخرج بذعر", "ألتزم بالخطة الموضوعة مسبقاً", "أضارب بعشوائية"], correct: 1 },
+            { q: "🧠 لديك ربح 20% لكن السعر يبدو مبالغاً فيه. قرارك؟", options: ["أحتفظ للأبد", "أغلق جزءاً من الربح وأحتفظ بباقي", "أشتري أكثر"], correct: 1 }
+        ];
+        let html = `<div class="fullscreen-modal" id="stage2Modal"><div class="modal-content"><h2>🧪 تقييم السلوك الاستثماري</h2><form id="quizForm">`;
+        scenarios.forEach((sc, idx) => {
+            html += `<div style="margin-bottom:1rem; background:#111827; padding:1rem; border-radius:1rem;">
+                        <p><strong>${sc.q}</strong></p>`;
+            sc.options.forEach((opt, optIdx) => {
+                html += `<label style="display:block; margin:0.3rem 0;"><input type="radio" name="q${idx}" value="${optIdx}"> ${opt}</label>`;
+            });
+            html += `</div>`;
+        });
+        html += `<button type="submit" class="btn-primary">تقييم مستواي</button></form></div></div>`;
+        return html;
+    }
+
+    function attachStage2Events() {
+        const form = document.getElementById('quizForm');
+        if(form) {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                let score = 0;
+                const scenariosCorrect = [2,2,1,1,1];
+                for(let i=0; i<5; i++) {
+                    const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                    if(selected && parseInt(selected.value) === scenariosCorrect[i]) score++;
+                }
+                let level = "";
+                if(score <= 2) level = "المستكشف (أساسيات إدارة رأس المال)";
+                else if(score === 3) level = "المتعلم (تنفيذ الأوامر وإدارة الصفقات)";
+                else level = "شبه الجاهز (استراتيجيات متقدمة وإدارة المخاطر)";
+                state.userLevel = level;
+                state.stage2Completed = true;
+                saveToLocal();
+                renderApp();
+            });
+        }
+    }
+
+    // ---------- STAGE 3: FULL SIMULATION DASHBOARD ----------
+    function renderDashboard() {
+        return `
+            <div class="dashboard" id="mainDashboard" style="display:block">
+                <div class="header">
+                    <div><h2>🎓 SimTrade Academy</h2><span>👤 متداول مبتدئ | المستوى: ${state.userLevel}</span></div>
+                    <div>💰 الرصيد: <span id="balanceDisplay">${state.balance.toFixed(2)}</span> $</div>
+                    <div class="badge-container" id="badgeList">${state.badges.map(b => `<span class="badge">🏅 ${b}</span>`).join('')}</div>
+                    <button id="reportBtn" class="btn-primary" style="background:#6c5ce7">📊 تقرير جاهزيتي</button>
+                </div>
+                <div class="trade-layout">
+                    <div class="chart-card">
+                        <div id="chartContainer" style="height: 380px;"></div>
+                        <button id="scenarioTrigger" class="btn-primary scenario-btn" style="background:#ffb347">🎲 بدء تمرين محاكاة (سيناريو)</button>
+                    </div>
+                    <div class="order-card">
+                        <h3>تنفيذ أمر</h3>
+                        <div class="order-form">
+                            <select id="orderType"><option value="buy">شراء 🔵</option><option value="sell">بيع 🔴</option></select>
+                            <input type="number" id="quantity" placeholder="الكمية" value="0.1" step="0.01">
+                            <input type="number" id="stopLossInput" placeholder="وقف الخسارة (اختياري)">
+                            <input type="number" id="takeProfitInput" placeholder="جني الربح (اختياري)">
+                            <button id="executeBtn" class="btn-primary">تنفيذ الصفقة</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="positions-card" style="margin-top:1rem">
+                    <h3>📋 المراكز المفتوحة</h3>
+                    <table id="positionsTable">
+                        <thead><tr><th>النوع</th><th>الكمية</th><th>سعر الدخول</th><th>السعر الحالي</th><th>الربح/الخسارة</th><th>إغلاق</th></tr></thead>
+                        <tbody id="positionsBody"></tbody>
+                    </table>
+                </div>
+                <div class="coach-card" style="margin-top:1rem">
+                    <h3>🧠 المدرب الذكي (AI Coach)</h3>
+                    <p id="coachMessage">مرحباً! سأقدم لك ملاحظات بعد كل صفقة لتحسين استراتيجيتك.</p>
+                </div>
+            </div>
+        `;
+    }
+
+    let currentPrice = 51200;
+    function initChartAndPriceFeed() {
+        if(chart) chart.remove();
+        const chartContainer = document.getElementById('chartContainer');
+        if(!chartContainer) return;
+        chart = LightweightCharts.createChart(chartContainer, { width: chartContainer.clientWidth, height: 380, layout: { backgroundColor: '#111827', textColor: '#ddd' }, grid: { vertLines: { color: '#1f2a3e' }, horzLines: { color: '#1f2a3e' } } });
+        series = chart.addLineSeries({ color: '#3b82f6', lineWidth: 2 });
+        let time = Math.floor(Date.now() / 1000) - 200;
+        for(let i=0;i<50;i++) {
+            time += 3600;
+            series.update({ time: time, value: currentPrice + (Math.random() - 0.5) * 200 });
+        }
+        if(priceInterval) clearInterval(priceInterval);
+        priceInterval = setInterval(() => {
+            let change = (Math.random() - 0.5) * 150;
+            currentPrice += change;
+            currentPrice = Math.max(10000, currentPrice);
+            const newTime = Math.floor(Date.now() / 1000);
+            series.update({ time: newTime, value: currentPrice });
+            updateOpenPositionsWithCurrentPrice();
+            updateUIAfterPriceChange();
+        }, 5000);
+        window.addEventListener('resize', () => { if(chart) chart.applyOptions({ width: chartContainer.clientWidth }); });
+    }
+
+    function updateOpenPositionsWithCurrentPrice() {
+        let anyClosed = false;
+        for(let pos of state.openPositions) {
+            pos.currentPrice = currentPrice;
+            let multiplier = (pos.type === 'buy') ? (currentPrice - pos.entryPrice) : (pos.entryPrice - currentPrice);
+            pos.pl = multiplier * pos.quantity;
+        }
+        renderPositionsTable();
+        updateBalanceAndUI();
+        saveToLocal();
+    }
+
+    function renderPositionsTable() {
+        const tbody = document.getElementById('positionsBody');
+        if(!tbody) return;
+        tbody.innerHTML = "";
+        state.openPositions.forEach(pos => {
+            const row = tbody.insertRow();
+            row.insertCell(0).innerText = pos.type === 'buy' ? "شراء" : "بيع";
+            row.insertCell(1).innerText = pos.quantity;
+            row.insertCell(2).innerText = pos.entryPrice.toFixed(2);
+            row.insertCell(3).innerText = pos.currentPrice.toFixed(2);
+            const plClass = pos.pl >=0 ? "profit-positive" : "profit-negative";
+            row.insertCell(4).innerHTML = `<span class="${plClass}">${pos.pl.toFixed(2)} $</span>`;
+            const closeBtn = document.createElement('button');
+            closeBtn.innerText = "إغلاق";
+            closeBtn.style.background = "#ff5a5f";
+            closeBtn.style.padding = "4px 10px";
+            closeBtn.style.borderRadius = "20px";
+            closeBtn.onclick = () => closePosition(pos.id);
+            row.insertCell(5).appendChild(closeBtn);
+        });
+    }
+
+    function closePosition(id) {
+        const pos = state.openPositions.find(p => p.id === id);
+        if(pos) {
+            state.balance += pos.pl;
+            state.totalTrades++;
+            let coachMsg = `🔔 تم إغلاق صفقة ${pos.type} بربح ${pos.pl.toFixed(2)}$. `;
+            if(!pos.stopLoss && state.tradesWithSL < 3) coachMsg += "⚠️ لم تستخدم وقف الخسارة! عرّض نفسك لمخاطر كبيرة. استخدم وقف الخسارة في المرة القادمة.";
+            else if(pos.stopLoss) coachMsg += "✔️ ممتاز استخدام وقف الخسارة، إدارة مخاطر جيدة.";
+            document.getElementById('coachMessage').innerHTML = coachMsg;
+            state.openPositions = state.openPositions.filter(p => p.id !== id);
+            updateBadgesOnTradeClose(pos);
+            saveToLocal();
+            renderPositionsTable();
+            updateBalanceAndUI();
+        }
+    }
+
+    function updateBadgesOnTradeClose(pos) {
+        if(state.totalTrades === 1 && !state.badges.includes("أول صفقة")) { state.badges.push("أول صفقة"); }
+        if(pos.stopLoss && !state.badges.includes("مدير مخاطر") && state.tradesWithSL >= 2) { state.badges.push("مدير مخاطر"); }
+        if(!state.badges.includes("نجا من الانهيار") && state.scenariosPassed >= 1) state.badges.push("نجا من الانهيار");
+        updateBadgesUI();
+        saveToLocal();
+    }
+
+    function updateBadgesUI() {
+        const container = document.getElementById('badgeList');
+        if(container) container.innerHTML = state.badges.map(b => `<span class="badge">🏅 ${b}</span>`).join('');
+    }
+
+    function updateBalanceAndUI() {
+        const balSpan = document.getElementById('balanceDisplay');
+        if(balSpan) balSpan.innerText = state.balance.toFixed(2);
+        saveToLocal();
+    }
+
+    function updateUIAfterPriceChange() {
+        renderPositionsTable();
+        updateBalanceAndUI();
+    }
+
+    function attachDashboardEvents() {
+        document.getElementById('executeBtn')?.addEventListener('click', () => {
+            const type = document.getElementById('orderType').value;
+            let quantity = parseFloat(document.getElementById('quantity').value);
+            const sl = parseFloat(document.getElementById('stopLossInput').value);
+            const tp = parseFloat(document.getElementById('takeProfitInput').value);
+            if(isNaN(quantity) || quantity <= 0) { alert("أدخل كمية صحيحة"); return; }
+            const entryPrice = currentPrice;
+            const requiredMargin = entryPrice * quantity;
+            if(requiredMargin > state.balance) { alert("رصيد غير كافٍ"); return; }
+            state.balance -= requiredMargin;
+            const newPos = {
+                id: Date.now(),
+                type: type,
+                quantity: quantity,
+                entryPrice: entryPrice,
+                currentPrice: currentPrice,
+                stopLoss: sl,
+                takeProfit: tp,
+                pl: 0
+            };
+            if(sl && !isNaN(sl)) state.tradesWithSL++;
+            state.openPositions.push(newPos);
+            state.totalTrades++;
+            updateBalanceAndUI();
+            renderPositionsTable();
+            document.getElementById('coachMessage').innerHTML = "✅ صفقة جديدة منفذة. تذكر مراقبة السوق واستخدام وقف الخسارة!";
+            updateBadgesUI();
+            saveToLocal();
+        });
+
+        document.getElementById('scenarioTrigger')?.addEventListener('click', () => {
+            const scenariosList = ["news", "flashcrash", "diversify"];
+            const rand = scenariosList[Math.floor(Math.random()*3)];
+            if(rand === "news") {
+                showToast("📰 خبر عاجل: تغير مفاجئ في سعر الفائدة! السوق يهتز.");
+                currentPrice *= 0.96; // هبوط 4%
+                if(series) series.update({ time: Math.floor(Date.now()/1000), value: currentPrice });
+            } else if(rand === "flashcrash") {
+                showToast("⚠️ انهيار مفاجئ! الأسعار تنخفض 10% فجأة - اختبار الضغط النفسي.");
+                currentPrice *= 0.90;
+                if(series) series.update({ time: Math.floor(Date.now()/1000), value: currentPrice });
+                state.scenariosPassed++;
+            } else {
+                showToast("📊 تحدٍ: أعد توزيع محفظتك، يجب ألا تتجاوز نسبة الأسهم التقنية 20% (محاكاة تثقيفية).");
+                document.getElementById('coachMessage').innerHTML = "🎯 تحذير استراتيجي: نوّع محفظتك لتقليل المخاطر.";
+            }
+            updateOpenPositionsWithCurrentPrice();
+            updateUIAfterPriceChange();
+            saveToLocal();
+        });
+
+        document.getElementById('reportBtn')?.addEventListener('click', () => {
+            const slPercent = state.totalTrades ? (state.tradesWithSL / state.totalTrades * 100).toFixed(1) : 0;
+            alert(`📈 تقرير الجاهزية:\n- عدد الصفقات: ${state.totalTrades}\n- نسبة صفقات بوقف خسارة: ${slPercent}%\n- السيناريوهات المجتازة: ${state.scenariosPassed}\n- المستوى: ${state.userLevel}\n${slPercent > 40 ? "✔️ جاهزية جيدة للتداول الحقيقي" : "⚠️ يوصى بتحسين إدارة المخاطر"}`);
+        });
+    }
+
+    function showToast(msg) {
+        const toast = document.createElement('div');
+        toast.className = 'toast-notify';
+        toast.innerText = msg;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+    }
+
+    // MAIN BOOT
+    (function init() {
+        loadFromLocal();
+        if(state.stage1Completed && state.stage2Completed && canAccessStage3()) {
+            state.stage1Completed = true; state.stage2Completed = true;
+            renderApp();
+        } else if(state.stage1Completed && !state.stage2Completed) {
+            renderApp();
+        } else if(!state.stage1Completed) {
+            renderApp();
+        } else {
+            renderApp();
+        }
+    })();
+</script>
+</body>
+</html>
