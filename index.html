@@ -652,6 +652,9 @@ input[type="range"] {
     <div style="text-align:left">
       <div style="font-size:12px;color:var(--text-muted)">تقدمك</div>
       <div id="s1-completion" style="font-size:13px;font-weight:700;color:var(--accent)">0 / 4 أقسام</div>
+      <button onclick="resetToStart()" style="background:#3a2a2a; border:1px solid #ff5a6e; padding:6px 12px; border-radius:20px; font-size:12px; cursor:pointer; margin-right:12px;">
+  🔄 بداية جديدة
+</button>
     </div>
   </div>
 
@@ -930,6 +933,9 @@ input[type="range"] {
           </div>
         </div>
         <div id="assessment-score-display" class="tag tag-gold" style="font-size:13px">النقاط: 0</div>
+        <button onclick="resetToStart()" style="background:#3a2a2a; border:1px solid #ff5a6e; padding:4px 10px; border-radius:20px; font-size:11px; cursor:pointer;">
+  🔄 إعادة تعيين
+     </button>
       </div>
       <div class="progress-bar" style="margin-top:12px">
         <div class="progress-fill" id="assessment-progress" style="width:0%"></div>
@@ -982,6 +988,9 @@ input[type="range"] {
       </div>
       <div class="badges-area" id="badges-area" style="max-width:180px"></div>
       <button class="btn btn-ghost" style="font-size:12px;padding:7px 12px" onclick="showReport()">📋 تقرير جاهزيتي</button>
+      <button class="btn btn-ghost" style="font-size:12px;padding:7px 12px;background:#3a2a2a;border-color:#ff5a6e;" onclick="resetToStart()">
+  🔄 بداية جديدة
+      </button>
       <div class="user-avatar">م</div>
     </div>
   </div>
@@ -2173,6 +2182,93 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
 // Initialize when page loads
 setTimeout(updateLeverage, 100);
+// ================================================================
+// RESET FUNCTION – العودة إلى المرحلة الأولى يدوياً
+// ================================================================
+function resetToStart() {
+  // إنشاء نافذة تأكيد
+  const modal = document.createElement('div');
+  modal.className = 'modal-overlay';
+  modal.style.zIndex = '3000';
+  modal.innerHTML = `
+    <div class="modal-box" style="max-width:450px;text-align:center">
+      <div style="font-size:48px;margin-bottom:16px">⚠️</div>
+      <div class="modal-title" style="font-size:20px">إعادة تعيين التقدم بالكامل</div>
+      <div class="modal-subtitle" style="margin-bottom:24px">
+        سيتم حذف جميع بياناتك:<br>
+        • المراحل المكتملة<br>
+        • الرصيد الافتراضي والصفقات<br>
+        • الشارات والإنجازات<br>
+        • نتائج التقييم<br><br>
+        <strong style="color:var(--red)">لا يمكن التراجع عن هذا الإجراء!</strong>
+      </div>
+      <div style="display:flex;gap:12px;justify-content:center">
+        <button class="btn btn-ghost" onclick="this.closest('.modal-overlay').remove()">إلغاء</button>
+        <button class="btn btn-red" onclick="performReset()" style="background:var(--red)">نعم، إعادة تعيين</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+}
+
+function performReset() {
+  // إزالة نافذة التأكيد
+  document.querySelectorAll('.modal-overlay').forEach(el => el.remove());
+
+  // 1. مسح localStorage
+  localStorage.removeItem(STATE_KEY);
+
+  // 2. إعادة تعيين المتغيرات العامة
+  state = {
+    stage: 0,
+    sectionsCompleted: [],
+    userLevel: 0,
+    balance: 100000,
+    openPositions: [],
+    closedPositions: [],
+    badges: [],
+    totalTrades: 0,
+    winningTrades: 0,
+    losingTrades: 0,
+    slTradeCount: 0,
+    scenariosCompleted: 0,
+    consecutiveSL: 0,
+    assessmentScore: 0,
+  };
+  
+  // 3. إعادة تعيين متغيرات المراحل
+  s1MapsClicked = 0;
+  s1PlatformSelected = false;
+  s1LeverMoved = false;
+  currentScenario = 0;
+  scenarioAnswers = [];
+  scenarioScore = 0;
+  positionId = 0;
+  Object.keys(badgesList).forEach(k => delete badgesList[k]);
+
+  // 4. إعادة تعيين أسعار السوق الافتراضية
+  currentPrice = 189.50;
+  openPrice = 189.50;
+  marketPrices = {
+    aapl: 189.50, btc: 67400, eur: 1.0850, gold: 2340, saudi: 12240
+  };
+  flashCrashActive = false;
+  scenarioIndex = 0;
+
+  // 5. إخفاء جميع الواجهات وإظهار المرحلة الأولى
+  document.getElementById('stage3-app').style.display = 'none';
+  document.getElementById('stage2-overlay').classList.add('hidden');
+  document.getElementById('stage1-overlay').classList.remove('hidden');
+  
+  // إعادة تهيئة المحتوى في المرحلة الأولى
+  drawInvestmentChart();
+  updateLeverage();
+  updateStage1UI();
+  showSection(1); // عرض القسم الأول
+  
+  // 6. عرض رسالة تأكيد
+  showToast('🔄', 'تمت إعادة التعيين', 'تم حذف جميع البيانات والعودة إلى البداية', 'achievement');
+}
 </script>
 </body>
 </html>
