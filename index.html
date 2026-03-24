@@ -657,7 +657,7 @@ input[type="range"] {
     </div>
     <div style="text-align:left">
       <div style="font-size:12px;color:var(--text-muted)">تقدمك</div>
-      <div id="s1-completion" style="font-size:13px;font-weight:700;color:var(--accent)">0 / 4 أقسام</div>
+      <div id="s1-completion" style="font-size:13px;font-weight:700;color:var(--accent)">0 / 7 أقسام</div>
       <button onclick="resetToStart()" style="background:#3a2a2a; border:1px solid #ff5a6e; padding:6px 12px; border-radius:20px; font-size:12px; cursor:pointer; margin-right:12px;">
   🔄 بداية جديدة
 </button>
@@ -918,9 +918,8 @@ input[type="range"] {
       <div style="margin-top:20px;text-align:center">
         <div id="lever-hint" style="font-size:12px;color:var(--text-muted);margin-bottom:12px">جرب تحريك الأشرطة لرؤية التأثير</div>
         <button class="btn btn-primary" id="s4-btn" onclick="completeSection(4)" disabled>اكتملت المرحلة الأولى ✓</button>
-      </div>
-    </div>
-  <!-- SECTION 5: Financial Instruments -->
+    </div> <!-- هذا إغلاق panel-4 -->
+<!-- SECTION 5: Financial Instruments -->
 <div class="section-panel" id="panel-5">
   <div class="section-title">📊 أنواع الأدوات المالية والاستثمارية</div>
   <div class="section-subtitle">تعرف على أهم الأدوات التي تشكل الأسواق المالية العالمية</div>
@@ -996,7 +995,7 @@ input[type="range"] {
   </div>
   <div id="s5-hint" style="font-size:12px; color:var(--text-muted); text-align:center; margin-top:12px;">اطّلع على المحتوى ثم اضغط الزر لإكمال القسم</div>
 </div>
-  <!-- SECTION 6: Chart Patterns & Candlesticks -->
+<!-- SECTION 6: Chart Patterns & Candlesticks -->
 <div class="section-panel" id="panel-6">
   <div class="section-title">📉 أنماط الرسوم البيانية والشموع اليابانية</div>
   <div class="section-subtitle">تعلم قراءة لغة السوق من خلال الأنماط الفنية الأكثر شيوعاً</div>
@@ -1081,7 +1080,7 @@ input[type="range"] {
   </div>
   <div id="s6-hint" style="font-size:12px; color:var(--text-muted); text-align:center; margin-top:12px;">أجب عن أسئلة المراجعة أولاً ثم اضغط الزر لإكمال القسم</div>
 </div>
-  <!-- SECTION 7: Trading Psychology -->
+<!-- SECTION 7: Trading Psychology -->
 <div class="section-panel" id="panel-7">
   <div class="section-title">🧠 التحليل النفسي للمتداول</div>
   <div class="section-subtitle">اكتشف العقبات الذهنية والنفسية التي تمنعك من الربح المستمر</div>
@@ -1129,8 +1128,8 @@ input[type="range"] {
     <button class="btn btn-primary" id="s7-btn" onclick="completeSection(7)" disabled>فهمت علم النفس المالي ✓</button>
   </div>
   <div id="s7-hint" style="font-size:12px; color:var(--text-muted); text-align:center; margin-top:12px;">اطّلع على المحتوى ثم اضغط الزر لإكمال القسم</div>
-</div>
-  </div> <!-- end stage1-content -->
+  
+</div> <!-- end stage1-content -->
 
   <!-- Footer CTA -->
   <div class="stage1-footer">
@@ -1484,29 +1483,39 @@ let s1MapsClicked = 0;
 let s1PlatformSelected = false;
 let s1LeverMoved = false;
 
+// متغيرات الأقسام الجديدة
+let s5Completed = false;
+let s6QuizPassed = false;
+let s7Completed = false;
+
 function showOnboarding() {
   document.getElementById('stage1-overlay').classList.remove('hidden');
   drawInvestmentChart();
   updateStage1UI();
-}
+
   // إضافة مستمعي الأحداث للأقسام 5 و 7
   const panel5 = document.getElementById('panel-5');
   if (panel5) {
     panel5.addEventListener('click', function() {
       if (!s5Completed) {
         s5Completed = true;
-        document.getElementById('s5-btn').disabled = false;
-        document.getElementById('s5-hint').textContent = '✓ تم الاطلاع، اضغط الزر لإكمال القسم';
+        const btn = document.getElementById('s5-btn');
+        if (btn) btn.disabled = false;
+        const hint = document.getElementById('s5-hint');
+        if (hint) hint.textContent = '✓ تم الاطلاع، اضغط الزر لإكمال القسم';
       }
     });
   }
+
   const panel7 = document.getElementById('panel-7');
   if (panel7) {
     panel7.addEventListener('click', function() {
       if (!s7Completed) {
         s7Completed = true;
-        document.getElementById('s7-btn').disabled = false;
-        document.getElementById('s7-hint').textContent = '✓ تم الاطلاع، اضغط الزر لإكمال القسم';
+        const btn = document.getElementById('s7-btn');
+        if (btn) btn.disabled = false;
+        const hint = document.getElementById('s7-hint');
+        if (hint) hint.textContent = '✓ تم الاطلاع، اضغط الزر لإكمال القسم';
       }
     });
   }
@@ -2282,8 +2291,6 @@ function showReport() {
 function closeReport() {
   document.getElementById('report-modal').classList.add('hidden');
 }
-
-function closeReport() { document.getElementById('report-modal').classList.add('hidden'); }
 function updateUI() { updateBalance(); updateStats(); renderBadges(); }
 function setTF(btn, tf) { document.querySelectorAll('.timeframe-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); generateHistoricalData(); }
 setTimeout(updateLeverage, 100);
