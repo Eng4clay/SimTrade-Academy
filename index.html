@@ -1579,7 +1579,6 @@ function selectAnswer(scenarioIdx, optIdx) { const s = scenariosArr[scenarioIdx]
 function nextScenario() { currentScenario++; renderScenario(currentScenario); }
 function showAssessmentResults() { document.getElementById('assessment-progress').style.width = '100%'; document.getElementById('scenarios-container').classList.add('hidden'); const screen = document.getElementById('result-screen'); screen.classList.remove('hidden'); let level, icon, levelName, path, desc; if (scenarioScore <= 2) { level = 1; icon = '🔭'; levelName = 'المستكشف'; path = 'مسار: أساسيات إدارة رأس المال'; desc = `حصلت على ${scenarioScore} نقاط من 5. لا بأس، هذا هو بالضبط سبب وجود هذه المنصة! ستتعلم أساسيات إدارة رأس المال وحماية محفظتك قبل كل شيء.`; } else if (scenarioScore === 3) { level = 2; icon = '📚'; levelName = 'المتعلم'; path = 'مسار: تنفيذ الأوامر وإدارة الصفقات'; desc = `ممتاز! ${scenarioScore} نقاط من 5. لديك فهم جيد للأساسيات. ستتدرب على تنفيذ الأوامر المختلفة وإدارة الصفقات المفتوحة بكفاءة.`; } else { level = 3; icon = '🎯'; levelName = 'شبه الجاهز'; path = 'مسار: استراتيجيات متقدمة وإدارة المخاطر'; desc = `رائع! ${scenarioScore} نقاط من 5. تفكيرك استثماري ناضج! ستتدرب على الاستراتيجيات المتقدمة وإدارة محفظة متكاملة في بيئة المحاكاة.`; } state.userLevel = level; state.assessmentScore = scenarioScore; saveState(); const scoreEl = document.getElementById('result-score'); scoreEl.textContent = scenarioScore+'/5'; scoreEl.className = 'result-score ' + (scenarioScore>=4?'score-high':scenarioScore>=3?'score-mid':'score-low'); document.getElementById('result-icon').textContent = icon; document.getElementById('result-level').textContent = levelName; document.getElementById('result-badge').innerHTML = `<span>${icon}</span><span>${path}</span>`; document.getElementById('result-desc').textContent = desc; }
 function proceedToStage3() { state.stage = 3; saveState(); document.getElementById('stage2-overlay').classList.add('hidden'); showTradingApp(); }
-
 // ================================================================
 // STAGE 3: TRADING APP
 // ================================================================
@@ -1596,43 +1595,137 @@ let scenarioIndex = 0;
 const scenarioTypes = ['news', 'portfolio', 'crash'];
 
 function showTradingApp() {
-  document.getElementById('stage3-app').style.display = 'flex';
-  initTradingChart();
-  restoreState();
-  startPriceUpdates();
-  updateUI();
-  showToast('🚀', 'مرحباً بك!', 'بيئة المحاكاة جاهزة. رصيدك الافتراضي: $100,000', 'achievement');
+  const app = document.getElementById('stage3-app');
+  if (app) {
+    app.style.display = 'flex';
+  }
+  
+  // تأخير بسيط للتأكد من أن العناصر جاهزة
+  setTimeout(() => {
+    initTradingChart();
+    restoreState();
+    startPriceUpdates();
+    updateUI();
+    showToast('🚀', 'مرحباً بك!', 'بيئة المحاكاة جاهزة. رصيدك الافتراضي: $100,000', 'achievement');
+  }, 100);
 }
 
 function restoreState() { updateBalance(); renderPositions(); renderBadges(); updateStats(); }
 
 function initTradingChart() {
   const container = document.getElementById('trading-chart');
-  if (!container) return;
+  if (!container) {
+    console.error('Container not found');
+    return;
+  }
+  
+  // تأكد أن المكتبة تم تحميلها
+  if (typeof LightweightCharts === 'undefined') {
+    console.log('Waiting for LightweightCharts to load...');
+    container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-muted)">⏳ جاري تحميل الرسم البياني...</div>';
+    setTimeout(initTradingChart, 500);
+    return;
+  }
+  
   try {
+    // تأكد أن العنصر له أبعاد واضحة
+    const rect = container.getBoundingClientRect();
+    if (rect.width === 0 || rect.height === 0) {
+      console.log('Container not visible yet, retrying...');
+      container.style.height = '350px';
+      setTimeout(initTradingChart, 100);
+      return;
+    }
+    
+    // إنشاء الرسم البياني
     chart = LightweightCharts.createChart(container, {
-      layout: { background: { color: '#0f1117' }, textColor: '#8892a4' },
-      grid: { vertLines: { color: '#1e2d3d' }, horzLines: { color: '#1e2d3d' } },
+      layout: { 
+        background: { color: '#0f1117' }, 
+        textColor: '#8892a4' 
+      },
+      grid: { 
+        vertLines: { color: '#1e2d3d' }, 
+        horzLines: { color: '#1e2d3d' } 
+      },
       crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
       rightPriceScale: { borderColor: '#1e2d3d' },
-      timeScale: { borderColor: '#1e2d3d', timeVisible: true, secondsVisible: false },
+      timeScale: { 
+        borderColor: '#1e2d3d', 
+        timeVisible: true, 
+        secondsVisible: false 
+      },
       width: container.clientWidth,
       height: container.clientHeight || 350,
     });
-    candleSeries = chart.addCandlestickSeries({ upColor: '#00e676', downColor: '#ff3d57', borderUpColor: '#00c853', borderDownColor: '#d32f2f', wickUpColor: '#00e676', wickDownColor: '#ff3d57' });
+    
+    // إضافة سلسلة الشموع
+    candleSeries = chart.addCandlestickSeries({ 
+      upColor: '#00e676', 
+      downColor: '#ff3d57', 
+      borderUpColor: '#00c853', 
+      borderDownColor: '#d32f2f', 
+      wickUpColor: '#00e676', 
+      wickDownColor: '#ff3d57' 
+    });
+    
+    // توليد البيانات التاريخية
     generateHistoricalData();
-    window.addEventListener('resize', () => { chart.applyOptions({ width: container.clientWidth, height: container.clientHeight || 350 }); });
-  } catch(e) { console.warn('Chart init failed:', e); container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-muted)">تحميل الرسم البياني...</div>'; }
+    
+    // معالجة تغيير حجم النافذة
+    const handleResize = () => {
+      if (chart) {
+        chart.applyOptions({ 
+          width: container.clientWidth, 
+          height: container.clientHeight || 350 
+        });
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    
+    console.log('Chart initialized successfully');
+    
+  } catch(e) { 
+    console.error('Chart init failed:', e); 
+    container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--red)">⚠️ خطأ في تحميل الرسم البياني</div>';
+    // محاولة إعادة التهيئة بعد ثانية
+    setTimeout(initTradingChart, 1000);
+  }
 }
 
 function generateHistoricalData() {
   priceHistory = [];
   let time = Math.floor(Date.now()/1000) - 300*60;
   let price = 185 + Math.random()*10;
-  for(let i=0;i<300;i++){ const o = price; const change = (Math.random()-0.48)*2; const h = o + Math.abs(change) + Math.random(); const l = o - Math.abs(change) - Math.random(); const c = o + change; price = c; priceHistory.push({time, open:+o.toFixed(2), high:+h.toFixed(2), low:+l.toFixed(2), close:+c.toFixed(2)}); time += 60; }
+  
+  for(let i=0;i<300;i++){ 
+    const o = price; 
+    const change = (Math.random()-0.48)*2; 
+    const h = Math.max(o, o + Math.abs(change)) + Math.random() * 0.5;
+    const l = Math.min(o, o - Math.abs(change)) - Math.random() * 0.5;
+    const c = o + change; 
+    price = c; 
+    priceHistory.push({
+      time, 
+      open: +o.toFixed(2), 
+      high: +h.toFixed(2), 
+      low: +l.toFixed(2), 
+      close: +c.toFixed(2)
+    }); 
+    time += 60; 
+  }
+  
   currentPrice = priceHistory[priceHistory.length-1].close;
   openPrice = priceHistory[0].open;
-  if (candleSeries) { try { candleSeries.setData(priceHistory); } catch(e){} }
+  
+  if (candleSeries && priceHistory.length > 0) { 
+    try { 
+      candleSeries.setData(priceHistory); 
+      console.log('Chart data loaded, candles:', priceHistory.length);
+    } catch(e){ 
+      console.error('Error setting chart data:', e);
+    }
+  }
+  
   updateChartStats();
 }
 
@@ -1656,17 +1749,37 @@ function updatePrices() {
   const o = lastCandle ? lastCandle.close : currentPrice;
   const h = Math.max(o, newPrice) + Math.random()*0.2;
   const l = Math.min(o, newPrice) - Math.random()*0.2;
-  const newCandle = {time, open:+o.toFixed(2), high:+h.toFixed(2), low:+l.toFixed(2), close:+newPrice.toFixed(2)};
-  if (candleSeries) { try { candleSeries.update(newCandle); } catch(e){} }
+  const newCandle = {
+    time, 
+    open: +o.toFixed(2), 
+    high: +h.toFixed(2), 
+    low: +l.toFixed(2), 
+    close: +newPrice.toFixed(2)
+  };
+  
+  if (candleSeries && priceHistory.length > 0) { 
+    try { 
+      candleSeries.update(newCandle); 
+    } catch(e){ 
+      console.warn('Error updating chart:', e);
+      // إذا فشل التحديث، حاول إعادة تعيين البيانات
+      try {
+        candleSeries.setData(priceHistory);
+      } catch(err) {}
+    }
+  }
+  
   priceHistory.push(newCandle);
   if(priceHistory.length > 500) priceHistory.shift();
   currentPrice = +newPrice.toFixed(2);
   flashCrashActive = false;
+  
   marketPrices.aapl = currentPrice;
   marketPrices.btc = +(marketPrices.btc + (Math.random()-0.49)*200).toFixed(0);
   marketPrices.eur = +(marketPrices.eur + (Math.random()-0.49)*0.001).toFixed(4);
   marketPrices.gold = +(marketPrices.gold + (Math.random()-0.49)*5).toFixed(0);
   marketPrices.saudi = +(marketPrices.saudi + (Math.random()-0.49)*30).toFixed(0);
+  
   updatePriceDisplay();
   updateOpenPositionsPnL();
   checkStopLossTakeProfit();
@@ -1674,76 +1787,306 @@ function updatePrices() {
 }
 
 function updatePriceDisplay() {
-  const p = currentPrice; const chg = ((p - openPrice)/openPrice*100).toFixed(2); const isUp = p >= openPrice;
-  document.getElementById('hdr-price').textContent = '$'+p.toFixed(2); document.getElementById('hdr-price').style.color = isUp ? 'var(--green)' : 'var(--red)';
-  const chgEl = document.getElementById('hdr-change'); chgEl.textContent = (isUp?'+':'')+chg+'%'; chgEl.style.color = isUp ? 'var(--green)' : 'var(--red)';
+  const p = currentPrice; 
+  const chg = ((p - openPrice)/openPrice*100).toFixed(2); 
+  const isUp = p >= openPrice;
+  document.getElementById('hdr-price').textContent = '$'+p.toFixed(2); 
+  document.getElementById('hdr-price').style.color = isUp ? 'var(--green)' : 'var(--red)';
+  const chgEl = document.getElementById('hdr-change'); 
+  chgEl.textContent = (isUp?'+':'')+chg+'%'; 
+  chgEl.style.color = isUp ? 'var(--green)' : 'var(--red)';
   document.getElementById('current-price-display').textContent = '$'+p.toFixed(2);
-  const mkAApl = document.getElementById('mk-aapl'); mkAApl.textContent = '$'+marketPrices.aapl.toFixed(2); mkAApl.style.color = isUp ? 'var(--green)' : 'var(--red)';
-  document.getElementById('mk-btc').textContent = '$'+marketPrices.btc.toLocaleString(); document.getElementById('mk-eur').textContent = marketPrices.eur.toFixed(4); document.getElementById('mk-saudi').textContent = marketPrices.saudi.toLocaleString(); document.getElementById('mk-gold').textContent = '$'+marketPrices.gold.toLocaleString();
-  document.getElementById('t-aapl').textContent = '$'+p.toFixed(2); document.getElementById('t-aapl').style.color = isUp ? 'var(--green)' : 'var(--red)'; document.getElementById('t-btc').textContent = '$'+marketPrices.btc.toLocaleString(); document.getElementById('t-eur').textContent = marketPrices.eur.toFixed(4); document.getElementById('t-gold').textContent = '$'+marketPrices.gold;
-  const qty = parseFloat(document.getElementById('qty-input').value) || 0; const total = qty * p; document.getElementById('pnl-estimate').textContent = `القيمة الإجمالية: $${total.toFixed(2)}`;
+  const mkAApl = document.getElementById('mk-aapl'); 
+  mkAApl.textContent = '$'+marketPrices.aapl.toFixed(2); 
+  mkAApl.style.color = isUp ? 'var(--green)' : 'var(--red)';
+  document.getElementById('mk-btc').textContent = '$'+marketPrices.btc.toLocaleString(); 
+  document.getElementById('mk-eur').textContent = marketPrices.eur.toFixed(4); 
+  document.getElementById('mk-saudi').textContent = marketPrices.saudi.toLocaleString(); 
+  document.getElementById('mk-gold').textContent = '$'+marketPrices.gold.toLocaleString();
+  document.getElementById('t-aapl').textContent = '$'+p.toFixed(2); 
+  document.getElementById('t-aapl').style.color = isUp ? 'var(--green)' : 'var(--red)'; 
+  document.getElementById('t-btc').textContent = '$'+marketPrices.btc.toLocaleString(); 
+  document.getElementById('t-eur').textContent = marketPrices.eur.toFixed(4); 
+  document.getElementById('t-gold').textContent = '$'+marketPrices.gold;
+  const qty = parseFloat(document.getElementById('qty-input').value) || 0; 
+  const total = qty * p; 
+  document.getElementById('pnl-estimate').textContent = `القيمة الإجمالية: $${total.toFixed(2)}`;
 }
 
-function setOrderType(type) { currentOrderType = type; document.getElementById('tab-buy').classList.toggle('active', type==='buy'); document.getElementById('tab-sell').classList.toggle('active', type==='sell'); const btn = document.getElementById('execute-btn'); if (type==='buy') { btn.style.background = 'linear-gradient(135deg, var(--green-dark), #004d40)'; btn.style.color = '#000'; btn.textContent = '▲ تنفيذ أمر الشراء'; } else { btn.style.background = 'linear-gradient(135deg, var(--red-dark), #b71c1c)'; btn.style.color = '#fff'; btn.textContent = '▼ تنفيذ أمر البيع'; } }
+function setOrderType(type) { 
+  currentOrderType = type; 
+  document.getElementById('tab-buy').classList.toggle('active', type==='buy'); 
+  document.getElementById('tab-sell').classList.toggle('active', type==='sell'); 
+  const btn = document.getElementById('execute-btn'); 
+  if (type==='buy') { 
+    btn.style.background = 'linear-gradient(135deg, var(--green-dark), #004d40)'; 
+    btn.style.color = '#000'; 
+    btn.textContent = '▲ تنفيذ أمر الشراء'; 
+  } else { 
+    btn.style.background = 'linear-gradient(135deg, var(--red-dark), #b71c1c)'; 
+    btn.style.color = '#fff'; 
+    btn.textContent = '▼ تنفيذ أمر البيع'; 
+  } 
+}
 
 function executeTrade() {
-  const qty = parseFloat(document.getElementById('qty-input').value); const sl = parseFloat(document.getElementById('sl-input').value) || null; const tp = parseFloat(document.getElementById('tp-input').value) || null;
+  const qty = parseFloat(document.getElementById('qty-input').value); 
+  const sl = parseFloat(document.getElementById('sl-input').value) || null; 
+  const tp = parseFloat(document.getElementById('tp-input').value) || null;
   if (!qty || qty <= 0) { showToast('⚠️','خطأ','أدخل كمية صحيحة','info'); return; }
   const cost = qty * currentPrice;
   if (cost > state.balance) { showToast('❌','رصيد غير كافٍ',`تحتاج $${cost.toFixed(2)} ورصيدك $${state.balance.toFixed(2)}`,'info'); return; }
   const position = { id: ++positionId, asset: 'AAPL', type: currentOrderType, qty, entryPrice: currentPrice, currentPrice, sl, tp, pnl: 0, time: new Date().toLocaleTimeString('ar-SA') };
-  state.openPositions.push(position); state.balance -= cost; state.totalTrades++; if(sl) state.slTradeCount++; state.consecutiveSL = sl ? (state.consecutiveSL||0)+1 : 0;
-  saveState(); updateBalance(); renderPositions(); updateStats();
+  state.openPositions.push(position); 
+  state.balance -= cost; 
+  state.totalTrades++; 
+  if(sl) state.slTradeCount++; 
+  state.consecutiveSL = sl ? (state.consecutiveSL||0)+1 : 0;
+  saveState(); 
+  updateBalance(); 
+  renderPositions(); 
+  updateStats();
   checkBadge('first_trade', state.totalTrades === 1, '⚡', 'أول صفقة', 'نفذت أول صفقة افتراضية!');
   checkBadge('risk_manager', state.consecutiveSL >= 3, '🛡️', 'مدير مخاطر', 'وضعت Stop Loss في 3 صفقات متتالية!');
-  let coachMsg = ''; if(!sl && !tp) { coachMsg = '⚠️ لاحظنا أنك نفذت الصفقة بدون وقف خسارة أو جني أرباح. هذا يعرضك لمخاطر كبيرة غير محسوبة. من الأفضل دائماً تحديد حد أقصى للخسارة قبل الدخول.'; } else if(sl && tp) { coachMsg = '✅ ممتاز! حددت وقف الخسارة وجني الأرباح. هذا هو التداول المحترف. استمر على هذا النهج.'; } else if(sl) { coachMsg = '👍 جيد! وضعت وقف خسارة لحماية رأس مالك. فكر أيضاً في تحديد هدف جني الأرباح لأخذها في الوقت المناسب.'; } else { coachMsg = '💡 قريب! لديك هدف ربح لكن بدون وقف خسارة. تذكر: حماية رأس المال أهم من الأرباح.'; } updateCoach(coachMsg);
+  let coachMsg = ''; 
+  if(!sl && !tp) { 
+    coachMsg = '⚠️ لاحظنا أنك نفذت الصفقة بدون وقف خسارة أو جني أرباح. هذا يعرضك لمخاطر كبيرة غير محسوبة. من الأفضل دائماً تحديد حد أقصى للخسارة قبل الدخول.'; 
+  } else if(sl && tp) { 
+    coachMsg = '✅ ممتاز! حددت وقف الخسارة وجني الأرباح. هذا هو التداول المحترف. استمر على هذا النهج.'; 
+  } else if(sl) { 
+    coachMsg = '👍 جيد! وضعت وقف خسارة لحماية رأس مالك. فكر أيضاً في تحديد هدف جني الأرباح لأخذها في الوقت المناسب.'; 
+  } else { 
+    coachMsg = '💡 قريب! لديك هدف ربح لكن بدون وقف خسارة. تذكر: حماية رأس المال أهم من الأرباح.'; 
+  } 
+  updateCoach(coachMsg);
   showToast(currentOrderType==='buy'?'▲':'▼', currentOrderType==='buy'?'تم الشراء':'تم البيع', `${qty} وحدة من AAPL بسعر $${currentPrice.toFixed(2)}`, 'info');
 }
 
-function updateOpenPositionsPnL() { state.openPositions.forEach(pos => { if(pos.type==='buy') pos.pnl = (currentPrice - pos.entryPrice) * pos.qty; else pos.pnl = (pos.entryPrice - currentPrice) * pos.qty; pos.currentPrice = currentPrice; }); renderPositions(); updateStats(); }
+function updateOpenPositionsPnL() { 
+  state.openPositions.forEach(pos => { 
+    if(pos.type==='buy') pos.pnl = (currentPrice - pos.entryPrice) * pos.qty; 
+    else pos.pnl = (pos.entryPrice - currentPrice) * pos.qty; 
+    pos.currentPrice = currentPrice; 
+  }); 
+  renderPositions(); 
+  updateStats(); 
+}
 
-function checkStopLossTakeProfit() { const toClose = []; state.openPositions.forEach(pos => { if(pos.type==='buy'){ if(pos.sl && currentPrice <= pos.sl) toClose.push({pos, reason:'وقف الخسارة'}); if(pos.tp && currentPrice >= pos.tp) toClose.push({pos, reason:'جني الأرباح'}); } else { if(pos.sl && currentPrice >= pos.sl) toClose.push({pos, reason:'وقف الخسارة'}); if(pos.tp && currentPrice <= pos.tp) toClose.push({pos, reason:'جني الأرباح'}); } }); toClose.forEach(({pos, reason}) => { closePosition(pos.id, true, reason); }); }
+function checkStopLossTakeProfit() { 
+  const toClose = []; 
+  state.openPositions.forEach(pos => { 
+    if(pos.type==='buy'){ 
+      if(pos.sl && currentPrice <= pos.sl) toClose.push({pos, reason:'وقف الخسارة'});
+      if(pos.tp && currentPrice >= pos.tp) toClose.push({pos, reason:'جني الأرباح'});
+    } else { 
+      if(pos.sl && currentPrice >= pos.sl) toClose.push({pos, reason:'وقف الخسارة'});
+      if(pos.tp && currentPrice <= pos.tp) toClose.push({pos, reason:'جني الأرباح'});
+    } 
+  }); 
+  toClose.forEach(({pos, reason}) => { 
+    closePosition(pos.id, true, reason); 
+  }); 
+}
 
-function closePosition(id, auto=false, reason='') { const idx = state.openPositions.findIndex(p=>p.id===id); if(idx===-1) return; const pos = state.openPositions[idx]; let finalPnl; if(pos.type==='buy') finalPnl = (currentPrice - pos.entryPrice) * pos.qty; else finalPnl = (pos.entryPrice - currentPrice) * pos.qty; state.balance += (pos.qty * pos.entryPrice) + finalPnl; if(finalPnl >= 0) state.winningTrades++; else state.losingTrades++; state.closedPositions = state.closedPositions || []; state.closedPositions.push({...pos, closePnl: finalPnl, closePrice: currentPrice}); state.openPositions.splice(idx, 1); saveState(); updateBalance(); renderPositions(); updateStats(); const pnlStr = (finalPnl>=0?'+':'')+finalPnl.toFixed(2); if(auto) { showToast(finalPnl>=0?'💰':'🔴', reason, `${pnlStr}$ — تم الإغلاق تلقائياً`, finalPnl>=0?'achievement':'info'); } else { showToast(finalPnl>=0?'💰':'🔴', 'تم إغلاق الصفقة', `الربح/الخسارة: $${pnlStr}`, finalPnl>=0?'achievement':'info'); } if(!pos.sl && finalPnl < 0) { updateCoach('🚨 لاحظنا أنك أغلقت صفقة خاسرة بدون وقف خسارة. لو كان لديك SL محدد، كانت الخسارة ستكون أقل بكثير. هل تريد إعادة المحاولة مع تطبيق إدارة المخاطر؟'); } checkBadge('first_profit', finalPnl > 0 && state.winningTrades===1, '💰', 'أول ربح', 'حققت أول ربح في المحاكاة!'); }
+function closePosition(id, auto=false, reason='') { 
+  const idx = state.openPositions.findIndex(p=>p.id===id); 
+  if(idx===-1) return; 
+  const pos = state.openPositions[idx]; 
+  let finalPnl; 
+  if(pos.type==='buy') finalPnl = (currentPrice - pos.entryPrice) * pos.qty; 
+  else finalPnl = (pos.entryPrice - currentPrice) * pos.qty; 
+  state.balance += (pos.qty * pos.entryPrice) + finalPnl; 
+  if(finalPnl >= 0) state.winningTrades++; 
+  else state.losingTrades++; 
+  state.closedPositions = state.closedPositions || []; 
+  state.closedPositions.push({...pos, closePnl: finalPnl, closePrice: currentPrice}); 
+  state.openPositions.splice(idx, 1); 
+  saveState(); 
+  updateBalance(); 
+  renderPositions(); 
+  updateStats(); 
+  const pnlStr = (finalPnl>=0?'+':'')+finalPnl.toFixed(2); 
+  if(auto) { 
+    showToast(finalPnl>=0?'💰':'🔴', reason, `${pnlStr}$ — تم الإغلاق تلقائياً`, finalPnl>=0?'achievement':'info'); 
+  } else { 
+    showToast(finalPnl>=0?'💰':'🔴', 'تم إغلاق الصفقة', `الربح/الخسارة: $${pnlStr}`, finalPnl>=0?'achievement':'info'); 
+  } 
+  if(!pos.sl && finalPnl < 0) { 
+    updateCoach('🚨 لاحظنا أنك أغلقت صفقة خاسرة بدون وقف خسارة. لو كان لديك SL محدد، كانت الخسارة ستكون أقل بكثير. هل تريد إعادة المحاولة مع تطبيق إدارة المخاطر؟'); 
+  } 
+  checkBadge('first_profit', finalPnl > 0 && state.winningTrades===1, '💰', 'أول ربح', 'حققت أول ربح في المحاكاة!'); 
+}
 
-function renderPositions() { const tbody = document.getElementById('positions-tbody'); const count = document.getElementById('pos-count'); if(!state.openPositions || state.openPositions.length===0){ tbody.innerHTML = '<tr><td colspan="8" class="empty-positions">لا توجد مراكز مفتوحة — نفذ أول صفقة لك</td></tr>'; count.textContent = '0 مركز'; return; } count.textContent = state.openPositions.length+' مركز'; tbody.innerHTML = state.openPositions.map(pos => { const pnl = pos.type==='buy' ? (currentPrice-pos.entryPrice)*pos.qty : (pos.entryPrice-currentPrice)*pos.qty; const pnlClass = pnl>=0?'text-green':'text-red'; return `<tr><td class="position-asset">${pos.asset}</td><td><span class="position-type ${pos.type==='buy'?'type-buy':'type-sell'}">${pos.type==='buy'?'شراء':'بيع'}</span></td><td>${pos.qty}</td><td class="mono">$${pos.entryPrice.toFixed(2)}</td><td class="mono">$${currentPrice.toFixed(2)}</td><td class="mono ${pnlClass}">${pnl>=0?'+':''}$${pnl.toFixed(2)}</td><td style="font-size:10px;color:var(--text-muted)">${pos.sl?'SL:'+pos.sl:'—'}/${pos.tp?'TP:'+pos.tp:'—'}</td><td><button class="close-pos-btn" onclick="closePosition(${pos.id})">إغلاق</button></td></tr>`; }).join(''); }
+function renderPositions() { 
+  const tbody = document.getElementById('positions-tbody'); 
+  const count = document.getElementById('pos-count'); 
+  if(!state.openPositions || state.openPositions.length===0){ 
+    tbody.innerHTML = '叭<td colspan="8" class="empty-positions">لا توجد مراكز مفتوحة — نفذ أول صفقة لك</td>'; 
+    count.textContent = '0 مركز'; 
+    return; 
+  } 
+  count.textContent = state.openPositions.length+' مركز'; 
+  tbody.innerHTML = state.openPositions.map(pos => { 
+    const pnl = pos.type==='buy' ? (currentPrice-pos.entryPrice)*pos.qty : (pos.entryPrice-currentPrice)*pos.qty; 
+    const pnlClass = pnl>=0?'text-green':'text-red'; 
+    return `<tr>
+        <td class="position-asset">${pos.asset}</td>
+        <td><span class="position-type ${pos.type==='buy'?'type-buy':'type-sell'}">${pos.type==='buy'?'شراء':'بيع'}</span></td>
+        <td>${pos.qty}</td>
+        <td class="mono">$${pos.entryPrice.toFixed(2)}</td>
+        <td class="mono">$${currentPrice.toFixed(2)}</td>
+        <td class="mono ${pnlClass}">${pnl>=0?'+':''}$${pnl.toFixed(2)}</td>
+        <td style="font-size:10px;color:var(--text-muted)">${pos.sl?'SL:'+pos.sl:'—'}/${pos.tp?'TP:'+pos.tp:'—'}</td>
+        <td><button class="close-pos-btn" onclick="closePosition(${pos.id})">إغلاق</button></td>
+      </tr>`; 
+  }).join(''); 
+}
 
-function updateBalance() { document.getElementById('balance-display').textContent = '$'+state.balance.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2}); }
-function updateStats() { document.getElementById('stat-total').textContent = state.totalTrades||0; document.getElementById('stat-winning').textContent = state.winningTrades||0; document.getElementById('stat-losing').textContent = state.losingTrades||0; document.getElementById('stat-sl').textContent = state.slTradeCount||0; document.getElementById('stat-scenarios').textContent = state.scenariosCompleted||0; const totalPnl = state.balance - 100000; const pnlEl = document.getElementById('stat-pnl'); pnlEl.textContent = (totalPnl>=0?'+':'')+'$'+Math.abs(totalPnl).toFixed(2); pnlEl.style.color = totalPnl>=0?'var(--green)':'var(--red)'; }
-function updateCoach(msg) { document.getElementById('coach-message').innerHTML = `<span class="coach-icon">🤖</span>${msg}`; }
+function updateBalance() { 
+  document.getElementById('balance-display').textContent = '$'+state.balance.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2}); 
+}
+
+function updateStats() { 
+  document.getElementById('stat-total').textContent = state.totalTrades||0; 
+  document.getElementById('stat-winning').textContent = state.winningTrades||0; 
+  document.getElementById('stat-losing').textContent = state.losingTrades||0; 
+  document.getElementById('stat-sl').textContent = state.slTradeCount||0; 
+  document.getElementById('stat-scenarios').textContent = state.scenariosCompleted||0; 
+  const totalPnl = state.balance - 100000; 
+  const pnlEl = document.getElementById('stat-pnl'); 
+  pnlEl.textContent = (totalPnl>=0?'+':'')+'$'+Math.abs(totalPnl).toFixed(2); 
+  pnlEl.style.color = totalPnl>=0?'var(--green)':'var(--red)'; 
+}
+
+function updateCoach(msg) { 
+  document.getElementById('coach-message').innerHTML = `<span class="coach-icon">🤖</span>${msg}`; 
+}
 
 function triggerScenario() {
-  const type = scenarioTypes[scenarioIndex % scenarioTypes.length]; scenarioIndex++;
-  const panel = document.getElementById('active-scenario-panel'); panel.classList.remove('hidden');
-  if(type==='news'){ const isGood = Math.random()>0.5; panel.innerHTML = `<div class="scenario-title">📰 سيناريو: خبر عاجل</div><div style="font-size:12px;color:var(--text-muted);line-height:1.7">${isGood?'🚀 قرار بنك الاحتياطي الفيدرالي بتخفيض أسعار الفائدة! الأسواق ترتفع.':'📉 تقرير تضخم أعلى من المتوقع! المستثمرون يخرجون من الأسهم.'}</div><div style="font-size:11px;color:var(--gold);margin-top:8px">💡 تحدٍّ: تصرف وفق هذا الخبر بصفقة مناسبة</div>`; showToast('📰','خبر عاجل!',isGood?'🚀 تخفيض الفائدة — قرار إيجابي للأسهم!':'📉 تضخم مرتفع — توقع ضغطاً على الأسواق','news'); currentPrice = +(currentPrice * (isGood ? 1.015 : 0.985)).toFixed(2); }
-  else if(type==='portfolio'){ panel.innerHTML = `<div class="scenario-title">📊 سيناريو: إدارة المحفظة</div><div style="font-size:12px;color:var(--text-muted);line-height:1.7">تحدٍّ: يجب ألا تتجاوز صفقاتك المفتوحة 3 في نفس الوقت. إذا لديك أكثر من ذلك، أغلق بعضها.</div><div style="font-size:11px;color:var(--gold);margin-top:8px">💡 التنويع لا يعني فتح صفقات لا نهاية لها!</div>`; showToast('📊','تحدي المحفظة!','راجع عدد مراكزك المفتوحة — الحد الأقصى 3 مراكز في آن واحد','portfolio'); }
-  else { panel.innerHTML = `<div class="scenario-title">🔴 سيناريو: انهيار مفاجئ!</div><div style="font-size:12px;color:var(--red);line-height:1.7;font-weight:600">⚡ Flash Crash! انخفاض حاد 10% خلال ثوانٍ. هل تبيع مذعوراً أم تصبر؟</div><div style="font-size:11px;color:var(--gold);margin-top:8px">💡 المتداول الناضج يحافظ على هدوئه ويراجع الخطة</div>`; currentPrice = +(currentPrice * 0.90).toFixed(2); flashCrashActive = true; const overlay = document.createElement('div'); overlay.className = 'flash-crash-overlay'; document.body.appendChild(overlay); setTimeout(() => overlay.remove(), 1500); showToast('🔴','انهيار مفاجئ!','Flash Crash — انخفاض 10% فجأة! لا تبيع مذعوراً.','crash'); }
-  state.scenariosCompleted = (state.scenariosCompleted||0)+1; saveState(); updateStats(); checkBadge('scenario_master', state.scenariosCompleted >= 3, '🎭', 'سيد السيناريوهات', 'أتممت 3 سيناريوهات تدريبية!');
+  const type = scenarioTypes[scenarioIndex % scenarioTypes.length]; 
+  scenarioIndex++;
+  const panel = document.getElementById('active-scenario-panel'); 
+  panel.classList.remove('hidden');
+  if(type==='news'){ 
+    const isGood = Math.random()>0.5; 
+    panel.innerHTML = `<div class="scenario-title">📰 سيناريو: خبر عاجل</div><div style="font-size:12px;color:var(--text-muted);line-height:1.7">${isGood?'🚀 قرار بنك الاحتياطي الفيدرالي بتخفيض أسعار الفائدة! الأسواق ترتفع.':'📉 تقرير تضخم أعلى من المتوقع! المستثمرون يخرجون من الأسهم.'}</div><div style="font-size:11px;color:var(--gold);margin-top:8px">💡 تحدٍّ: تصرف وفق هذا الخبر بصفقة مناسبة</div>`; 
+    showToast('📰','خبر عاجل!',isGood?'🚀 تخفيض الفائدة — قرار إيجابي للأسهم!':'📉 تضخم مرتفع — توقع ضغطاً على الأسواق','news'); 
+    currentPrice = +(currentPrice * (isGood ? 1.015 : 0.985)).toFixed(2); 
+  }
+  else if(type==='portfolio'){ 
+    panel.innerHTML = `<div class="scenario-title">📊 سيناريو: إدارة المحفظة</div><div style="font-size:12px;color:var(--text-muted);line-height:1.7">تحدٍّ: يجب ألا تتجاوز صفقاتك المفتوحة 3 في نفس الوقت. إذا لديك أكثر من ذلك، أغلق بعضها.</div><div style="font-size:11px;color:var(--gold);margin-top:8px">💡 التنويع لا يعني فتح صفقات لا نهاية لها!</div>`; 
+    showToast('📊','تحدي المحفظة!','راجع عدد مراكزك المفتوحة — الحد الأقصى 3 مراكز في آن واحد','portfolio'); 
+  }
+  else { 
+    panel.innerHTML = `<div class="scenario-title">🔴 سيناريو: انهيار مفاجئ!</div><div style="font-size:12px;color:var(--red);line-height:1.7;font-weight:600">⚡ Flash Crash! انخفاض حاد 10% خلال ثوانٍ. هل تبيع مذعوراً أم تصبر؟</div><div style="font-size:11px;color:var(--gold);margin-top:8px">💡 المتداول الناضج يحافظ على هدوئه ويراجع الخطة</div>`; 
+    currentPrice = +(currentPrice * 0.90).toFixed(2); 
+    flashCrashActive = true; 
+    const overlay = document.createElement('div'); 
+    overlay.className = 'flash-crash-overlay'; 
+    document.body.appendChild(overlay); 
+    setTimeout(() => overlay.remove(), 1500); 
+    showToast('🔴','انهيار مفاجئ!','Flash Crash — انخفاض 10% فجأة! لا تبيع مذعوراً.','crash'); 
+  }
+  state.scenariosCompleted = (state.scenariosCompleted||0)+1; 
+  saveState(); 
+  updateStats(); 
+  checkBadge('scenario_master', state.scenariosCompleted >= 3, '🎭', 'سيد السيناريوهات', 'أتممت 3 سيناريوهات تدريبية!');
 }
 
 const badgesList = {};
-function checkBadge(id, condition, icon, name, msg) { if(!condition || badgesList[id]) return; badgesList[id] = true; if(!state.badges) state.badges = []; if(!state.badges.find(b=>b.id===id)){ state.badges.push({id, icon, name}); saveState(); renderBadges(); showToast('🏆','شارة جديدة: '+name, msg,'achievement'); } }
-function renderBadges() { const area = document.getElementById('badges-area'); const list = document.getElementById('badges-list-panel'); if(!state.badges || state.badges.length===0){ area.innerHTML = ''; list.innerHTML = '<div style="font-size:12px;color:var(--text-muted);text-align:center;padding:10px">لا توجد شارات بعد — ابدأ التداول!</div>'; return; } area.innerHTML = state.badges.map(b=>`<span class="badge-chip" title="${b.name}">${b.icon} ${b.name}</span>`).join(''); list.innerHTML = `<div style="display:flex;flex-direction:column;gap:8px">${state.badges.map(b=>`<div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="font-size:18px">${b.icon}</span><span>${b.name}</span></div>`).join('')}</div>`; }
 
-function showToast(icon, title, msg, type='info') { const container = document.getElementById('toast-container'); const toast = document.createElement('div'); toast.className = `toast ${type}`; toast.innerHTML = `<div class="toast-icon">${icon}</div><div class="toast-body"><div class="toast-title">${title}</div><div class="toast-msg">${msg}</div></div>`; container.appendChild(toast); setTimeout(() => { toast.classList.add('removing'); setTimeout(() => toast.remove(), 300); }, 4000); }
+function checkBadge(id, condition, icon, name, msg) { 
+  if(!condition || badgesList[id]) return; 
+  badgesList[id] = true; 
+  if(!state.badges) state.badges = []; 
+  if(!state.badges.find(b=>b.id===id)){ 
+    state.badges.push({id, icon, name}); 
+    saveState(); 
+    renderBadges(); 
+    showToast('🏆','شارة جديدة: '+name, msg,'achievement'); 
+  } 
+}
+
+function renderBadges() { 
+  const area = document.getElementById('badges-area'); 
+  const list = document.getElementById('badges-list-panel'); 
+  if(!state.badges || state.badges.length===0){ 
+    area.innerHTML = ''; 
+    list.innerHTML = '<div style="font-size:12px;color:var(--text-muted);text-align:center;padding:10px">لا توجد شارات بعد — ابدأ التداول!</div>'; 
+    return; 
+  } 
+  area.innerHTML = state.badges.map(b=>`<span class="badge-chip" title="${b.name}">${b.icon} ${b.name}</span>`).join(''); 
+  list.innerHTML = `<div style="display:flex;flex-direction:column;gap:8px">${state.badges.map(b=>`<div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="font-size:18px">${b.icon}</span><span>${b.name}</span></div>`).join('')}</div>`; 
+}
+
+function showToast(icon, title, msg, type='info') { 
+  const container = document.getElementById('toast-container'); 
+  const toast = document.createElement('div'); 
+  toast.className = `toast ${type}`; 
+  toast.innerHTML = `<div class="toast-icon">${icon}</div><div class="toast-body"><div class="toast-title">${title}</div><div class="toast-msg">${msg}</div></div>`; 
+  container.appendChild(toast); 
+  setTimeout(() => { 
+    toast.classList.add('removing'); 
+    setTimeout(() => toast.remove(), 300); 
+  }, 4000); 
+}
 
 function showReport() {
-  const total = state.totalTrades||0; const winning = state.winningTrades||0; const slPct = total>0 ? Math.round((state.slTradeCount/total)*100) : 0; const scenarios = state.scenariosCompleted||0; const badges = (state.badges||[]).length; const pnl = state.balance - 100000;
-  let readiness = 0; if(total >= 5) readiness += 20; if(slPct >= 70) readiness += 30; if(scenarios >= 2) readiness += 20; if(badges >= 2) readiness += 15; if(winning/Math.max(total,1) >= 0.5) readiness += 15; readiness = Math.min(100, readiness);
+  const total = state.totalTrades||0; 
+  const winning = state.winningTrades||0; 
+  const slPct = total>0 ? Math.round((state.slTradeCount/total)*100) : 0; 
+  const scenarios = state.scenariosCompleted||0; 
+  const badges = (state.badges||[]).length; 
+  const pnl = state.balance - 100000;
+  let readiness = 0; 
+  if(total >= 5) readiness += 20; 
+  if(slPct >= 70) readiness += 30; 
+  if(scenarios >= 2) readiness += 20; 
+  if(badges >= 2) readiness += 15; 
+  if(winning/Math.max(total,1) >= 0.5) readiness += 15; 
+  readiness = Math.min(100, readiness);
   const gradColor = readiness >= 70 ? 'var(--green)' : readiness >= 40 ? 'var(--gold)' : 'var(--red)';
   document.getElementById('report-content').innerHTML = `<div class="report-card"><div class="report-val" style="color:var(--accent)">${total}</div><div class="report-label">إجمالي الصفقات المنفذة</div></div><div class="report-card"><div class="report-val" style="color:${slPct>=70?'var(--green)':'var(--red)'}">${slPct}%</div><div class="report-label">نسبة الصفقات مع Stop Loss</div></div><div class="report-card"><div class="report-val" style="color:var(--blue)">${scenarios}</div><div class="report-label">سيناريوهات تم اجتيازها</div></div><div class="report-card"><div class="report-val" style="color:var(--gold)">${badges}</div><div class="report-label">شارات الإنجاز المكتسبة</div></div><div class="report-card"><div class="report-val" style="color:${pnl>=0?'var(--green)':'var(--red)'}">${pnl>=0?'+':''}$${Math.abs(pnl).toFixed(0)}</div><div class="report-label">إجمالي الربح/الخسارة</div></div><div class="report-card"><div class="report-val">${total>0?Math.round(winning/total*100):0}%</div><div class="report-label">نسبة الصفقات الرابحة</div></div>`;
-  document.getElementById('readiness-pct').textContent = readiness+'%'; document.getElementById('readiness-fill').style.background = `linear-gradient(90deg, ${gradColor}, var(--accent))`; setTimeout(()=>{ document.getElementById('readiness-fill').style.width = readiness+'%'; }, 100);
-  let rec, recColor; if(readiness >= 70) { rec = '🟢 لديك مؤشرات إيجابية قوية! تطبيق وقف الخسارة بانتظام وإتمام عدة سيناريوهات يدل على نضج في التفكير. تذكر: لا يزال التداول بالأموال الحقيقية يتطلب تعلماً إضافياً ومعرفة عميقة بالأدوات التي ستتداول بها.'; recColor = 'var(--green)'; } else if(readiness >= 40) { rec = '🟡 بدأت تفهم المفاهيم الأساسية لكن تحتاج المزيد من التدريب. ركز على وضع وقف الخسارة في كل صفقة، وتجربة السيناريوهات المختلفة. لا تتسرع في التداول بأموال حقيقية.'; recColor = 'var(--gold)'; } else { rec = '🔴 لا تزال في مرحلة التعلم الأساسية. تحتاج تنفيذ المزيد من الصفقات الافتراضية مع تطبيق إدارة المخاطر. الاستعجال في التداول الحقيقي قد يكلفك خسائر كبيرة. استمر في التدريب.'; recColor = 'var(--red)'; }
+  document.getElementById('readiness-pct').textContent = readiness+'%'; 
+  document.getElementById('readiness-fill').style.background = `linear-gradient(90deg, ${gradColor}, var(--accent))`; 
+  setTimeout(()=>{ document.getElementById('readiness-fill').style.width = readiness+'%'; }, 100);
+  let rec, recColor; 
+  if(readiness >= 70) { 
+    rec = '🟢 لديك مؤشرات إيجابية قوية! تطبيق وقف الخسارة بانتظام وإتمام عدة سيناريوهات يدل على نضج في التفكير. تذكر: لا يزال التداول بالأموال الحقيقية يتطلب تعلماً إضافياً ومعرفة عميقة بالأدوات التي ستتداول بها.'; 
+    recColor = 'var(--green)'; 
+  } else if(readiness >= 40) { 
+    rec = '🟡 بدأت تفهم المفاهيم الأساسية لكن تحتاج المزيد من التدريب. ركز على وضع وقف الخسارة في كل صفقة، وتجربة السيناريوهات المختلفة. لا تتسرع في التداول بأموال حقيقية.'; 
+    recColor = 'var(--gold)'; 
+  } else { 
+    rec = '🔴 لا تزال في مرحلة التعلم الأساسية. تحتاج تنفيذ المزيد من الصفقات الافتراضية مع تطبيق إدارة المخاطر. الاستعجال في التداول الحقيقي قد يكلفك خسائر كبيرة. استمر في التدريب.'; 
+    recColor = 'var(--red)'; 
+  }
   document.getElementById('recommendation').innerHTML = `<div class="rec-title" style="color:${recColor}">توصيتنا</div><div class="rec-text">${rec}</div>`;
   document.getElementById('report-modal').classList.remove('hidden');
 }
-function closeReport() { document.getElementById('report-modal').classList.add('hidden'); }
-function updateUI() { updateBalance(); updateStats(); renderBadges(); }
-function setTF(btn, tf) { document.querySelectorAll('.timeframe-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); generateHistoricalData(); }
+
+function closeReport() { 
+  document.getElementById('report-modal').classList.add('hidden'); 
+}
+
+function updateUI() { 
+  updateBalance(); 
+  updateStats(); 
+  renderBadges(); 
+}
+
+function setTF(btn, tf) { 
+  document.querySelectorAll('.timeframe-btn').forEach(b=>b.classList.remove('active')); 
+  btn.classList.add('active'); 
+  generateHistoricalData(); 
+}
+
 setTimeout(updateLeverage, 100);
 
 function resetToStart() {
-  const modal = document.createElement('div'); modal.className = 'modal-overlay'; modal.style.zIndex = '3000';
+  const modal = document.createElement('div'); 
+  modal.className = 'modal-overlay'; 
+  modal.style.zIndex = '3000';
   modal.innerHTML = `<div class="modal-box" style="max-width:450px;text-align:center"><div style="font-size:48px;margin-bottom:16px">⚠️</div><div class="modal-title" style="font-size:20px">إعادة تعيين التقدم بالكامل</div><div class="modal-subtitle" style="margin-bottom:24px">سيتم حذف جميع بياناتك:<br>• المراحل المكتملة<br>• الرصيد الافتراضي والصفقات<br>• الشارات والإنجازات<br>• نتائج التقييم<br><br><strong style="color:var(--red)">لا يمكن التراجع عن هذا الإجراء!</strong></div><div style="display:flex;gap:12px;justify-content:center"><button class="btn btn-ghost" onclick="this.closest('.modal-overlay').remove()">إلغاء</button><button class="btn btn-red" onclick="performReset()" style="background:var(--red)">نعم، إعادة تعيين</button></div></div>`;
   document.body.appendChild(modal);
 }
@@ -1754,8 +2097,13 @@ function performReset() {
   state = { stage: 0, sectionsCompleted: [], userLevel: 0, balance: 100000, openPositions: [], closedPositions: [], badges: [], totalTrades: 0, winningTrades: 0, losingTrades: 0, slTradeCount: 0, scenariosCompleted: 0, consecutiveSL: 0, assessmentScore: 0 };
   s1MapsClicked = 0; s1PlatformSelected = false; s1LeverMoved = false; currentScenario = 0; scenarioAnswers = []; scenarioScore = 0; positionId = 0; Object.keys(badgesList).forEach(k => delete badgesList[k]); s5Completed = false; s6QuizPassed = false; s7Completed = false;
   currentPrice = 189.50; openPrice = 189.50; marketPrices = { aapl: 189.50, btc: 67400, eur: 1.0850, gold: 2340, saudi: 12240 }; flashCrashActive = false; scenarioIndex = 0;
-  document.getElementById('stage3-app').style.display = 'none'; document.getElementById('stage2-overlay').classList.add('hidden'); document.getElementById('stage1-overlay').classList.remove('hidden');
-  drawInvestmentChart(); updateLeverage(); updateStage1UI(); showSection(1);
+  document.getElementById('stage3-app').style.display = 'none'; 
+  document.getElementById('stage2-overlay').classList.add('hidden'); 
+  document.getElementById('stage1-overlay').classList.remove('hidden');
+  drawInvestmentChart(); 
+  updateLeverage(); 
+  updateStage1UI(); 
+  showSection(1);
   showToast('🔄', 'تمت إعادة التعيين', 'تم حذف جميع البيانات والعودة إلى البداية', 'achievement');
 }
 </script>
