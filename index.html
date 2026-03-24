@@ -66,7 +66,6 @@ body {
 @keyframes badgePop { 0% { transform: scale(0) rotate(-10deg); opacity:0; } 70% { transform: scale(1.2) rotate(3deg); } 100% { transform: scale(1) rotate(0); opacity:1; } }
 @keyframes toastIn { from { transform: translateX(120%); opacity:0; } to { transform: translateX(0); opacity:1; } }
 @keyframes toastOut { from { transform: translateX(0); opacity:1; } to { transform: translateX(120%); opacity:0; } }
-@keyframes treeGrow { from { transform: scaleY(0); transform-origin: bottom; } to { transform: scaleY(1); transform-origin: bottom; } }
 
 /* ===== LAYOUT HELPERS ===== */
 .hidden { display: none !important; }
@@ -361,7 +360,7 @@ input[type="range"] {
 /* ================================================================
    STAGE 3: TRADING DASHBOARD
 ================================================================ */
-#stage3-app { display: none; flex-direction: column; height: 100vh; overflow: hidden; }
+#stage3-app { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
 /* Top Header */
 .app-header {
@@ -640,54 +639,38 @@ input[type="range"] {
     <div style="text-align:center">
       <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px">المرحلة الأولى — التأسيس المعرفي</div>
       <div class="stage-progress" id="stage-dots">
-  <div class="step-dot active" id="dot-1">١</div>
-  <div class="step-line" id="line-1"></div>
-  <div class="step-dot" id="dot-2">٢</div>
-  <div class="step-line" id="line-2"></div>
-  <div class="step-dot" id="dot-3">٣</div>
-  <div class="step-line" id="line-3"></div>
-  <div class="step-dot" id="dot-4">٤</div>
-  <div class="step-line" id="line-4"></div>
-  <div class="step-dot" id="dot-5">٥</div>
-  <div class="step-line" id="line-5"></div>
-  <div class="step-dot" id="dot-6">٦</div>
-  <div class="step-line" id="line-6"></div>
-  <div class="step-dot" id="dot-7">٧</div>
-</div>
+        <div class="step-dot active" id="dot-1">١</div>
+        <div class="step-line" id="line-1"></div>
+        <div class="step-dot" id="dot-2">٢</div>
+        <div class="step-line" id="line-2"></div>
+        <div class="step-dot" id="dot-3">٣</div>
+        <div class="step-line" id="line-3"></div>
+        <div class="step-dot" id="dot-4">٤</div>
+        <div class="step-line" id="line-4"></div>
+        <div class="step-dot" id="dot-5">٥</div>
+        <div class="step-line" id="line-5"></div>
+        <div class="step-dot" id="dot-6">٦</div>
+        <div class="step-line" id="line-6"></div>
+        <div class="step-dot" id="dot-7">٧</div>
+      </div>
     </div>
     <div style="text-align:left">
       <div style="font-size:12px;color:var(--text-muted)">تقدمك</div>
       <div id="s1-completion" style="font-size:13px;font-weight:700;color:var(--accent)">0 / 7 أقسام</div>
-      <button onclick="resetToStart()" style="background:#3a2a2a; border:1px solid #ff5a6e; padding:6px 12px; border-radius:20px; font-size:12px; cursor:pointer; margin-right:12px;">
-  🔄 بداية جديدة
-</button>
+      <button onclick="resetToStart()" style="background:#3a2a2a; border:1px solid #ff5a6e; padding:6px 12px; border-radius:20px; font-size:12px; cursor:pointer; margin-right:12px;">🔄 بداية جديدة</button>
     </div>
   </div>
 
   <div class="stage1-content">
     <!-- Navigation tabs -->
     <div class="section-nav">
-      <button class="section-nav-btn active" onclick="showSection(1)" id="nav-1">
-        <span class="check">✓</span> 📈 الاستثمار
-      </button>
-      <button class="section-nav-btn" onclick="showSection(2)" id="nav-2">
-        <span class="check">✓</span> 🖥 المنصات
-      </button>
-      <button class="section-nav-btn" onclick="showSection(3)" id="nav-3">
-        <span class="check">✓</span> 🌍 البورصات
-      </button>
-      <button class="section-nav-btn" onclick="showSection(4)" id="nav-4">
-        <span class="check">✓</span> ⚙️ الرافعة
-      </button>
-      <button class="section-nav-btn" onclick="showSection(5)" id="nav-5">
-  <span class="check">✓</span> 📚 الأدوات المالية
-</button>
-<button class="section-nav-btn" onclick="showSection(6)" id="nav-6">
-  <span class="check">✓</span> 📈 أنماط الرسوم
-</button>
-<button class="section-nav-btn" onclick="showSection(7)" id="nav-7">
-  <span class="check">✓</span> 🧠 علم النفس المالي
-</button>
+      <button class="section-nav-btn active" onclick="showSection(1)" id="nav-1"><span class="check">✓</span> 📈 الاستثمار</button>
+      <button class="section-nav-btn" onclick="showSection(2)" id="nav-2"><span class="check">✓</span> 🖥 المنصات</button>
+      <button class="section-nav-btn" onclick="showSection(3)" id="nav-3"><span class="check">✓</span> 🌍 البورصات</button>
+      <button class="section-nav-btn" onclick="showSection(4)" id="nav-4"><span class="check">✓</span> ⚙️ الرافعة</button>
+      <button class="section-nav-btn" onclick="showSection(5)" id="nav-5"><span class="check">✓</span> 📚 الأدوات المالية</button>
+      <button class="section-nav-btn" onclick="showSection(6)" id="nav-6"><span class="check">✓</span> 📈 أنماط الرسوم</button>
+      <button class="section-nav-btn" onclick="showSection(7)" id="nav-7"><span class="check">✓</span> 🧠 علم النفس المالي</button>
     </div>
 
     <!-- SECTION 1: Investment Chart -->
@@ -775,14 +758,13 @@ input[type="range"] {
         <svg id="world-map-svg" viewBox="0 0 900 450" xmlns="http://www.w3.org/2000/svg">
           <!-- Simplified world map background -->
           <rect width="900" height="450" fill="#0a0d15"/>
-          <!-- Ocean texture -->
-          <rect width="900" height="450" fill="url(#ocean-grad)"/>
           <defs>
             <radialGradient id="ocean-grad" cx="50%" cy="50%">
               <stop offset="0%" stop-color="#0d1929"/>
               <stop offset="100%" stop-color="#060c15"/>
             </radialGradient>
           </defs>
+          <rect width="900" height="450" fill="url(#ocean-grad)"/>
           <!-- Simplified continent shapes -->
           <!-- North America -->
           <path d="M80,80 L200,70 L240,90 L260,130 L250,180 L220,220 L180,240 L150,260 L120,240 L90,200 L70,160 L60,120 Z" fill="#1a2535" stroke="#1e2d3d" stroke-width="1"/>
@@ -854,7 +836,6 @@ input[type="range"] {
             <text x="740" y="95" fill="#ff7043" font-size="9" text-anchor="middle" font-family="IBM Plex Sans Arabic">طوكيو</text>
           </g>
         </svg>
-
         <!-- Info panel (hidden initially) -->
         <div id="map-info" class="map-info-panel hidden" style="top:20px;left:20px"></div>
       </div>
@@ -917,220 +898,223 @@ input[type="range"] {
       </div>
       <div style="margin-top:20px;text-align:center">
         <div id="lever-hint" style="font-size:12px;color:var(--text-muted);margin-bottom:12px">جرب تحريك الأشرطة لرؤية التأثير</div>
-        <button class="btn btn-primary" id="s4-btn" onclick="completeSection(4)" disabled>اكتملت المرحلة الأولى ✓</button>
-    </div> <!-- هذا إغلاق panel-4 -->
-<!-- SECTION 5: Financial Instruments -->
-<div class="section-panel" id="panel-5">
-  <div class="section-title">📊 أنواع الأدوات المالية والاستثمارية</div>
-  <div class="section-subtitle">تعرف على أهم الأدوات التي تشكل الأسواق المالية العالمية</div>
-  
-  <div style="max-height: 500px; overflow-y: auto; padding-right: 8px;">
-    <!-- الأسهم -->
-    <div class="card" style="margin-bottom: 20px;">
-      <h3 style="color: var(--accent); margin-bottom: 10px;">📈 1. الأسهم (Stocks)</h3>
-      <p><strong>الأسهم العادية:</strong> حصة ملكية في الشركة مع حق التصويت وتوزيع الأرباح.</p>
-      <p><strong>الأسهم الممتازة:</strong> أولوية في توزيع الأرباح لكن بدون حق تصويت.</p>
-      <p><strong>إيصالات الإيداع:</strong> تملك أسهم شركات أجنبية عبر بورصة محلية.</p>
-      <p><em>مثال عملي:</em> شراء 100 سهم في "أرامكو" عبر محفظة استثمارية.</p>
-    </div>
-    
-    <!-- الصناديق -->
-    <div class="card" style="margin-bottom: 20px;">
-      <h3 style="color: var(--accent); margin-bottom: 10px;">🏦 2. الأموال (Funds)</h3>
-      <p><strong>صناديق المؤشرات المتداولة (ETFs):</strong> تتبع مؤشراً معيناً وتُتداول كالأسهم.</p>
-      <p><strong>صناديق الاستثمار المشترك:</strong> يديرها متخصصون وتستثمر في سلة متنوعة.</p>
-      <p><strong>صناديق الريت (REITs):</strong> تستثمر في العقارات وتوزع أرباحاً دورية.</p>
-      <p><em>مثال عملي:</em> الاستثمار في صندوق "الراجحي ريت" للحصول على عوائد عقارية.</p>
-    </div>
-    
-    <!-- العقود الآجلة -->
-    <div class="card" style="margin-bottom: 20px;">
-      <h3 style="color: var(--accent); margin-bottom: 10px;">⏳ 3. العقود الآجلة (Futures)</h3>
-      <p>اتفاقية لشراء أو بيع أصل في تاريخ مستقبلي بسعر محدد مسبقاً.</p>
-      <p><strong>أنواعها:</strong> عقود أسهم فردية، عقود مؤشرات، عقود عملات، عقود سلع (نفط، ذهب، قمح)، عقود طقس، عقود مواد بناء.</p>
-      <p><em>مثال عملي:</em> شركة طيران تشتري عقود نفط آجلة لتثبيت تكلفة الوقود.</p>
-    </div>
-    
-    <!-- العملات الرقمية -->
-    <div class="card" style="margin-bottom: 20px;">
-      <h3 style="color: var(--accent); margin-bottom: 10px;">₿ 4. العملات الرقمية (Cryptocurrencies)</h3>
-      <p><strong>التداول الفوري:</strong> شراء وبيع مباشر.</p>
-      <p><strong>العقود الآجلة للعملات الرقمية:</strong> للمضاربة على الأسعار المستقبلية.</p>
-      <p><strong>المؤشرات:</strong> مثل مؤشر Crypto 10 الذي يقيس أداء أكبر العملات.</p>
-      <p><em>مثال عملي:</em> شراء "بيتكوين" عبر منصة Binance والاحتفاظ به للاستثمار طويل الأجل.</p>
-    </div>
-    
-    <!-- السندات -->
-    <div class="card" style="margin-bottom: 20px;">
-      <h3 style="color: var(--accent); margin-bottom: 10px;">📜 5. السندات (Bonds)</h3>
-      <p><strong>سندات حكومية:</strong> منخفضة المخاطر، تصدر لتمويل المشاريع العامة.</p>
-      <p><strong>سندات الشركات:</strong> تصدرها الشركات الكبرى لتمويل توسعاتها.</p>
-      <p><em>مثال عملي:</em> شركة "أرامكو" تصدر سندات بقيمة 5 مليارات دولار.</p>
-    </div>
-    
-    <!-- الاقتصاد -->
-    <div class="card" style="margin-bottom: 20px;">
-      <h3 style="color: var(--accent); margin-bottom: 10px;">🌍 6. الاقتصاد (Economy)</h3>
-      <p><strong>الناتج المحلي الإجمالي (GDP):</strong> يقيس نمو الاقتصاد.</p>
-      <p><strong>معدلات التضخم:</strong> تؤثر على القوة الشرائية وأسعار الفائدة.</p>
-      <p><strong>السياسات النقدية:</strong> قرارات البنوك المركزية (رفع أو خفض الفائدة).</p>
-      <p><em>مثال عملي:</em> رفع الفائدة يؤدي إلى انخفاض الأسهم وزيادة عوائد السندات.</p>
-    </div>
-    
-    <!-- نصائح سريعة -->
-    <div class="card" style="background: var(--bg-elevated); border-right: 3px solid var(--gold);">
-      <h3 style="color: var(--gold);">💡 نصائح سريعة للمبتدئين</h3>
-      <ul style="margin-right: 20px;">
-        <li>ابدأ بالتعلم قبل الاستثمار</li>
-        <li>استخدم الحسابات التجريبية (Demo)</li>
-        <li>نوع محفظتك بين الأسهم والسندات والعقارات</li>
-        <li>لا تخاطر بأكثر من 2-5% من رأس المال في صفقة واحدة</li>
-        <li>استشر مختصين ماليين عند الحاجة</li>
-      </ul>
-    </div>
-  </div>
-  
-  <div style="margin-top: 30px; text-align: center;">
-    <button class="btn btn-primary" id="s5-btn" onclick="completeSection(5)" disabled>فهمت الأساسيات ✓</button>
-  </div>
-  <div id="s5-hint" style="font-size:12px; color:var(--text-muted); text-align:center; margin-top:12px;">اطّلع على المحتوى ثم اضغط الزر لإكمال القسم</div>
-</div>
-<!-- SECTION 6: Chart Patterns & Candlesticks -->
-<div class="section-panel" id="panel-6">
-  <div class="section-title">📉 أنماط الرسوم البيانية والشموع اليابانية</div>
-  <div class="section-subtitle">تعلم قراءة لغة السوق من خلال الأنماط الفنية الأكثر شيوعاً</div>
-  
-  <div style="max-height: 500px; overflow-y: auto; padding-right: 8px;">
-    <!-- أنماط الخطوط -->
-    <div class="card" style="margin-bottom: 20px;">
-      <h3 style="color: var(--accent);">📐 أنماط الخطوط (Line Patterns)</h3>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 12px; margin-top: 12px;">
-        <div><span class="tag tag-green">صاعد (Bullish)</span><br>مثلث صاعد، علم، وتد هابط، قاع مزدوج، قاع ثلاثي، كوب ومقبض</div>
-        <div><span class="tag tag-red">هابط (Bearish)</span><br>مثلث هابط، قمة مزدوجة، رأس وكتفين، قمة ثلاثية، قناة سعرية هابطة</div>
-        <div><span class="tag tag-blue">ثنائي (Bilateral)</span><br>مثلث متماثل، قد ينكسر لأعلى أو لأسفل حسب الاتجاه العام</div>
-      </div>
-      <p class="text-muted" style="margin-top: 12px;"><strong>🔍 ملاحظة:</strong> أنماط الخطوط تعطي نظرة عامة على السوق، ويجب تأكيدها مع أنماط الشموع للحصول على إشارات أقوى.</p>
-    </div>
-    
-    <!-- الشموع اليابانية -->
-    <div class="card" style="margin-bottom: 20px;">
-      <h3 style="color: var(--accent);">🕯️ الشموع اليابانية (Candlestick Patterns)</h3>
-      <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
-        <div style="flex:1; min-width: 200px;">
-          <div style="background: var(--bg-elevated); padding: 8px; border-radius: var(--radius); text-align: center;">
-            <div style="font-size: 20px;">📈</div>
-            <strong>شمعة صاعدة</strong><br>
-            <span class="text-green">جسم أخضر/أبيض</span><br>
-            الإغلاق أعلى من الافتتاح
-          </div>
-        </div>
-        <div style="flex:1; min-width: 200px;">
-          <div style="background: var(--bg-elevated); padding: 8px; border-radius: var(--radius); text-align: center;">
-            <div style="font-size: 20px;">📉</div>
-            <strong>شمعة هابطة</strong><br>
-            <span class="text-red">جسم أحمر/أسود</span><br>
-            الإغلاق أقل من الافتتاح
-          </div>
-        </div>
-      </div>
-      <div style="margin-top: 10px;">
-        <p><strong>⭐ أشهر الأنماط الانعكاسية الصاعدة:</strong> المطرقة (Hammer)، المطرقة المقلوبة (Inverted Hammer)، الابتلاع الصاعد (Bullish Engulfing)، نجمة الصباح (Morning Star)، خط الاختراق (Piercing Line)، الجنود البيض الثلاثة (Three White Soldiers).</p>
-        <p><strong>⭐ أشهر الأنماط الانعكاسية الهابطة:</strong> الرجل المشنوق (Hanging Man)، الشهاب (Shooting Star)، الابتلاع الهابط (Bearish Engulfing)، نجمة المساء (Evening Star)، الغيوم الداكنة (Dark Cloud Cover)، الغربان السود الثلاثة (Three Black Crows).</p>
-        <p><strong>⭐ الأنماط المحايدة:</strong> الدوجي (Doji) والقمة الدوارة (Spinning Top) تشير إلى تردد السوق.</p>
-        <p><em>💡 فائدة الشموع:</em> تعطي نظرة فورية على الصراع بين البائعين والمشترين، وتساعد في تحديد نقاط الدخول والخروج بدقة عالية.</p>
+        <button class="btn btn-primary" id="s4-btn" onclick="completeSection(4)" disabled>أتقنت الرافعة ✓</button>
       </div>
     </div>
-    
-    <!-- اختبار المراجعة (بسيط) -->
-    <div class="card" style="background: var(--bg-elevated); border-right: 3px solid var(--gold);">
-      <h3 style="color: var(--gold);">📝 اختبار سريع (مراجعة)</h3>
-      <div id="quiz-6">
-        <div style="margin-bottom: 15px;">
-          <p><strong>1. ما هو نمط الرأس والكتفين (Head & Shoulders)؟</strong></p>
-          <label><input type="radio" name="q6-1" value="0"> نمط استمراري صاعد</label><br>
-          <label><input type="radio" name="q6-1" value="1"> نمط انعكاسي هابط</label><br>
-          <label><input type="radio" name="q6-1" value="2"> نمط ثنائي غير محدد</label>
-        </div>
-        <div style="margin-bottom: 15px;">
-          <p><strong>2. أي من هذه الأنماط يعتبر صاعداً (Bullish)؟</strong></p>
-          <label><input type="radio" name="q6-2" value="0"> قمة مزدوجة (Double Top)</label><br>
-          <label><input type="radio" name="q6-2" value="1"> قاع مزدوج (Double Bottom)</label><br>
-          <label><input type="radio" name="q6-2" value="2"> مثلث هابط (Descending Triangle)</label>
-        </div>
-        <div style="margin-bottom: 15px;">
-          <p><strong>3. ما الذي تشير إليه شمعة "المطرقة" (Hammer) في نهاية اتجاه هابط؟</strong></p>
-          <label><input type="radio" name="q6-3" value="0"> استمرار الهبوط</label><br>
-          <label><input type="radio" name="q6-3" value="1"> انعكاس صاعد محتمل</label><br>
-          <label><input type="radio" name="q6-3" value="2"> تردد فقط</label>
-        </div>
-        <div style="margin-bottom: 15px;">
-          <p><strong>4. ما فائدة الجمع بين أنماط الخطوط وأنماط الشموع؟</strong></p>
-          <label><input type="radio" name="q6-4" value="0"> لتأكيد الإشارات وتقليل الأخطاء</label><br>
-          <label><input type="radio" name="q6-4" value="1"> لأنهما متشابهان تماماً</label><br>
-          <label><input type="radio" name="q6-4" value="2"> لا فائدة تذكر</label>
-        </div>
-        <button class="btn btn-ghost" id="check-quiz-btn" style="margin-top: 8px;" onclick="checkSection6Quiz()">تحقق من إجاباتي</button>
-        <div id="quiz-feedback" style="margin-top: 10px; font-size: 12px; color: var(--text-secondary);"></div>
-      </div>
-    </div>
-  </div>
-  
-  <div style="margin-top: 30px; text-align: center;">
-    <button class="btn btn-primary" id="s6-btn" onclick="completeSection(6)" disabled>فهمت الأنماط ✓</button>
-  </div>
-  <div id="s6-hint" style="font-size:12px; color:var(--text-muted); text-align:center; margin-top:12px;">أجب عن أسئلة المراجعة أولاً ثم اضغط الزر لإكمال القسم</div>
-</div>
-<!-- SECTION 7: Trading Psychology -->
-<div class="section-panel" id="panel-7">
-  <div class="section-title">🧠 التحليل النفسي للمتداول</div>
-  <div class="section-subtitle">اكتشف العقبات الذهنية والنفسية التي تمنعك من الربح المستمر</div>
-  
-  <div style="max-height: 500px; overflow-y: auto; padding-right: 8px;">
-    <div class="card" style="margin-bottom: 20px;">
-      <h3 style="color: var(--accent);">لماذا نخسر؟</h3>
-      <p>أكثر من 90% من المتداولين يخسرون على المدى المتوسط والطويل. السبب ليس فقط نقص المعرفة الفنية، بل وجود عقبات نفسية وذهنية تمنع تطبيق الخطة والاستراتيجية بشكل منضبط.</p>
-    </div>
-    
-    <div class="card" style="margin-bottom: 20px;">
-      <h3 style="color: var(--accent);">🔴 العقبات النفسية (7 عقبات رئيسية)</h3>
-      <ul>
-        <li><strong>الطمع (Greed):</strong> الرغبة في أرباح سريعة وكبيرة تدفع للمخاطرة غير المحسوبة.</li>
-        <li><strong>التمني (Wishful thinking):</strong> انتظار عودة السعر رغم وجود خسارة، يؤدي لإلغاء وقف الخسارة.</li>
-        <li><strong>استعجال النجاح (Impatience):</strong> الدخول في صفقات غير مكتملة أو التداول على فترات زمنية صغيرة دون خبرة.</li>
-        <li><strong>الثقة المفرطة (Overconfidence):</strong> بعد سلسلة من الأرباح، يتجاهل المتداول المخاطر ويزيد العقود.</li>
-        <li><strong>الندم والحسرة (Regret):</strong> التردد بعد فوات فرصة، أو التمسك بصفقة خاسرة لتجنب الشعور بالندم.</li>
-        <li><strong>الانتقام (Revenge):</strong> محاولة تعويض الخسارة بصفقة أكبر، مما يضاعف الخسائر.</li>
-        <li><strong>الخوف (Fear):</strong> الخوف من الخسارة، أو من فوات الفرصة، أو من الاعتراف بالخطأ، أو من ترك الأموال للسوق، وحتى الخوف من النجاح.</li>
-      </ul>
-    </div>
-    
-    <div class="card" style="margin-bottom: 20px;">
-      <h3 style="color: var(--accent);">🧠 العقبات الذهنية (3 عقبات)</h3>
-      <ul>
-        <li><strong>ضعف التركيز:</strong> بسبب الإرهاق أو المؤثرات الخارجية، مما يسبب أخطاء تنفيذية.</li>
-        <li><strong>التفكير بالنتائج:</strong> الانشغال بالأرباح المستقبلية بدلاً من الالتزام بالخطة، يؤدي لاتخاذ قرارات عاطفية.</li>
-        <li><strong>النسيان:</strong> نسيان شروط الدخول أو قواعد إدارة المخاطر، خاصة مع تقدم العمر أو كثرة الصفقات.</li>
-      </ul>
-    </div>
-    
-    <div class="card" style="margin-bottom: 20px;">
-      <h3 style="color: var(--accent);">🛠️ كيف تتغلب على هذه العقبات؟</h3>
-      <p><strong>أولاً: التعرف عليها</strong> – راقب مشاعرك قبل وأثناء التداول. سجل الأخطاء والمشاعر في مفكرة.</p>
-      <p><strong>ثانياً: استخدم التوقف الذاتي</strong> – عند الشعور بالخوف أو الطمع، ابتعد عن الشاشة وخذ نفساً عميقاً. إن لم تستطع، مارس التنفس العميق حتى تهدأ.</p>
-      <p><strong>ثالثاً: الالتزام بقواعد إدارة المخاطر</strong> – استخدم وقف الخسارة في كل صفقة، ولا تخاطر بأكثر من 2% من رأس المال.</p>
-      <p><strong>رابعاً: التدريب على الحساب التجريبي</strong> – لمدة لا تقل عن 6 أشهر حتى تثبت قدرتك على التحكم النفسي والالتزام بالخطة.</p>
-      <p><strong>خامساً: ضع خطة مكتوبة</strong> – تتضمن شروط الدخول والخروج، ونسبة المخاطرة، وأوقات التداول.</p>
-      <p><em>💡 نصيحة: اقرأ كتباً متخصصة مثل "التداول في المنطقة" لمارك دوجالس، وتدرب على تمارين التنفس والاسترخاء.</em></p>
-    </div>
-  </div>
-  
-  <div style="margin-top: 30px; text-align: center;">
-    <button class="btn btn-primary" id="s7-btn" onclick="completeSection(7)" disabled>فهمت علم النفس المالي ✓</button>
-  </div>
-  <div id="s7-hint" style="font-size:12px; color:var(--text-muted); text-align:center; margin-top:12px;">اطّلع على المحتوى ثم اضغط الزر لإكمال القسم</div>
-  
-</div> <!-- end stage1-content -->
 
+    <!-- SECTION 5: Financial Instruments -->
+    <div class="section-panel" id="panel-5">
+      <div class="section-title">📊 أنواع الأدوات المالية والاستثمارية</div>
+      <div class="section-subtitle">تعرف على أهم الأدوات التي تشكل الأسواق المالية العالمية</div>
+      
+      <div style="max-height: 500px; overflow-y: auto; padding-right: 8px;">
+        <!-- الأسهم -->
+        <div class="card" style="margin-bottom: 20px;">
+          <h3 style="color: var(--accent); margin-bottom: 10px;">📈 1. الأسهم (Stocks)</h3>
+          <p><strong>الأسهم العادية:</strong> حصة ملكية في الشركة مع حق التصويت وتوزيع الأرباح.</p>
+          <p><strong>الأسهم الممتازة:</strong> أولوية في توزيع الأرباح لكن بدون حق تصويت.</p>
+          <p><strong>إيصالات الإيداع:</strong> تملك أسهم شركات أجنبية عبر بورصة محلية.</p>
+          <p><em>مثال عملي:</em> شراء 100 سهم في "أرامكو" عبر محفظة استثمارية.</p>
+        </div>
+        
+        <!-- الصناديق -->
+        <div class="card" style="margin-bottom: 20px;">
+          <h3 style="color: var(--accent); margin-bottom: 10px;">🏦 2. الأموال (Funds)</h3>
+          <p><strong>صناديق المؤشرات المتداولة (ETFs):</strong> تتبع مؤشراً معيناً وتُتداول كالأسهم.</p>
+          <p><strong>صناديق الاستثمار المشترك:</strong> يديرها متخصصون وتستثمر في سلة متنوعة.</p>
+          <p><strong>صناديق الريت (REITs):</strong> تستثمر في العقارات وتوزع أرباحاً دورية.</p>
+          <p><em>مثال عملي:</em> الاستثمار في صندوق "الراجحي ريت" للحصول على عوائد عقارية.</p>
+        </div>
+        
+        <!-- العقود الآجلة -->
+        <div class="card" style="margin-bottom: 20px;">
+          <h3 style="color: var(--accent); margin-bottom: 10px;">⏳ 3. العقود الآجلة (Futures)</h3>
+          <p>اتفاقية لشراء أو بيع أصل في تاريخ مستقبلي بسعر محدد مسبقاً.</p>
+          <p><strong>أنواعها:</strong> عقود أسهم فردية، عقود مؤشرات، عقود عملات، عقود سلع (نفط، ذهب، قمح)، عقود طقس، عقود مواد بناء.</p>
+          <p><em>مثال عملي:</em> شركة طيران تشتري عقود نفط آجلة لتثبيت تكلفة الوقود.</p>
+        </div>
+        
+        <!-- العملات الرقمية -->
+        <div class="card" style="margin-bottom: 20px;">
+          <h3 style="color: var(--accent); margin-bottom: 10px;">₿ 4. العملات الرقمية (Cryptocurrencies)</h3>
+          <p><strong>التداول الفوري:</strong> شراء وبيع مباشر.</p>
+          <p><strong>العقود الآجلة للعملات الرقمية:</strong> للمضاربة على الأسعار المستقبلية.</p>
+          <p><strong>المؤشرات:</strong> مثل مؤشر Crypto 10 الذي يقيس أداء أكبر العملات.</p>
+          <p><em>مثال عملي:</em> شراء "بيتكوين" عبر منصة Binance والاحتفاظ به للاستثمار طويل الأجل.</p>
+        </div>
+        
+        <!-- السندات -->
+        <div class="card" style="margin-bottom: 20px;">
+          <h3 style="color: var(--accent); margin-bottom: 10px;">📜 5. السندات (Bonds)</h3>
+          <p><strong>سندات حكومية:</strong> منخفضة المخاطر، تصدر لتمويل المشاريع العامة.</p>
+          <p><strong>سندات الشركات:</strong> تصدرها الشركات الكبرى لتمويل توسعاتها.</p>
+          <p><em>مثال عملي:</em> شركة "أرامكو" تصدر سندات بقيمة 5 مليارات دولار.</p>
+        </div>
+        
+        <!-- الاقتصاد -->
+        <div class="card" style="margin-bottom: 20px;">
+          <h3 style="color: var(--accent); margin-bottom: 10px;">🌍 6. الاقتصاد (Economy)</h3>
+          <p><strong>الناتج المحلي الإجمالي (GDP):</strong> يقيس نمو الاقتصاد.</p>
+          <p><strong>معدلات التضخم:</strong> تؤثر على القوة الشرائية وأسعار الفائدة.</p>
+          <p><strong>السياسات النقدية:</strong> قرارات البنوك المركزية (رفع أو خفض الفائدة).</p>
+          <p><em>مثال عملي:</em> رفع الفائدة يؤدي إلى انخفاض الأسهم وزيادة عوائد السندات.</p>
+        </div>
+        
+        <!-- نصائح سريعة -->
+        <div class="card" style="background: var(--bg-elevated); border-right: 3px solid var(--gold);">
+          <h3 style="color: var(--gold);">💡 نصائح سريعة للمبتدئين</h3>
+          <ul style="margin-right: 20px;">
+            <li>ابدأ بالتعلم قبل الاستثمار</li>
+            <li>استخدم الحسابات التجريبية (Demo)</li>
+            <li>نوع محفظتك بين الأسهم والسندات والعقارات</li>
+            <li>لا تخاطر بأكثر من 2-5% من رأس المال في صفقة واحدة</li>
+            <li>استشر مختصين ماليين عند الحاجة</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div style="margin-top: 30px; text-align: center;">
+        <button class="btn btn-primary" id="s5-btn" onclick="completeSection(5)" disabled>فهمت الأساسيات ✓</button>
+      </div>
+      <div id="s5-hint" style="font-size:12px; color:var(--text-muted); text-align:center; margin-top:12px;">اطّلع على المحتوى ثم اضغط الزر لإكمال القسم</div>
+    </div>
+    
+    <!-- SECTION 6: Chart Patterns & Candlesticks -->
+    <div class="section-panel" id="panel-6">
+      <div class="section-title">📉 أنماط الرسوم البيانية والشموع اليابانية</div>
+      <div class="section-subtitle">تعلم قراءة لغة السوق من خلال الأنماط الفنية الأكثر شيوعاً</div>
+      
+      <div style="max-height: 500px; overflow-y: auto; padding-right: 8px;">
+        <!-- أنماط الخطوط -->
+        <div class="card" style="margin-bottom: 20px;">
+          <h3 style="color: var(--accent);">📐 أنماط الخطوط (Line Patterns)</h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 12px; margin-top: 12px;">
+            <div><span class="tag tag-green">صاعد (Bullish)</span><br>مثلث صاعد، علم، وتد هابط، قاع مزدوج، قاع ثلاثي، كوب ومقبض</div>
+            <div><span class="tag tag-red">هابط (Bearish)</span><br>مثلث هابط، قمة مزدوجة، رأس وكتفين، قمة ثلاثية، قناة سعرية هابطة</div>
+            <div><span class="tag tag-blue">ثنائي (Bilateral)</span><br>مثلث متماثل، قد ينكسر لأعلى أو لأسفل حسب الاتجاه العام</div>
+          </div>
+          <p class="text-muted" style="margin-top: 12px;"><strong>🔍 ملاحظة:</strong> أنماط الخطوط تعطي نظرة عامة على السوق، ويجب تأكيدها مع أنماط الشموع للحصول على إشارات أقوى.</p>
+        </div>
+        
+        <!-- الشموع اليابانية -->
+        <div class="card" style="margin-bottom: 20px;">
+          <h3 style="color: var(--accent);">🕯️ الشموع اليابانية (Candlestick Patterns)</h3>
+          <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
+            <div style="flex:1; min-width: 200px;">
+              <div style="background: var(--bg-elevated); padding: 8px; border-radius: var(--radius); text-align: center;">
+                <div style="font-size: 20px;">📈</div>
+                <strong>شمعة صاعدة</strong><br>
+                <span class="text-green">جسم أخضر/أبيض</span><br>
+                الإغلاق أعلى من الافتتاح
+              </div>
+            </div>
+            <div style="flex:1; min-width: 200px;">
+              <div style="background: var(--bg-elevated); padding: 8px; border-radius: var(--radius); text-align: center;">
+                <div style="font-size: 20px;">📉</div>
+                <strong>شمعة هابطة</strong><br>
+                <span class="text-red">جسم أحمر/أسود</span><br>
+                الإغلاق أقل من الافتتاح
+              </div>
+            </div>
+          </div>
+          <div style="margin-top: 10px;">
+            <p><strong>⭐ أشهر الأنماط الانعكاسية الصاعدة:</strong> المطرقة (Hammer)، المطرقة المقلوبة (Inverted Hammer)، الابتلاع الصاعد (Bullish Engulfing)، نجمة الصباح (Morning Star)، خط الاختراق (Piercing Line)، الجنود البيض الثلاثة (Three White Soldiers).</p>
+            <p><strong>⭐ أشهر الأنماط الانعكاسية الهابطة:</strong> الرجل المشنوق (Hanging Man)، الشهاب (Shooting Star)، الابتلاع الهابط (Bearish Engulfing)، نجمة المساء (Evening Star)، الغيوم الداكنة (Dark Cloud Cover)، الغربان السود الثلاثة (Three Black Crows).</p>
+            <p><strong>⭐ الأنماط المحايدة:</strong> الدوجي (Doji) والقمة الدوارة (Spinning Top) تشير إلى تردد السوق.</p>
+            <p><em>💡 فائدة الشموع:</em> تعطي نظرة فورية على الصراع بين البائعين والمشترين، وتساعد في تحديد نقاط الدخول والخروج بدقة عالية.</p>
+          </div>
+        </div>
+        
+        <!-- اختبار المراجعة (بسيط) -->
+        <div class="card" style="background: var(--bg-elevated); border-right: 3px solid var(--gold);">
+          <h3 style="color: var(--gold);">📝 اختبار سريع (مراجعة)</h3>
+          <div id="quiz-6">
+            <div style="margin-bottom: 15px;">
+              <p><strong>1. ما هو نمط الرأس والكتفين (Head & Shoulders)؟</strong></p>
+              <label><input type="radio" name="q6-1" value="0"> نمط استمراري صاعد</label><br>
+              <label><input type="radio" name="q6-1" value="1"> نمط انعكاسي هابط</label><br>
+              <label><input type="radio" name="q6-1" value="2"> نمط ثنائي غير محدد</label>
+            </div>
+            <div style="margin-bottom: 15px;">
+              <p><strong>2. أي من هذه الأنماط يعتبر صاعداً (Bullish)؟</strong></p>
+              <label><input type="radio" name="q6-2" value="0"> قمة مزدوجة (Double Top)</label><br>
+              <label><input type="radio" name="q6-2" value="1"> قاع مزدوج (Double Bottom)</label><br>
+              <label><input type="radio" name="q6-2" value="2"> مثلث هابط (Descending Triangle)</label>
+            </div>
+            <div style="margin-bottom: 15px;">
+              <p><strong>3. ما الذي تشير إليه شمعة "المطرقة" (Hammer) في نهاية اتجاه هابط؟</strong></p>
+              <label><input type="radio" name="q6-3" value="0"> استمرار الهبوط</label><br>
+              <label><input type="radio" name="q6-3" value="1"> انعكاس صاعد محتمل</label><br>
+              <label><input type="radio" name="q6-3" value="2"> تردد فقط</label>
+            </div>
+            <div style="margin-bottom: 15px;">
+              <p><strong>4. ما فائدة الجمع بين أنماط الخطوط وأنماط الشموع؟</strong></p>
+              <label><input type="radio" name="q6-4" value="0"> لتأكيد الإشارات وتقليل الأخطاء</label><br>
+              <label><input type="radio" name="q6-4" value="1"> لأنهما متشابهان تماماً</label><br>
+              <label><input type="radio" name="q6-4" value="2"> لا فائدة تذكر</label>
+            </div>
+            <button class="btn btn-ghost" id="check-quiz-btn" style="margin-top: 8px;" onclick="checkSection6Quiz()">تحقق من إجاباتي</button>
+            <div id="quiz-feedback" style="margin-top: 10px; font-size: 12px; color: var(--text-secondary);"></div>
+          </div>
+        </div>
+      </div>
+      
+      <div style="margin-top: 30px; text-align: center;">
+        <button class="btn btn-primary" id="s6-btn" onclick="completeSection(6)" disabled>فهمت الأنماط ✓</button>
+      </div>
+      <div id="s6-hint" style="font-size:12px; color:var(--text-muted); text-align:center; margin-top:12px;">أجب عن أسئلة المراجعة أولاً ثم اضغط الزر لإكمال القسم</div>
+    </div>
+    
+    <!-- SECTION 7: Trading Psychology -->
+    <div class="section-panel" id="panel-7">
+      <div class="section-title">🧠 التحليل النفسي للمتداول</div>
+      <div class="section-subtitle">اكتشف العقبات الذهنية والنفسية التي تمنعك من الربح المستمر</div>
+      
+      <div style="max-height: 500px; overflow-y: auto; padding-right: 8px;">
+        <div class="card" style="margin-bottom: 20px;">
+          <h3 style="color: var(--accent);">لماذا نخسر؟</h3>
+          <p>أكثر من 90% من المتداولين يخسرون على المدى المتوسط والطويل. السبب ليس فقط نقص المعرفة الفنية، بل وجود عقبات نفسية وذهنية تمنع تطبيق الخطة والاستراتيجية بشكل منضبط.</p>
+        </div>
+        
+        <div class="card" style="margin-bottom: 20px;">
+          <h3 style="color: var(--accent);">🔴 العقبات النفسية (7 عقبات رئيسية)</h3>
+          <ul>
+            <li><strong>الطمع (Greed):</strong> الرغبة في أرباح سريعة وكبيرة تدفع للمخاطرة غير المحسوبة.</li>
+            <li><strong>التمني (Wishful thinking):</strong> انتظار عودة السعر رغم وجود خسارة، يؤدي لإلغاء وقف الخسارة.</li>
+            <li><strong>استعجال النجاح (Impatience):</strong> الدخول في صفقات غير مكتملة أو التداول على فترات زمنية صغيرة دون خبرة.</li>
+            <li><strong>الثقة المفرطة (Overconfidence):</strong> بعد سلسلة من الأرباح، يتجاهل المتداول المخاطر ويزيد العقود.</li>
+            <li><strong>الندم والحسرة (Regret):</strong> التردد بعد فوات فرصة، أو التمسك بصفقة خاسرة لتجنب الشعور بالندم.</li>
+            <li><strong>الانتقام (Revenge):</strong> محاولة تعويض الخسارة بصفقة أكبر، مما يضاعف الخسائر.</li>
+            <li><strong>الخوف (Fear):</strong> الخوف من الخسارة، أو من فوات الفرصة، أو من الاعتراف بالخطأ، أو من ترك الأموال للسوق، وحتى الخوف من النجاح.</li>
+          </ul>
+        </div>
+        
+        <div class="card" style="margin-bottom: 20px;">
+          <h3 style="color: var(--accent);">🧠 العقبات الذهنية (3 عقبات)</h3>
+          <ul>
+            <li><strong>ضعف التركيز:</strong> بسبب الإرهاق أو المؤثرات الخارجية، مما يسبب أخطاء تنفيذية.</li>
+            <li><strong>التفكير بالنتائج:</strong> الانشغال بالأرباح المستقبلية بدلاً من الالتزام بالخطة، يؤدي لاتخاذ قرارات عاطفية.</li>
+            <li><strong>النسيان:</strong> نسيان شروط الدخول أو قواعد إدارة المخاطر، خاصة مع تقدم العمر أو كثرة الصفقات.</li>
+          </ul>
+        </div>
+        
+        <div class="card" style="margin-bottom: 20px;">
+          <h3 style="color: var(--accent);">🛠️ كيف تتغلب على هذه العقبات؟</h3>
+          <p><strong>أولاً: التعرف عليها</strong> – راقب مشاعرك قبل وأثناء التداول. سجل الأخطاء والمشاعر في مفكرة.</p>
+          <p><strong>ثانياً: استخدم التوقف الذاتي</strong> – عند الشعور بالخوف أو الطمع، ابتعد عن الشاشة وخذ نفساً عميقاً. إن لم تستطع، مارس التنفس العميق حتى تهدأ.</p>
+          <p><strong>ثالثاً: الالتزام بقواعد إدارة المخاطر</strong> – استخدم وقف الخسارة في كل صفقة، ولا تخاطر بأكثر من 2% من رأس المال.</p>
+          <p><strong>رابعاً: التدريب على الحساب التجريبي</strong> – لمدة لا تقل عن 6 أشهر حتى تثبت قدرتك على التحكم النفسي والالتزام بالخطة.</p>
+          <p><strong>خامساً: ضع خطة مكتوبة</strong> – تتضمن شروط الدخول والخروج، ونسبة المخاطرة، وأوقات التداول.</p>
+          <p><em>💡 نصيحة: اقرأ كتباً متخصصة مثل "التداول في المنطقة" لمارك دوجالس، وتدرب على تمارين التنفس والاسترخاء.</em></p>
+        </div>
+      </div>
+      
+      <div style="margin-top: 30px; text-align: center;">
+        <button class="btn btn-primary" id="s7-btn" onclick="completeSection(7)" disabled>فهمت علم النفس المالي ✓</button>
+      </div>
+      <div id="s7-hint" style="font-size:12px; color:var(--text-muted); text-align:center; margin-top:12px;">اطّلع على المحتوى ثم اضغط الزر لإكمال القسم</div>
+    </div>
+  </div>
   <!-- Footer CTA -->
   <div class="stage1-footer">
     <div>
@@ -1141,6 +1125,7 @@ input[type="range"] {
     </div>
   </div>
 </div>
+
 <!-- ================================================================
      STAGE 2: ASSESSMENT
 ================================================================ -->
@@ -1156,9 +1141,7 @@ input[type="range"] {
           </div>
         </div>
         <div id="assessment-score-display" class="tag tag-gold" style="font-size:13px">النقاط: 0</div>
-        <button onclick="resetToStart()" style="background:#3a2a2a; border:1px solid #ff5a6e; padding:4px 10px; border-radius:20px; font-size:11px; cursor:pointer;">
-  🔄 إعادة تعيين
-     </button>
+        <button onclick="resetToStart()" style="background:#3a2a2a; border:1px solid #ff5a6e; padding:4px 10px; border-radius:20px; font-size:11px; cursor:pointer;">🔄 إعادة تعيين</button>
       </div>
       <div class="progress-bar" style="margin-top:12px">
         <div class="progress-fill" id="assessment-progress" style="width:0%"></div>
@@ -1188,7 +1171,7 @@ input[type="range"] {
 <!-- ================================================================
      STAGE 3: TRADING DASHBOARD
 ================================================================ -->
-<div id="stage3-app">
+<div id="stage3-app" style="display: none;">
   <!-- Header -->
   <div class="app-header">
     <div class="header-logo">⚡ SimTrade <span>Academy</span></div>
@@ -1211,9 +1194,7 @@ input[type="range"] {
       </div>
       <div class="badges-area" id="badges-area" style="max-width:180px"></div>
       <button class="btn btn-ghost" style="font-size:12px;padding:7px 12px" onclick="showReport()">📋 تقرير جاهزيتي</button>
-      <button class="btn btn-ghost" style="font-size:12px;padding:7px 12px;background:#3a2a2a;border-color:#ff5a6e;" onclick="resetToStart()">
-  🔄 بداية جديدة
-      </button>
+      <button class="btn btn-ghost" style="font-size:12px;padding:7px 12px;background:#3a2a2a;border-color:#ff5a6e;" onclick="resetToStart()">🔄 بداية جديدة</button>
       <div class="user-avatar">م</div>
     </div>
   </div>
@@ -1272,7 +1253,7 @@ input[type="range"] {
     <!-- Center: Chart + Positions -->
     <div class="center-panel">
       <div class="chart-container">
-        <div id="trading-chart"></div>
+        <div id="trading-chart" style="height: 350px;"></div>
         <div class="chart-overlay">
           <button class="timeframe-btn active" onclick="setTF(this,'1m')">1د</button>
           <button class="timeframe-btn" onclick="setTF(this,'5m')">5د</button>
@@ -1296,16 +1277,7 @@ input[type="range"] {
       <div class="positions-area">
         <table class="positions-table">
           <thead>
-            <tr>
-              <th>الأصل</th>
-              <th>النوع</th>
-              <th>الكمية</th>
-              <th>سعر الدخول</th>
-              <th>السعر الحالي</th>
-              <th>الربح/الخسارة</th>
-              <th>SL/TP</th>
-              <th>إغلاق</th>
-            </tr>
+            <tr><th>الأصل</th><th>النوع</th><th>الكمية</th><th>سعر الدخول</th><th>السعر الحالي</th><th>الربح/الخسارة</th><th>SL/TP</th><th>إغلاق</th></tr>
           </thead>
           <tbody id="positions-tbody">
             <tr><td colspan="8" class="empty-positions">لا توجد مراكز مفتوحة — نفذ أول صفقة لك</td></tr>
@@ -1318,33 +1290,16 @@ input[type="range"] {
     <div class="right-panel">
       <div class="panel-header">السوق</div>
       <div class="market-panel">
-        <div class="market-item">
-          <div><div class="market-symbol">AAPL</div><div style="font-size:10px;color:var(--text-muted)">أبل</div></div>
-          <div class="market-change text-green" id="mk-aapl">---</div>
-        </div>
-        <div class="market-item">
-          <div><div class="market-symbol">BTC/USD</div><div style="font-size:10px;color:var(--text-muted)">بيتكوين</div></div>
-          <div class="market-change" id="mk-btc">---</div>
-        </div>
-        <div class="market-item">
-          <div><div class="market-symbol">EUR/USD</div><div style="font-size:10px;color:var(--text-muted)">يورو</div></div>
-          <div class="market-change" id="mk-eur">---</div>
-        </div>
-        <div class="market-item">
-          <div><div class="market-symbol">SAUDI</div><div style="font-size:10px;color:var(--text-muted)">تداول</div></div>
-          <div class="market-change" id="mk-saudi">---</div>
-        </div>
-        <div class="market-item">
-          <div><div class="market-symbol">GOLD</div><div style="font-size:10px;color:var(--text-muted)">ذهب</div></div>
-          <div class="market-change" id="mk-gold">---</div>
-        </div>
+        <div class="market-item"><div><div class="market-symbol">AAPL</div><div style="font-size:10px;color:var(--text-muted)">أبل</div></div><div class="market-change text-green" id="mk-aapl">---</div></div>
+        <div class="market-item"><div><div class="market-symbol">BTC/USD</div><div style="font-size:10px;color:var(--text-muted)">بيتكوين</div></div><div class="market-change" id="mk-btc">---</div></div>
+        <div class="market-item"><div><div class="market-symbol">EUR/USD</div><div style="font-size:10px;color:var(--text-muted)">يورو</div></div><div class="market-change" id="mk-eur">---</div></div>
+        <div class="market-item"><div><div class="market-symbol">SAUDI</div><div style="font-size:10px;color:var(--text-muted)">تداول</div></div><div class="market-change" id="mk-saudi">---</div></div>
+        <div class="market-item"><div><div class="market-symbol">GOLD</div><div style="font-size:10px;color:var(--text-muted)">ذهب</div></div><div class="market-change" id="mk-gold">---</div></div>
       </div>
 
       <div class="panel-header">محرك السيناريوهات</div>
       <div class="scenario-panel">
-        <button class="scenario-trigger-btn" onclick="triggerScenario()">
-          ⚡ تنشيط سيناريو تدريبي
-        </button>
+        <button class="scenario-trigger-btn" onclick="triggerScenario()">⚡ تنشيط سيناريو تدريبي</button>
         <div id="active-scenario-panel" class="hidden active-scenario" style="margin-top:10px"></div>
       </div>
 
@@ -1359,9 +1314,7 @@ input[type="range"] {
 
       <div class="panel-header">شارات الإنجاز</div>
       <div class="scenario-panel" id="badges-list-panel">
-        <div style="font-size:12px;color:var(--text-muted);text-align:center;padding:10px">
-          لا توجد شارات بعد — ابدأ التداول!
-        </div>
+        <div style="font-size:12px;color:var(--text-muted);text-align:center;padding:10px">لا توجد شارات بعد — ابدأ التداول!</div>
       </div>
     </div>
   </div>
@@ -1396,9 +1349,6 @@ input[type="range"] {
   </div>
 </div>
 
-<!-- ================================================================
-     JAVASCRIPT
-================================================================ -->
 <script>
 // ================================================================
 // STATE MANAGEMENT
@@ -1415,25 +1365,14 @@ let state = {
   totalTrades: 0,
   winningTrades: 0,
   losingTrades: 0,
-  slTradeCount: 0, // trades with stop loss
+  slTradeCount: 0,
   scenariosCompleted: 0,
   consecutiveSL: 0,
   assessmentScore: 0,
 };
 
-function saveState() {
-  localStorage.setItem(STATE_KEY, JSON.stringify(state));
-}
-
-function loadState() {
-  try {
-    const saved = localStorage.getItem(STATE_KEY);
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      state = { ...state, ...parsed };
-    }
-  } catch(e) { console.warn('State load failed:', e); }
-}
+function saveState() { localStorage.setItem(STATE_KEY, JSON.stringify(state)); }
+function loadState() { try { const saved = localStorage.getItem(STATE_KEY); if (saved) { const parsed = JSON.parse(saved); state = { ...state, ...parsed }; } } catch(e) { console.warn('State load failed:', e); } }
 
 // ================================================================
 // INITIALIZATION
@@ -1450,30 +1389,16 @@ window.addEventListener('load', () => {
 });
 
 function initApp() {
-  // Security: validate stage transitions
   if (state.stage === 3) {
-    // Re-validate
-    if (!state.sectionsCompleted || state.sectionsCompleted.length < 4 || state.userLevel === 0) {
-      state.stage = 1;
-      saveState();
-    }
+    if (!state.sectionsCompleted || state.sectionsCompleted.length < 7 || state.userLevel === 0) { state.stage = 1; saveState(); }
   }
   if (state.stage === 2) {
-    if (!state.sectionsCompleted || state.sectionsCompleted.length < 4) {
-      state.stage = 1;
-      saveState();
-    }
+    if (!state.sectionsCompleted || state.sectionsCompleted.length < 7) { state.stage = 1; saveState(); }
   }
 
-  if (state.stage === 3) {
-    showTradingApp();
-  } else if (state.stage === 2) {
-    showAssessment();
-  } else {
-    state.stage = 1;
-    saveState();
-    showOnboarding();
-  }
+  if (state.stage === 3) { showTradingApp(); }
+  else if (state.stage === 2) { showAssessment(); }
+  else { state.stage = 1; saveState(); showOnboarding(); }
 }
 
 // ================================================================
@@ -1482,8 +1407,6 @@ function initApp() {
 let s1MapsClicked = 0;
 let s1PlatformSelected = false;
 let s1LeverMoved = false;
-
-// متغيرات الأقسام الجديدة
 let s5Completed = false;
 let s6QuizPassed = false;
 let s7Completed = false;
@@ -1492,115 +1415,48 @@ function showOnboarding() {
   document.getElementById('stage1-overlay').classList.remove('hidden');
   drawInvestmentChart();
   updateStage1UI();
-
-  // إضافة مستمعي الأحداث للأقسام 5 و 7
+  
   const panel5 = document.getElementById('panel-5');
   if (panel5) {
-    panel5.addEventListener('click', function() {
-      if (!s5Completed) {
-        s5Completed = true;
-        const btn = document.getElementById('s5-btn');
-        if (btn) btn.disabled = false;
-        const hint = document.getElementById('s5-hint');
-        if (hint) hint.textContent = '✓ تم الاطلاع، اضغط الزر لإكمال القسم';
-      }
-    });
+    panel5.addEventListener('click', function() { if (!s5Completed) { s5Completed = true; const btn = document.getElementById('s5-btn'); if (btn) btn.disabled = false; const hint = document.getElementById('s5-hint'); if (hint) hint.textContent = '✓ تم الاطلاع، اضغط الزر لإكمال القسم'; } });
   }
-
   const panel7 = document.getElementById('panel-7');
   if (panel7) {
-    panel7.addEventListener('click', function() {
-      if (!s7Completed) {
-        s7Completed = true;
-        const btn = document.getElementById('s7-btn');
-        if (btn) btn.disabled = false;
-        const hint = document.getElementById('s7-hint');
-        if (hint) hint.textContent = '✓ تم الاطلاع، اضغط الزر لإكمال القسم';
-      }
-    });
+    panel7.addEventListener('click', function() { if (!s7Completed) { s7Completed = true; const btn = document.getElementById('s7-btn'); if (btn) btn.disabled = false; const hint = document.getElementById('s7-hint'); if (hint) hint.textContent = '✓ تم الاطلاع، اضغط الزر لإكمال القسم'; } });
   }
 }
-// Draw investment vs speculation chart
+
 function drawInvestmentChart() {
   const canvas = document.getElementById('investment-canvas');
   const ctx = canvas.getContext('2d');
-  canvas.width = canvas.offsetWidth * window.devicePixelRatio || 800;
-  canvas.height = 280 * window.devicePixelRatio;
-  canvas.style.height = '280px';
-  ctx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
-  const W = canvas.offsetWidth || 800;
-  const H = 280;
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width;
+  canvas.height = rect.height;
+  const W = canvas.width;
+  const H = canvas.height;
+  if (W === 0) return;
   ctx.clearRect(0,0,W,H);
-
-  // Grid
   ctx.strokeStyle = '#1e2d3d';
   ctx.lineWidth = 1;
-  for(let i=0;i<5;i++){
-    const y = H*0.1 + (H*0.8/4)*i;
-    ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke();
-  }
-
+  for(let i=0;i<5;i++){ const y = H*0.1 + (H*0.8/4)*i; ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
   const pts = 60;
   const startY = H * 0.7;
-
-  // Investment line (smooth growth with small dips)
   let investLine = [];
   let v = startY;
-  for(let i=0;i<pts;i++){
-    v += (-3 + Math.random()*2.5);
-    v = Math.max(H*0.1, Math.min(startY + 10, v));
-    investLine.push({x: (i/(pts-1))*W, y: v});
-  }
-  // Force downtrend overall but long-term up
+  for(let i=0;i<pts;i++){ v += (-3 + Math.random()*2.5); v = Math.max(H*0.1, Math.min(startY + 10, v)); investLine.push({x: (i/(pts-1))*W, y: v}); }
   investLine = investLine.map((p,i) => ({...p, y: p.y - (i/pts)*startY*0.5}));
-
-  // Speculation line (volatile)
   let specLine = [];
   v = startY;
-  for(let i=0;i<pts;i++){
-    v += (-8 + Math.random()*16);
-    v = Math.max(H*0.05, Math.min(H*0.95, v));
-    specLine.push({x: (i/(pts-1))*W, y: v});
-  }
-
-  // Draw areas
-  // Investment area
-  ctx.beginPath();
-  ctx.moveTo(investLine[0].x, H);
-  investLine.forEach(p => ctx.lineTo(p.x, p.y));
-  ctx.lineTo(investLine[pts-1].x, H);
-  ctx.closePath();
-  const ig = ctx.createLinearGradient(0, 0, 0, H);
-  ig.addColorStop(0, 'rgba(0,230,118,0.25)');
-  ig.addColorStop(1, 'rgba(0,230,118,0)');
+  for(let i=0;i<pts;i++){ v += (-8 + Math.random()*16); v = Math.max(H*0.05, Math.min(H*0.95, v)); specLine.push({x: (i/(pts-1))*W, y: v}); }
+  ctx.beginPath(); ctx.moveTo(investLine[0].x, H); investLine.forEach(p => ctx.lineTo(p.x, p.y)); ctx.lineTo(investLine[pts-1].x, H); ctx.closePath();
+  const ig = ctx.createLinearGradient(0, 0, 0, H); ig.addColorStop(0, 'rgba(0,230,118,0.25)'); ig.addColorStop(1, 'rgba(0,230,118,0)');
   ctx.fillStyle = ig; ctx.fill();
-
-  // Investment line
-  ctx.beginPath(); ctx.moveTo(investLine[0].x, investLine[0].y);
-  investLine.forEach(p => ctx.lineTo(p.x, p.y));
-  ctx.strokeStyle = '#00e676'; ctx.lineWidth = 2.5; ctx.stroke();
-
-  // Speculation line
-  ctx.beginPath(); ctx.moveTo(specLine[0].x, specLine[0].y);
-  specLine.forEach(p => ctx.lineTo(p.x, p.y));
-  ctx.strokeStyle = '#ff3d57'; ctx.lineWidth = 2; ctx.setLineDash([5,3]); ctx.stroke();
-  ctx.setLineDash([]);
-
-  // Tree emoji at end of invest line
-  ctx.font = '20px serif';
-  ctx.fillText('🌳', investLine[pts-1].x - 10, investLine[pts-1].y - 8);
-  ctx.font = '16px serif';
-  ctx.fillText('⚡', specLine[pts-1].x - 8, specLine[pts-1].y - 5);
-
-  // Labels
-  ctx.font = '12px IBM Plex Sans Arabic';
-  ctx.fillStyle = '#8892a4';
-  ctx.fillText('السنة 1', W*0.05, H-8);
-  ctx.fillText('السنة 5', W*0.5-15, H-8);
-  ctx.fillText('السنة 10', W*0.95-25, H-8);
+  ctx.beginPath(); ctx.moveTo(investLine[0].x, investLine[0].y); investLine.forEach(p => ctx.lineTo(p.x, p.y)); ctx.strokeStyle = '#00e676'; ctx.lineWidth = 2.5; ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(specLine[0].x, specLine[0].y); specLine.forEach(p => ctx.lineTo(p.x, p.y)); ctx.strokeStyle = '#ff3d57'; ctx.lineWidth = 2; ctx.setLineDash([5,3]); ctx.stroke(); ctx.setLineDash([]);
+  ctx.font = '20px serif'; ctx.fillText('🌳', investLine[pts-1].x - 10, investLine[pts-1].y - 8);
+  ctx.font = '16px serif'; ctx.fillText('⚡', specLine[pts-1].x - 8, specLine[pts-1].y - 5);
 }
 
-// Section navigation
 let currentSection = 1;
 function showSection(n) {
   document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
@@ -1608,20 +1464,19 @@ function showSection(n) {
   document.querySelectorAll('.section-nav-btn').forEach((b,i) => b.classList.toggle('active', i+1===n));
   currentSection = n;
   updateDots(n);
+  if (n === 5) { const btn5 = document.getElementById('s5-btn'); if (btn5 && !s5Completed) { btn5.disabled = false; document.getElementById('s5-hint').textContent = '✓ اضغط الزر لإكمال القسم'; } }
+  if (n === 7) { const btn7 = document.getElementById('s7-btn'); if (btn7 && !s7Completed) { btn7.disabled = false; document.getElementById('s7-hint').textContent = '✓ اضغط الزر لإكمال القسم'; } }
 }
 
 function updateDots(n) {
   for(let i=1;i<=7;i++){
     const dot = document.getElementById('dot-'+i);
-    if(dot) {
-      dot.classList.remove('active','done');
-      if(state.sectionsCompleted && state.sectionsCompleted.includes(i)) dot.classList.add('done');
-      else if(i===n) dot.classList.add('active');
-    }
+    if(dot) { dot.classList.remove('active','done'); if(state.sectionsCompleted && state.sectionsCompleted.includes(i)) dot.classList.add('done'); else if(i===n) dot.classList.add('active'); }
     const line = document.getElementById('line-'+i);
     if(line) line.classList.toggle('done', state.sectionsCompleted && state.sectionsCompleted.includes(i));
   }
 }
+
 function selectPlatform(el, type) {
   document.querySelectorAll('.platform-card').forEach(c => c.classList.remove('selected'));
   el.classList.add('selected');
@@ -1630,7 +1485,6 @@ function selectPlatform(el, type) {
   document.getElementById('platform-hint').textContent = 'ممتاز! تعرفت على هذا النوع من المنصات.';
 }
 
-// Market map data
 const marketData = {
   nyse: { name:'بورصة نيويورك (NYSE)', country:'🇺🇸 الولايات المتحدة', type:'أسهم، ETFs', hours:'14:30–21:00 بتوقيت السعودية', liquidity:'الأعلى عالمياً', cap:'$25+ تريليون', famous:'AAPL, MSFT, GOOGL' },
   lse:  { name:'بورصة لندن (LSE)', country:'🇬🇧 المملكة المتحدة', type:'أسهم، سندات', hours:'11:00–19:30 بتوقيت السعودية', liquidity:'عالية جداً', cap:'$3.8 تريليون', famous:'BP, HSBC, Unilever' },
@@ -1644,19 +1498,9 @@ function showMarket(id, x, y) {
   if(!d) return;
   const panel = document.getElementById('map-info');
   panel.classList.remove('hidden');
-  panel.innerHTML = `
-    <div class="map-info-title">${d.name}</div>
-    <div class="map-info-row"><span class="map-info-label">الدولة</span><span class="map-info-val">${d.country}</span></div>
-    <div class="map-info-row"><span class="map-info-label">أنواع الأدوات</span><span class="map-info-val">${d.type}</span></div>
-    <div class="map-info-row"><span class="map-info-label">أوقات التداول</span><span class="map-info-val">${d.hours}</span></div>
-    <div class="map-info-row"><span class="map-info-label">السيولة</span><span class="map-info-val">${d.liquidity}</span></div>
-    <div class="map-info-row"><span class="map-info-label">القيمة السوقية</span><span class="map-info-val">${d.cap}</span></div>
-    <div class="map-info-row"><span class="map-info-label">أبرز الأسهم</span><span class="map-info-val">${d.famous}</span></div>
-  `;
+  panel.innerHTML = `<div class="map-info-title">${d.name}</div><div class="map-info-row"><span class="map-info-label">الدولة</span><span class="map-info-val">${d.country}</span></div><div class="map-info-row"><span class="map-info-label">أنواع الأدوات</span><span class="map-info-val">${d.type}</span></div><div class="map-info-row"><span class="map-info-label">أوقات التداول</span><span class="map-info-val">${d.hours}</span></div><div class="map-info-row"><span class="map-info-label">السيولة</span><span class="map-info-val">${d.liquidity}</span></div><div class="map-info-row"><span class="map-info-label">القيمة السوقية</span><span class="map-info-val">${d.cap}</span></div><div class="map-info-row"><span class="map-info-label">أبرز الأسهم</span><span class="map-info-val">${d.famous}</span></div>`;
   s1MapsClicked++;
-  if(s1MapsClicked >= 2) {
-    document.getElementById('s3-btn').disabled = false;
-  }
+  if(s1MapsClicked >= 2) { document.getElementById('s3-btn').disabled = false; }
 }
 
 function updateLeverage() {
@@ -1667,7 +1511,6 @@ function updateLeverage() {
   const profit = power * (Math.abs(move)/100);
   const loss = power * (Math.abs(move)/100);
   const pct = move * lev;
-
   document.getElementById('capital-val').textContent = '$'+cap.toLocaleString();
   document.getElementById('leverage-val').textContent = '1:'+lev;
   document.getElementById('move-val').textContent = (move>=0?'+':'')+move+'%';
@@ -1675,49 +1518,32 @@ function updateLeverage() {
   document.getElementById('res-profit').textContent = '+$'+profit.toFixed(2);
   document.getElementById('res-loss').textContent = '−$'+loss.toFixed(2);
   document.getElementById('res-pct').textContent = (move>=0?'+':'')+pct.toFixed(1)+'%';
-
   s1LeverMoved = true;
   document.getElementById('s4-btn').disabled = false;
   document.getElementById('lever-hint').textContent = '✓ رائع! أتقنت مفهوم الرافعة المالية.';
 }
+
 function completeSection(n) {
-  if (n === 5) {
-    if (!s5Completed) { s5Completed = true; }
-  } else if (n === 6) {
-    if (!s6QuizPassed) { showToast('⚠️', 'لم تجتز الاختبار', 'أجب عن أسئلة المراجعة بشكل صحيح أولاً', 'info'); return; }
-  } else if (n === 7) {
-    if (!s7Completed) { s7Completed = true; }
-  }
+  if (n === 5 && !s5Completed) { showToast('⚠️', 'لم تكتمل', 'يجب الاطلاع على محتوى القسم أولاً', 'info'); return; }
+  if (n === 6 && !s6QuizPassed) { showToast('⚠️', 'لم تجتز الاختبار', 'أجب عن أسئلة المراجعة بشكل صحيح أولاً', 'info'); return; }
+  if (n === 7 && !s7Completed) { showToast('⚠️', 'لم تكتمل', 'يجب الاطلاع على محتوى القسم أولاً', 'info'); return; }
   if (!state.sectionsCompleted) state.sectionsCompleted = [];
-  if (!state.sectionsCompleted.includes(n)) {
-    state.sectionsCompleted.push(n);
-    saveState();
-  }
+  if (!state.sectionsCompleted.includes(n)) { state.sectionsCompleted.push(n); saveState(); }
   updateStage1UI();
-  if (n < 7) setTimeout(() => showSection(n+1), 300);
+  if (n < 7) setTimeout(() => showSection(n + 1), 300);
 }
+
 function updateStage1UI() {
   const done = state.sectionsCompleted ? state.sectionsCompleted.length : 0;
   document.getElementById('s1-completion').textContent = done + ' / 7 أقسام';
   const proceed = document.getElementById('proceed-btn');
-  if (done >= 7) {
-    proceed.disabled = false;
-    document.getElementById('proceed-hint').textContent = '✓ أتممت جميع الأقسام — جاهز للمتابعة!';
-    document.getElementById('proceed-hint').style.color = 'var(--green)';
-  }
-  for(let i=1;i<=7;i++){
-    const btn = document.getElementById('nav-'+i);
-    if(btn && state.sectionsCompleted && state.sectionsCompleted.includes(i)) btn.classList.add('completed');
-  }
+  if (done >= 7) { proceed.disabled = false; document.getElementById('proceed-hint').textContent = '✓ أتممت جميع الأقسام — جاهز للمتابعة!'; document.getElementById('proceed-hint').style.color = 'var(--green)'; }
+  for(let i=1;i<=7;i++){ const btn = document.getElementById('nav-'+i); if(btn && state.sectionsCompleted && state.sectionsCompleted.includes(i)) btn.classList.add('completed'); }
   updateDots(currentSection);
 }
+
 function checkSection6Quiz() {
-  const answers = {
-    q1: document.querySelector('input[name="q6-1"]:checked')?.value,
-    q2: document.querySelector('input[name="q6-2"]:checked')?.value,
-    q3: document.querySelector('input[name="q6-3"]:checked')?.value,
-    q4: document.querySelector('input[name="q6-4"]:checked')?.value
-  };
+  const answers = { q1: document.querySelector('input[name="q6-1"]:checked')?.value, q2: document.querySelector('input[name="q6-2"]:checked')?.value, q3: document.querySelector('input[name="q6-3"]:checked')?.value, q4: document.querySelector('input[name="q6-4"]:checked')?.value };
   const correct = { q1: '1', q2: '1', q3: '1', q4: '0' };
   let score = 0;
   if (answers.q1 === correct.q1) score++;
@@ -1725,33 +1551,21 @@ function checkSection6Quiz() {
   if (answers.q3 === correct.q3) score++;
   if (answers.q4 === correct.q4) score++;
   const feedback = document.getElementById('quiz-feedback');
-  if (score === 4) {
-    feedback.innerHTML = '<span class="text-green">✓ ممتاز! إجاباتك صحيحة. يمكنك الآن إكمال القسم.</span>';
-    s6QuizPassed = true;
-    const btn = document.getElementById('s6-btn');
-    if (btn) btn.disabled = false;
-    document.getElementById('s6-hint').textContent = '✓ تم اجتياز الاختبار، اضغط الزر لإكمال القسم';
-  } else {
-    feedback.innerHTML = `<span class="text-red">❌ أجبت على ${score} من 4 إجابات صحيحة. حاول مرة أخرى.</span>`;
-    s6QuizPassed = false;
-    const btn = document.getElementById('s6-btn');
-    if (btn) btn.disabled = true;
-  }
+  if (score === 4) { feedback.innerHTML = '<span class="text-green">✓ ممتاز! إجاباتك صحيحة. يمكنك الآن إكمال القسم.</span>'; s6QuizPassed = true; const btn = document.getElementById('s6-btn'); if (btn) btn.disabled = false; document.getElementById('s6-hint').textContent = '✓ تم اجتياز الاختبار، اضغط الزر لإكمال القسم'; }
+  else { feedback.innerHTML = `<span class="text-red">❌ أجبت على ${score} من 4 إجابات صحيحة. حاول مرة أخرى.</span>`; s6QuizPassed = false; const btn = document.getElementById('s6-btn'); if (btn) btn.disabled = true; }
 }
+
 function proceedToStage2() {
-  if (!state.sectionsCompleted || state.sectionsCompleted.length < 7) {
-    showToast('⚠️', 'غير مكتمل', 'يجب إكمال جميع الأقسام السبعة أولاً', 'info');
-    return;
-  }
-  state.stage = 2;
-  saveState();
+  if (!state.sectionsCompleted || state.sectionsCompleted.length < 7) { showToast('⚠️', 'غير مكتمل', 'يجب إكمال جميع الأقسام السبعة أولاً', 'info'); return; }
+  state.stage = 2; saveState();
   document.getElementById('stage1-overlay').classList.add('hidden');
   showAssessment();
 }
+
 // ================================================================
 // STAGE 2: ASSESSMENT
 // ================================================================
-const scenarios = [
+const scenariosArr = [
   { icon: '📉', text: 'السهم الذي تملكه ينخفض 5% فجأة بدون أي أخبار سلبية. ماذا تفعل؟', context: 'السعر كان يتداول بشكل طبيعي، ثم حدث انخفاض مفاجئ في حجم التداول.', options: ['أبيع فوراً لتقليل الخسارة قبل أن تزداد', 'أشتري المزيد للاستفادة من الانخفاض فوراً', 'أتوقف وأراجع التحليل وأنتظر وضوح السبب'], correct: 2, feedback: ['❌ البيع العاطفي من أشد أخطاء المبتدئين. انخفاض بدون أسباب غالباً ما يكون فرصة شراء، وليس وقت بيع مذعور.', '⚠️ الشراء الفوري بدون تحليل خطر أيضاً. قد يكون الانخفاض بداية تراجع أعمق. الحذر أولاً.', '✅ ممتاز! التحليل قبل أي قرار هو سمة المتداول الناضج. انتظر وتحقق من السبب قبل أي إجراء.'] },
   { icon: '🎰', text: 'صديق أخبرك بـ "صفقة العمر": سهم مضمون يرتفع 300% في أسبوع! ماذا تفعل؟', context: 'السهم غير معروف، ولا توجد أي معلومات موثوقة عنه في المصادر الرسمية.', options: ['أستثمر كل رأس مالي في هذا السهم الرابح!', 'أستثمر 10% فقط كحد أقصى وأراقب', 'أتجاهل تماماً وأبحث في مصادر موثوقة بدلاً من ذلك'], correct: 2, feedback: ['❌ هذا النمط هو الوصفة المثالية لخسارة كل رأس مالك. "الصفقات المضمونة" لا وجود لها في الأسواق المالية.', '⚠️ تحسّن، لكنك لا تزال تراهن بدون أساس. حتى 10% من رأس مالك تستحق البحث والتحليل.', '✅ صحيح تماماً! النصائح العشوائية هي أخطر مصدر للمعلومات في عالم الاستثمار. ثق بالتحليل لا بالشائعات.'] },
   { icon: '📊', text: 'محفظتك تضم 3 أسهم تقنية فقط. أسهم التكنولوجيا تنهار 20% اليوم. ما تعليقك على وضعك؟', context: 'خبر اقتصادي كبير أثر على قطاع التكنولوجيا بأكمله عالمياً.', options: ['سأبيع الثلاثة فوراً وأحول لعملات رقمية', 'وضعي جيد، فالتنويع داخل قطاع واحد كافٍ', 'وضعي سيء لأن محفظتي غير متنوعة قطاعياً'], correct: 2, feedback: ['❌ التحويل للعملات الرقمية بدون خطة ليس حلاً. الهروب العاطفي من خسارة لخسارة أخرى محتملة.', '❌ خطأ كبير في فهم التنويع. التنويع الحقيقي يعني توزيع القطاعات، ليس عدد الأسهم فقط.', '✅ وعي ممتاز! التنويع القطاعي الحقيقي يحمي محفظتك من انهيار قطاع بأكمله. هذا التفكير يحميك.'] },
@@ -1760,8 +1574,8 @@ const scenarios = [
 ];
 let currentScenario = 0, scenarioAnswers = [], scenarioScore = 0;
 function showAssessment() { document.getElementById('stage2-overlay').classList.remove('hidden'); currentScenario = 0; scenarioAnswers = []; scenarioScore = 0; renderScenario(0); }
-function renderScenario(idx) { if (idx >= scenarios.length) { showAssessmentResults(); return; } const s = scenarios[idx]; const pct = (idx/scenarios.length)*100; document.getElementById('assessment-progress').style.width = pct+'%'; document.getElementById('scenario-progress-txt').textContent = `السيناريو ${idx+1} من ${scenarios.length}`; document.getElementById('assessment-score-display').textContent = `النقاط: ${scenarioScore}`; const c = document.getElementById('scenarios-container'); c.innerHTML = `<div class="scenario-box"><div class="scenario-icon">${s.icon}</div><div class="scenario-text">${s.text}</div><div class="scenario-context">📌 السياق: ${s.context}</div><div class="scenario-options">${s.options.map((opt, i) => `<button class="scenario-opt" onclick="selectAnswer(${idx}, ${i})" id="opt-${i}"><div class="opt-letter">${['أ','ب','ج'][i]}</div><span>${opt}</span></button>`).join('')}</div><div id="scenario-feedback" class="scenario-feedback"></div><div class="scenario-nav"><div></div><button class="btn btn-primary" id="next-btn" onclick="nextScenario()" style="display:none">${idx < scenarios.length-1 ? 'التالي ←' : 'عرض النتائج 🏆'}</button></div></div>`; }
-function selectAnswer(scenarioIdx, optIdx) { const s = scenarios[scenarioIdx]; const opts = document.querySelectorAll('.scenario-opt'); opts.forEach(o => o.disabled = true); opts[optIdx].classList.add('selected'); const isCorrect = optIdx === s.correct; if (isCorrect) { scenarioScore++; opts[optIdx].classList.add('correct'); } else { opts[optIdx].classList.add('wrong'); opts[s.correct].classList.add('correct'); } const fb = document.getElementById('scenario-feedback'); fb.textContent = s.feedback[optIdx]; fb.className = 'scenario-feedback show ' + (isCorrect ? 'feedback-good' : 'feedback-bad'); document.getElementById('next-btn').style.display = 'flex'; scenarioAnswers.push(optIdx); document.getElementById('assessment-score-display').textContent = `النقاط: ${scenarioScore}`; }
+function renderScenario(idx) { if (idx >= scenariosArr.length) { showAssessmentResults(); return; } const s = scenariosArr[idx]; const pct = (idx/scenariosArr.length)*100; document.getElementById('assessment-progress').style.width = pct+'%'; document.getElementById('scenario-progress-txt').textContent = `السيناريو ${idx+1} من ${scenariosArr.length}`; document.getElementById('assessment-score-display').textContent = `النقاط: ${scenarioScore}`; const c = document.getElementById('scenarios-container'); c.innerHTML = `<div class="scenario-box"><div class="scenario-icon">${s.icon}</div><div class="scenario-text">${s.text}</div><div class="scenario-context">📌 السياق: ${s.context}</div><div class="scenario-options">${s.options.map((opt, i) => `<button class="scenario-opt" onclick="selectAnswer(${idx}, ${i})" id="opt-${i}"><div class="opt-letter">${['أ','ب','ج'][i]}</div><span>${opt}</span></button>`).join('')}</div><div id="scenario-feedback" class="scenario-feedback"></div><div class="scenario-nav"><div></div><button class="btn btn-primary" id="next-btn" onclick="nextScenario()" style="display:none">${idx < scenariosArr.length-1 ? 'التالي ←' : 'عرض النتائج 🏆'}</button></div></div>`; }
+function selectAnswer(scenarioIdx, optIdx) { const s = scenariosArr[scenarioIdx]; const opts = document.querySelectorAll('.scenario-opt'); opts.forEach(o => o.disabled = true); opts[optIdx].classList.add('selected'); const isCorrect = optIdx === s.correct; if (isCorrect) { scenarioScore++; opts[optIdx].classList.add('correct'); } else { opts[optIdx].classList.add('wrong'); opts[s.correct].classList.add('correct'); } const fb = document.getElementById('scenario-feedback'); fb.textContent = s.feedback[optIdx]; fb.className = 'scenario-feedback show ' + (isCorrect ? 'feedback-good' : 'feedback-bad'); document.getElementById('next-btn').style.display = 'flex'; scenarioAnswers.push(optIdx); document.getElementById('assessment-score-display').textContent = `النقاط: ${scenarioScore}`; }
 function nextScenario() { currentScenario++; renderScenario(currentScenario); }
 function showAssessmentResults() { document.getElementById('assessment-progress').style.width = '100%'; document.getElementById('scenarios-container').classList.add('hidden'); const screen = document.getElementById('result-screen'); screen.classList.remove('hidden'); let level, icon, levelName, path, desc; if (scenarioScore <= 2) { level = 1; icon = '🔭'; levelName = 'المستكشف'; path = 'مسار: أساسيات إدارة رأس المال'; desc = `حصلت على ${scenarioScore} نقاط من 5. لا بأس، هذا هو بالضبط سبب وجود هذه المنصة! ستتعلم أساسيات إدارة رأس المال وحماية محفظتك قبل كل شيء.`; } else if (scenarioScore === 3) { level = 2; icon = '📚'; levelName = 'المتعلم'; path = 'مسار: تنفيذ الأوامر وإدارة الصفقات'; desc = `ممتاز! ${scenarioScore} نقاط من 5. لديك فهم جيد للأساسيات. ستتدرب على تنفيذ الأوامر المختلفة وإدارة الصفقات المفتوحة بكفاءة.`; } else { level = 3; icon = '🎯'; levelName = 'شبه الجاهز'; path = 'مسار: استراتيجيات متقدمة وإدارة المخاطر'; desc = `رائع! ${scenarioScore} نقاط من 5. تفكيرك استثماري ناضج! ستتدرب على الاستراتيجيات المتقدمة وإدارة محفظة متكاملة في بيئة المحاكاة.`; } state.userLevel = level; state.assessmentScore = scenarioScore; saveState(); const scoreEl = document.getElementById('result-score'); scoreEl.textContent = scenarioScore+'/5'; scoreEl.className = 'result-score ' + (scenarioScore>=4?'score-high':scenarioScore>=3?'score-mid':'score-low'); document.getElementById('result-icon').textContent = icon; document.getElementById('result-level').textContent = levelName; document.getElementById('result-badge').innerHTML = `<span>${icon}</span><span>${path}</span>`; document.getElementById('result-desc').textContent = desc; }
 function proceedToStage3() { state.stage = 3; saveState(); document.getElementById('stage2-overlay').classList.add('hidden'); showTradingApp(); }
@@ -1775,9 +1589,7 @@ let priceHistory = [];
 let candleSeries = null;
 let currentOrderType = 'buy';
 let chart = null;
-let marketPrices = {
-  aapl: 189.50, btc: 67400, eur: 1.0850, gold: 2340, saudi: 12240
-};
+let marketPrices = { aapl: 189.50, btc: 67400, eur: 1.0850, gold: 2340, saudi: 12240 };
 let flashCrashActive = false;
 let positionId = 0;
 let scenarioIndex = 0;
@@ -1792,19 +1604,11 @@ function showTradingApp() {
   showToast('🚀', 'مرحباً بك!', 'بيئة المحاكاة جاهزة. رصيدك الافتراضي: $100,000', 'achievement');
 }
 
-function restoreState() {
-  // Restore balance, positions, badges
-  updateBalance();
-  renderPositions();
-  renderBadges();
-  updateStats();
-}
+function restoreState() { updateBalance(); renderPositions(); renderBadges(); updateStats(); }
 
-// Initialize TradingView Lightweight Charts
 function initTradingChart() {
   const container = document.getElementById('trading-chart');
   if (!container) return;
-
   try {
     chart = LightweightCharts.createChart(container, {
       layout: { background: { color: '#0f1117' }, textColor: '#8892a4' },
@@ -1815,44 +1619,20 @@ function initTradingChart() {
       width: container.clientWidth,
       height: container.clientHeight || 350,
     });
-
-    candleSeries = chart.addCandlestickSeries({
-      upColor: '#00e676', downColor: '#ff3d57',
-      borderUpColor: '#00c853', borderDownColor: '#d32f2f',
-      wickUpColor: '#00e676', wickDownColor: '#ff3d57',
-    });
-
-    // Generate historical data
+    candleSeries = chart.addCandlestickSeries({ upColor: '#00e676', downColor: '#ff3d57', borderUpColor: '#00c853', borderDownColor: '#d32f2f', wickUpColor: '#00e676', wickDownColor: '#ff3d57' });
     generateHistoricalData();
-
-    window.addEventListener('resize', () => {
-      chart.applyOptions({ width: container.clientWidth, height: container.clientHeight || 350 });
-    });
-  } catch(e) {
-    console.warn('Chart init failed:', e);
-    container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-muted)">تحميل الرسم البياني...</div>';
-  }
+    window.addEventListener('resize', () => { chart.applyOptions({ width: container.clientWidth, height: container.clientHeight || 350 }); });
+  } catch(e) { console.warn('Chart init failed:', e); container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-muted)">تحميل الرسم البياني...</div>'; }
 }
 
 function generateHistoricalData() {
   priceHistory = [];
   let time = Math.floor(Date.now()/1000) - 300*60;
   let price = 185 + Math.random()*10;
-  for(let i=0;i<300;i++){
-    const o = price;
-    const change = (Math.random()-0.48)*2;
-    const h = o + Math.abs(change) + Math.random();
-    const l = o - Math.abs(change) - Math.random();
-    const c = o + change;
-    price = c;
-    priceHistory.push({time, open:+o.toFixed(2), high:+h.toFixed(2), low:+l.toFixed(2), close:+c.toFixed(2)});
-    time += 60;
-  }
+  for(let i=0;i<300;i++){ const o = price; const change = (Math.random()-0.48)*2; const h = o + Math.abs(change) + Math.random(); const l = o - Math.abs(change) - Math.random(); const c = o + change; price = c; priceHistory.push({time, open:+o.toFixed(2), high:+h.toFixed(2), low:+l.toFixed(2), close:+c.toFixed(2)}); time += 60; }
   currentPrice = priceHistory[priceHistory.length-1].close;
   openPrice = priceHistory[0].open;
-  if (candleSeries) {
-    try { candleSeries.setData(priceHistory); } catch(e){}
-  }
+  if (candleSeries) { try { candleSeries.setData(priceHistory); } catch(e){} }
   updateChartStats();
 }
 
@@ -1865,41 +1645,28 @@ function updateChartStats() {
   document.getElementById('cs-close').textContent = '$'+last.close.toFixed(2);
 }
 
-// Price update engine
-function startPriceUpdates() {
-  setInterval(updatePrices, 5000);
-  updatePriceDisplay();
-}
+function startPriceUpdates() { setInterval(updatePrices, 5000); updatePriceDisplay(); }
 
 function updatePrices() {
-  // AAPL price update
   const volatility = flashCrashActive ? 3 : 0.5;
   const change = (Math.random()-0.49) * volatility;
   const newPrice = Math.max(100, currentPrice + change);
-
   const time = Math.floor(Date.now()/1000);
   const lastCandle = priceHistory[priceHistory.length-1];
   const o = lastCandle ? lastCandle.close : currentPrice;
   const h = Math.max(o, newPrice) + Math.random()*0.2;
   const l = Math.min(o, newPrice) - Math.random()*0.2;
   const newCandle = {time, open:+o.toFixed(2), high:+h.toFixed(2), low:+l.toFixed(2), close:+newPrice.toFixed(2)};
-
-  if (candleSeries) {
-    try { candleSeries.update(newCandle); } catch(e){}
-  }
+  if (candleSeries) { try { candleSeries.update(newCandle); } catch(e){} }
   priceHistory.push(newCandle);
   if(priceHistory.length > 500) priceHistory.shift();
-
   currentPrice = +newPrice.toFixed(2);
   flashCrashActive = false;
-
-  // Update other market prices
   marketPrices.aapl = currentPrice;
   marketPrices.btc = +(marketPrices.btc + (Math.random()-0.49)*200).toFixed(0);
   marketPrices.eur = +(marketPrices.eur + (Math.random()-0.49)*0.001).toFixed(4);
   marketPrices.gold = +(marketPrices.gold + (Math.random()-0.49)*5).toFixed(0);
   marketPrices.saudi = +(marketPrices.saudi + (Math.random()-0.49)*30).toFixed(0);
-
   updatePriceDisplay();
   updateOpenPositionsPnL();
   checkStopLossTakeProfit();
@@ -1907,478 +1674,88 @@ function updatePrices() {
 }
 
 function updatePriceDisplay() {
-  const p = currentPrice;
-  const chg = ((p - openPrice)/openPrice*100).toFixed(2);
-  const isUp = p >= openPrice;
-
-  document.getElementById('hdr-price').textContent = '$'+p.toFixed(2);
-  document.getElementById('hdr-price').style.color = isUp ? 'var(--green)' : 'var(--red)';
-  const chgEl = document.getElementById('hdr-change');
-  chgEl.textContent = (isUp?'+':'')+chg+'%';
-  chgEl.style.color = isUp ? 'var(--green)' : 'var(--red)';
+  const p = currentPrice; const chg = ((p - openPrice)/openPrice*100).toFixed(2); const isUp = p >= openPrice;
+  document.getElementById('hdr-price').textContent = '$'+p.toFixed(2); document.getElementById('hdr-price').style.color = isUp ? 'var(--green)' : 'var(--red)';
+  const chgEl = document.getElementById('hdr-change'); chgEl.textContent = (isUp?'+':'')+chg+'%'; chgEl.style.color = isUp ? 'var(--green)' : 'var(--red)';
   document.getElementById('current-price-display').textContent = '$'+p.toFixed(2);
-
-  // Market panel
-  const mkAApl = document.getElementById('mk-aapl');
-  mkAApl.textContent = '$'+marketPrices.aapl.toFixed(2);
-  mkAApl.style.color = isUp ? 'var(--green)' : 'var(--red)';
-  const mkBtc = document.getElementById('mk-btc');
-  mkBtc.textContent = '$'+marketPrices.btc.toLocaleString();
-  mkBtc.style.color = marketPrices.btc > 67400 ? 'var(--green)' : 'var(--red)';
-  document.getElementById('mk-eur').textContent = marketPrices.eur.toFixed(4);
-  document.getElementById('mk-saudi').textContent = marketPrices.saudi.toLocaleString();
-  document.getElementById('mk-gold').textContent = '$'+marketPrices.gold.toLocaleString();
-
-  // Tickers
-  document.getElementById('t-aapl').textContent = '$'+p.toFixed(2);
-  document.getElementById('t-aapl').style.color = isUp ? 'var(--green)' : 'var(--red)';
-  document.getElementById('t-btc').textContent = '$'+marketPrices.btc.toLocaleString();
-  document.getElementById('t-eur').textContent = marketPrices.eur.toFixed(4);
-  document.getElementById('t-gold').textContent = '$'+marketPrices.gold;
-
-  // Estimate
-  const qty = parseFloat(document.getElementById('qty-input').value) || 0;
-  const total = qty * p;
-  document.getElementById('pnl-estimate').textContent = `القيمة الإجمالية: $${total.toFixed(2)}`;
+  const mkAApl = document.getElementById('mk-aapl'); mkAApl.textContent = '$'+marketPrices.aapl.toFixed(2); mkAApl.style.color = isUp ? 'var(--green)' : 'var(--red)';
+  document.getElementById('mk-btc').textContent = '$'+marketPrices.btc.toLocaleString(); document.getElementById('mk-eur').textContent = marketPrices.eur.toFixed(4); document.getElementById('mk-saudi').textContent = marketPrices.saudi.toLocaleString(); document.getElementById('mk-gold').textContent = '$'+marketPrices.gold.toLocaleString();
+  document.getElementById('t-aapl').textContent = '$'+p.toFixed(2); document.getElementById('t-aapl').style.color = isUp ? 'var(--green)' : 'var(--red)'; document.getElementById('t-btc').textContent = '$'+marketPrices.btc.toLocaleString(); document.getElementById('t-eur').textContent = marketPrices.eur.toFixed(4); document.getElementById('t-gold').textContent = '$'+marketPrices.gold;
+  const qty = parseFloat(document.getElementById('qty-input').value) || 0; const total = qty * p; document.getElementById('pnl-estimate').textContent = `القيمة الإجمالية: $${total.toFixed(2)}`;
 }
 
-// Order execution
-function setOrderType(type) {
-  currentOrderType = type;
-  document.getElementById('tab-buy').classList.toggle('active', type==='buy');
-  document.getElementById('tab-sell').classList.toggle('active', type==='sell');
-  const btn = document.getElementById('execute-btn');
-  if (type==='buy') {
-    btn.style.background = 'linear-gradient(135deg, var(--green-dark), #004d40)';
-    btn.style.color = '#000';
-    btn.textContent = '▲ تنفيذ أمر الشراء';
-  } else {
-    btn.style.background = 'linear-gradient(135deg, var(--red-dark), #b71c1c)';
-    btn.style.color = '#fff';
-    btn.textContent = '▼ تنفيذ أمر البيع';
-  }
-}
+function setOrderType(type) { currentOrderType = type; document.getElementById('tab-buy').classList.toggle('active', type==='buy'); document.getElementById('tab-sell').classList.toggle('active', type==='sell'); const btn = document.getElementById('execute-btn'); if (type==='buy') { btn.style.background = 'linear-gradient(135deg, var(--green-dark), #004d40)'; btn.style.color = '#000'; btn.textContent = '▲ تنفيذ أمر الشراء'; } else { btn.style.background = 'linear-gradient(135deg, var(--red-dark), #b71c1c)'; btn.style.color = '#fff'; btn.textContent = '▼ تنفيذ أمر البيع'; } }
 
 function executeTrade() {
-  const qty = parseFloat(document.getElementById('qty-input').value);
-  const sl = parseFloat(document.getElementById('sl-input').value) || null;
-  const tp = parseFloat(document.getElementById('tp-input').value) || null;
-
+  const qty = parseFloat(document.getElementById('qty-input').value); const sl = parseFloat(document.getElementById('sl-input').value) || null; const tp = parseFloat(document.getElementById('tp-input').value) || null;
   if (!qty || qty <= 0) { showToast('⚠️','خطأ','أدخل كمية صحيحة','info'); return; }
-
   const cost = qty * currentPrice;
-  if (cost > state.balance) {
-    showToast('❌','رصيد غير كافٍ',`تحتاج $${cost.toFixed(2)} ورصيدك $${state.balance.toFixed(2)}`,'info');
-    return;
-  }
-
-  const position = {
-    id: ++positionId,
-    asset: 'AAPL',
-    type: currentOrderType,
-    qty,
-    entryPrice: currentPrice,
-    currentPrice,
-    sl,
-    tp,
-    pnl: 0,
-    time: new Date().toLocaleTimeString('ar-SA'),
-  };
-
-  state.openPositions.push(position);
-  state.balance -= cost;
-  state.totalTrades++;
-  if(sl) state.slTradeCount++;
-
-  // Consecutive SL tracking
-  if(sl) state.consecutiveSL = (state.consecutiveSL||0)+1;
-  else state.consecutiveSL = 0;
-
-  saveState();
-  updateBalance();
-  renderPositions();
-  updateStats();
-
-  // Check badges
+  if (cost > state.balance) { showToast('❌','رصيد غير كافٍ',`تحتاج $${cost.toFixed(2)} ورصيدك $${state.balance.toFixed(2)}`,'info'); return; }
+  const position = { id: ++positionId, asset: 'AAPL', type: currentOrderType, qty, entryPrice: currentPrice, currentPrice, sl, tp, pnl: 0, time: new Date().toLocaleTimeString('ar-SA') };
+  state.openPositions.push(position); state.balance -= cost; state.totalTrades++; if(sl) state.slTradeCount++; state.consecutiveSL = sl ? (state.consecutiveSL||0)+1 : 0;
+  saveState(); updateBalance(); renderPositions(); updateStats();
   checkBadge('first_trade', state.totalTrades === 1, '⚡', 'أول صفقة', 'نفذت أول صفقة افتراضية!');
   checkBadge('risk_manager', state.consecutiveSL >= 3, '🛡️', 'مدير مخاطر', 'وضعت Stop Loss في 3 صفقات متتالية!');
-
-  // Coach feedback
-  let coachMsg = '';
-  if(!sl && !tp) {
-    coachMsg = '⚠️ لاحظنا أنك نفذت الصفقة بدون وقف خسارة أو جني أرباح. هذا يعرضك لمخاطر كبيرة غير محسوبة. من الأفضل دائماً تحديد حد أقصى للخسارة قبل الدخول.';
-  } else if(sl && tp) {
-    coachMsg = '✅ ممتاز! حددت وقف الخسارة وجني الأرباح. هذا هو التداول المحترف. استمر على هذا النهج.';
-  } else if(sl) {
-    coachMsg = '👍 جيد! وضعت وقف خسارة لحماية رأس مالك. فكر أيضاً في تحديد هدف جني الأرباح لأخذها في الوقت المناسب.';
-  } else {
-    coachMsg = '💡 قريب! لديك هدف ربح لكن بدون وقف خسارة. تذكر: حماية رأس المال أهم من الأرباح.';
-  }
-  updateCoach(coachMsg);
-
-  showToast(currentOrderType==='buy'?'▲':'▼',
-    currentOrderType==='buy'?'تم الشراء':'تم البيع',
-    `${qty} وحدة من AAPL بسعر $${currentPrice.toFixed(2)}`,
-    'info'
-  );
+  let coachMsg = ''; if(!sl && !tp) { coachMsg = '⚠️ لاحظنا أنك نفذت الصفقة بدون وقف خسارة أو جني أرباح. هذا يعرضك لمخاطر كبيرة غير محسوبة. من الأفضل دائماً تحديد حد أقصى للخسارة قبل الدخول.'; } else if(sl && tp) { coachMsg = '✅ ممتاز! حددت وقف الخسارة وجني الأرباح. هذا هو التداول المحترف. استمر على هذا النهج.'; } else if(sl) { coachMsg = '👍 جيد! وضعت وقف خسارة لحماية رأس مالك. فكر أيضاً في تحديد هدف جني الأرباح لأخذها في الوقت المناسب.'; } else { coachMsg = '💡 قريب! لديك هدف ربح لكن بدون وقف خسارة. تذكر: حماية رأس المال أهم من الأرباح.'; } updateCoach(coachMsg);
+  showToast(currentOrderType==='buy'?'▲':'▼', currentOrderType==='buy'?'تم الشراء':'تم البيع', `${qty} وحدة من AAPL بسعر $${currentPrice.toFixed(2)}`, 'info');
 }
 
-function updateOpenPositionsPnL() {
-  state.openPositions.forEach(pos => {
-    if(pos.type==='buy') pos.pnl = (currentPrice - pos.entryPrice) * pos.qty;
-    else pos.pnl = (pos.entryPrice - currentPrice) * pos.qty;
-    pos.currentPrice = currentPrice;
-  });
-  renderPositions();
-  updateStats();
-}
+function updateOpenPositionsPnL() { state.openPositions.forEach(pos => { if(pos.type==='buy') pos.pnl = (currentPrice - pos.entryPrice) * pos.qty; else pos.pnl = (pos.entryPrice - currentPrice) * pos.qty; pos.currentPrice = currentPrice; }); renderPositions(); updateStats(); }
 
-function checkStopLossTakeProfit() {
-  const toClose = [];
-  state.openPositions.forEach(pos => {
-    if(pos.type==='buy'){
-      if(pos.sl && currentPrice <= pos.sl) toClose.push({pos, reason:'وقف الخسارة'});
-      if(pos.tp && currentPrice >= pos.tp) toClose.push({pos, reason:'جني الأرباح'});
-    } else {
-      if(pos.sl && currentPrice >= pos.sl) toClose.push({pos, reason:'وقف الخسارة'});
-      if(pos.tp && currentPrice <= pos.tp) toClose.push({pos, reason:'جني الأرباح'});
-    }
-  });
-  toClose.forEach(({pos, reason}) => {
-    closePosition(pos.id, true, reason);
-  });
-}
+function checkStopLossTakeProfit() { const toClose = []; state.openPositions.forEach(pos => { if(pos.type==='buy'){ if(pos.sl && currentPrice <= pos.sl) toClose.push({pos, reason:'وقف الخسارة'}); if(pos.tp && currentPrice >= pos.tp) toClose.push({pos, reason:'جني الأرباح'}); } else { if(pos.sl && currentPrice >= pos.sl) toClose.push({pos, reason:'وقف الخسارة'}); if(pos.tp && currentPrice <= pos.tp) toClose.push({pos, reason:'جني الأرباح'}); } }); toClose.forEach(({pos, reason}) => { closePosition(pos.id, true, reason); }); }
 
-function closePosition(id, auto=false, reason='') {
-  const idx = state.openPositions.findIndex(p=>p.id===id);
-  if(idx===-1) return;
-  const pos = state.openPositions[idx];
+function closePosition(id, auto=false, reason='') { const idx = state.openPositions.findIndex(p=>p.id===id); if(idx===-1) return; const pos = state.openPositions[idx]; let finalPnl; if(pos.type==='buy') finalPnl = (currentPrice - pos.entryPrice) * pos.qty; else finalPnl = (pos.entryPrice - currentPrice) * pos.qty; state.balance += (pos.qty * pos.entryPrice) + finalPnl; if(finalPnl >= 0) state.winningTrades++; else state.losingTrades++; state.closedPositions = state.closedPositions || []; state.closedPositions.push({...pos, closePnl: finalPnl, closePrice: currentPrice}); state.openPositions.splice(idx, 1); saveState(); updateBalance(); renderPositions(); updateStats(); const pnlStr = (finalPnl>=0?'+':'')+finalPnl.toFixed(2); if(auto) { showToast(finalPnl>=0?'💰':'🔴', reason, `${pnlStr}$ — تم الإغلاق تلقائياً`, finalPnl>=0?'achievement':'info'); } else { showToast(finalPnl>=0?'💰':'🔴', 'تم إغلاق الصفقة', `الربح/الخسارة: $${pnlStr}`, finalPnl>=0?'achievement':'info'); } if(!pos.sl && finalPnl < 0) { updateCoach('🚨 لاحظنا أنك أغلقت صفقة خاسرة بدون وقف خسارة. لو كان لديك SL محدد، كانت الخسارة ستكون أقل بكثير. هل تريد إعادة المحاولة مع تطبيق إدارة المخاطر؟'); } checkBadge('first_profit', finalPnl > 0 && state.winningTrades===1, '💰', 'أول ربح', 'حققت أول ربح في المحاكاة!'); }
 
-  let finalPnl;
-  if(pos.type==='buy') finalPnl = (currentPrice - pos.entryPrice) * pos.qty;
-  else finalPnl = (pos.entryPrice - currentPrice) * pos.qty;
+function renderPositions() { const tbody = document.getElementById('positions-tbody'); const count = document.getElementById('pos-count'); if(!state.openPositions || state.openPositions.length===0){ tbody.innerHTML = '<tr><td colspan="8" class="empty-positions">لا توجد مراكز مفتوحة — نفذ أول صفقة لك</td></tr>'; count.textContent = '0 مركز'; return; } count.textContent = state.openPositions.length+' مركز'; tbody.innerHTML = state.openPositions.map(pos => { const pnl = pos.type==='buy' ? (currentPrice-pos.entryPrice)*pos.qty : (pos.entryPrice-currentPrice)*pos.qty; const pnlClass = pnl>=0?'text-green':'text-red'; return `<tr><td class="position-asset">${pos.asset}</td><td><span class="position-type ${pos.type==='buy'?'type-buy':'type-sell'}">${pos.type==='buy'?'شراء':'بيع'}</span></td><td>${pos.qty}</td><td class="mono">$${pos.entryPrice.toFixed(2)}</td><td class="mono">$${currentPrice.toFixed(2)}</td><td class="mono ${pnlClass}">${pnl>=0?'+':''}$${pnl.toFixed(2)}</td><td style="font-size:10px;color:var(--text-muted)">${pos.sl?'SL:'+pos.sl:'—'}/${pos.tp?'TP:'+pos.tp:'—'}</td><td><button class="close-pos-btn" onclick="closePosition(${pos.id})">إغلاق</button></td></tr>`; }).join(''); }
 
-  state.balance += (pos.qty * pos.entryPrice) + finalPnl;
-  if(finalPnl >= 0) state.winningTrades++;
-  else state.losingTrades++;
+function updateBalance() { document.getElementById('balance-display').textContent = '$'+state.balance.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function updateStats() { document.getElementById('stat-total').textContent = state.totalTrades||0; document.getElementById('stat-winning').textContent = state.winningTrades||0; document.getElementById('stat-losing').textContent = state.losingTrades||0; document.getElementById('stat-sl').textContent = state.slTradeCount||0; document.getElementById('stat-scenarios').textContent = state.scenariosCompleted||0; const totalPnl = state.balance - 100000; const pnlEl = document.getElementById('stat-pnl'); pnlEl.textContent = (totalPnl>=0?'+':'')+'$'+Math.abs(totalPnl).toFixed(2); pnlEl.style.color = totalPnl>=0?'var(--green)':'var(--red)'; }
+function updateCoach(msg) { document.getElementById('coach-message').innerHTML = `<span class="coach-icon">🤖</span>${msg}`; }
 
-  state.closedPositions = state.closedPositions || [];
-  state.closedPositions.push({...pos, closePnl: finalPnl, closePrice: currentPrice});
-  state.openPositions.splice(idx, 1);
-  saveState();
-
-  updateBalance();
-  renderPositions();
-  updateStats();
-
-  const pnlStr = (finalPnl>=0?'+':'')+finalPnl.toFixed(2);
-  if(auto) {
-    showToast(finalPnl>=0?'💰':'🔴', reason, `${pnlStr}$ — تم الإغلاق تلقائياً`, finalPnl>=0?'achievement':'info');
-  } else {
-    showToast(finalPnl>=0?'💰':'🔴', 'تم إغلاق الصفقة', `الربح/الخسارة: $${pnlStr}`, finalPnl>=0?'achievement':'info');
-  }
-
-  // Post-close coach
-  if(!pos.sl && finalPnl < 0) {
-    updateCoach('🚨 لاحظنا أنك أغلقت صفقة خاسرة بدون وقف خسارة. لو كان لديك SL محدد، كانت الخسارة ستكون أقل بكثير. هل تريد إعادة المحاولة مع تطبيق إدارة المخاطر؟');
-  }
-
-  // Achievement check
-  checkBadge('first_profit', finalPnl > 0 && state.winningTrades===1, '💰', 'أول ربح', 'حققت أول ربح في المحاكاة!');
-}
-
-function renderPositions() {
-  const tbody = document.getElementById('positions-tbody');
-  const count = document.getElementById('pos-count');
-  if(!state.openPositions || state.openPositions.length===0){
-    tbody.innerHTML = '<tr><td colspan="8" class="empty-positions">لا توجد مراكز مفتوحة — نفذ أول صفقة لك</td></tr>';
-    count.textContent = '0 مركز';
-    return;
-  }
-  count.textContent = state.openPositions.length+' مركز';
-  tbody.innerHTML = state.openPositions.map(pos => {
-    const pnl = pos.type==='buy' ? (currentPrice-pos.entryPrice)*pos.qty : (pos.entryPrice-currentPrice)*pos.qty;
-    const pnlClass = pnl>=0?'text-green':'text-red';
-    return `
-      <tr>
-        <td class="position-asset">${pos.asset}</td>
-        <td><span class="position-type ${pos.type==='buy'?'type-buy':'type-sell'}">${pos.type==='buy'?'شراء':'بيع'}</span></td>
-        <td>${pos.qty}</td>
-        <td class="mono">$${pos.entryPrice.toFixed(2)}</td>
-        <td class="mono">$${currentPrice.toFixed(2)}</td>
-        <td class="mono ${pnlClass}">${pnl>=0?'+':''}$${pnl.toFixed(2)}</td>
-        <td style="font-size:10px;color:var(--text-muted)">${pos.sl?'SL:'+pos.sl:'—'}/${pos.tp?'TP:'+pos.tp:'—'}</td>
-        <td><button class="close-pos-btn" onclick="closePosition(${pos.id})">إغلاق</button></td>
-      </tr>
-    `;
-  }).join('');
-}
-
-function updateBalance() {
-  document.getElementById('balance-display').textContent = '$'+state.balance.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2});
-}
-
-function updateStats() {
-  document.getElementById('stat-total').textContent = state.totalTrades||0;
-  document.getElementById('stat-winning').textContent = state.winningTrades||0;
-  document.getElementById('stat-losing').textContent = state.losingTrades||0;
-  document.getElementById('stat-sl').textContent = state.slTradeCount||0;
-  document.getElementById('stat-scenarios').textContent = state.scenariosCompleted||0;
-  const totalPnl = state.balance - 100000;
-  const pnlEl = document.getElementById('stat-pnl');
-  pnlEl.textContent = (totalPnl>=0?'+':'')+'$'+Math.abs(totalPnl).toFixed(2);
-  pnlEl.style.color = totalPnl>=0?'var(--green)':'var(--red)';
-}
-
-function updateCoach(msg) {
-  document.getElementById('coach-message').innerHTML = `<span class="coach-icon">🤖</span>${msg}`;
-}
-
-// ================================================================
-// SCENARIOS ENGINE
-// ================================================================
 function triggerScenario() {
-  const type = scenarioTypes[scenarioIndex % scenarioTypes.length];
-  scenarioIndex++;
-
-  const panel = document.getElementById('active-scenario-panel');
-  panel.classList.remove('hidden');
-
-  if(type==='news'){
-    const isGood = Math.random()>0.5;
-    panel.innerHTML = `<div class="scenario-title">📰 سيناريو: خبر عاجل</div>
-      <div style="font-size:12px;color:var(--text-muted);line-height:1.7">
-        ${isGood?'🚀 قرار بنك الاحتياطي الفيدرالي بتخفيض أسعار الفائدة! الأسواق ترتفع.':'📉 تقرير تضخم أعلى من المتوقع! المستثمرون يخرجون من الأسهم.'}
-      </div>
-      <div style="font-size:11px;color:var(--gold);margin-top:8px">💡 تحدٍّ: تصرف وفق هذا الخبر بصفقة مناسبة</div>`;
-    showToast('📰','خبر عاجل!',isGood?'🚀 تخفيض الفائدة — قرار إيجابي للأسهم!':'📉 تضخم مرتفع — توقع ضغطاً على الأسواق','news');
-    // Simulate price impact
-    currentPrice = +(currentPrice * (isGood ? 1.015 : 0.985)).toFixed(2);
-
-  } else if(type==='portfolio'){
-    panel.innerHTML = `<div class="scenario-title">📊 سيناريو: إدارة المحفظة</div>
-      <div style="font-size:12px;color:var(--text-muted);line-height:1.7">
-        تحدٍّ: يجب ألا تتجاوز صفقاتك المفتوحة 3 في نفس الوقت. إذا لديك أكثر من ذلك، أغلق بعضها.
-      </div>
-      <div style="font-size:11px;color:var(--gold);margin-top:8px">💡 التنويع لا يعني فتح صفقات لا نهاية لها!</div>`;
-    showToast('📊','تحدي المحفظة!','راجع عدد مراكزك المفتوحة — الحد الأقصى 3 مراكز في آن واحد','portfolio');
-
-  } else {
-    // Flash Crash
-    panel.innerHTML = `<div class="scenario-title">🔴 سيناريو: انهيار مفاجئ!</div>
-      <div style="font-size:12px;color:var(--red);line-height:1.7;font-weight:600">
-        ⚡ Flash Crash! انخفاض حاد 10% خلال ثوانٍ. هل تبيع مذعوراً أم تصبر؟
-      </div>
-      <div style="font-size:11px;color:var(--gold);margin-top:8px">💡 المتداول الناضج يحافظ على هدوئه ويراجع الخطة</div>`;
-    currentPrice = +(currentPrice * 0.90).toFixed(2);
-    flashCrashActive = true;
-    // Flash overlay
-    const overlay = document.createElement('div');
-    overlay.className = 'flash-crash-overlay';
-    document.body.appendChild(overlay);
-    setTimeout(() => overlay.remove(), 1500);
-    showToast('🔴','انهيار مفاجئ!','Flash Crash — انخفاض 10% فجأة! لا تبيع مذعوراً.','crash');
-  }
-
-  state.scenariosCompleted = (state.scenariosCompleted||0)+1;
-  saveState();
-  updateStats();
-  checkBadge('scenario_master', state.scenariosCompleted >= 3, '🎭', 'سيد السيناريوهات', 'أتممت 3 سيناريوهات تدريبية!');
+  const type = scenarioTypes[scenarioIndex % scenarioTypes.length]; scenarioIndex++;
+  const panel = document.getElementById('active-scenario-panel'); panel.classList.remove('hidden');
+  if(type==='news'){ const isGood = Math.random()>0.5; panel.innerHTML = `<div class="scenario-title">📰 سيناريو: خبر عاجل</div><div style="font-size:12px;color:var(--text-muted);line-height:1.7">${isGood?'🚀 قرار بنك الاحتياطي الفيدرالي بتخفيض أسعار الفائدة! الأسواق ترتفع.':'📉 تقرير تضخم أعلى من المتوقع! المستثمرون يخرجون من الأسهم.'}</div><div style="font-size:11px;color:var(--gold);margin-top:8px">💡 تحدٍّ: تصرف وفق هذا الخبر بصفقة مناسبة</div>`; showToast('📰','خبر عاجل!',isGood?'🚀 تخفيض الفائدة — قرار إيجابي للأسهم!':'📉 تضخم مرتفع — توقع ضغطاً على الأسواق','news'); currentPrice = +(currentPrice * (isGood ? 1.015 : 0.985)).toFixed(2); }
+  else if(type==='portfolio'){ panel.innerHTML = `<div class="scenario-title">📊 سيناريو: إدارة المحفظة</div><div style="font-size:12px;color:var(--text-muted);line-height:1.7">تحدٍّ: يجب ألا تتجاوز صفقاتك المفتوحة 3 في نفس الوقت. إذا لديك أكثر من ذلك، أغلق بعضها.</div><div style="font-size:11px;color:var(--gold);margin-top:8px">💡 التنويع لا يعني فتح صفقات لا نهاية لها!</div>`; showToast('📊','تحدي المحفظة!','راجع عدد مراكزك المفتوحة — الحد الأقصى 3 مراكز في آن واحد','portfolio'); }
+  else { panel.innerHTML = `<div class="scenario-title">🔴 سيناريو: انهيار مفاجئ!</div><div style="font-size:12px;color:var(--red);line-height:1.7;font-weight:600">⚡ Flash Crash! انخفاض حاد 10% خلال ثوانٍ. هل تبيع مذعوراً أم تصبر؟</div><div style="font-size:11px;color:var(--gold);margin-top:8px">💡 المتداول الناضج يحافظ على هدوئه ويراجع الخطة</div>`; currentPrice = +(currentPrice * 0.90).toFixed(2); flashCrashActive = true; const overlay = document.createElement('div'); overlay.className = 'flash-crash-overlay'; document.body.appendChild(overlay); setTimeout(() => overlay.remove(), 1500); showToast('🔴','انهيار مفاجئ!','Flash Crash — انخفاض 10% فجأة! لا تبيع مذعوراً.','crash'); }
+  state.scenariosCompleted = (state.scenariosCompleted||0)+1; saveState(); updateStats(); checkBadge('scenario_master', state.scenariosCompleted >= 3, '🎭', 'سيد السيناريوهات', 'أتممت 3 سيناريوهات تدريبية!');
 }
 
-// ================================================================
-// BADGES SYSTEM
-// ================================================================
 const badgesList = {};
+function checkBadge(id, condition, icon, name, msg) { if(!condition || badgesList[id]) return; badgesList[id] = true; if(!state.badges) state.badges = []; if(!state.badges.find(b=>b.id===id)){ state.badges.push({id, icon, name}); saveState(); renderBadges(); showToast('🏆','شارة جديدة: '+name, msg,'achievement'); } }
+function renderBadges() { const area = document.getElementById('badges-area'); const list = document.getElementById('badges-list-panel'); if(!state.badges || state.badges.length===0){ area.innerHTML = ''; list.innerHTML = '<div style="font-size:12px;color:var(--text-muted);text-align:center;padding:10px">لا توجد شارات بعد — ابدأ التداول!</div>'; return; } area.innerHTML = state.badges.map(b=>`<span class="badge-chip" title="${b.name}">${b.icon} ${b.name}</span>`).join(''); list.innerHTML = `<div style="display:flex;flex-direction:column;gap:8px">${state.badges.map(b=>`<div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="font-size:18px">${b.icon}</span><span>${b.name}</span></div>`).join('')}</div>`; }
 
-function checkBadge(id, condition, icon, name, msg) {
-  if(!condition || badgesList[id]) return;
-  badgesList[id] = true;
-  if(!state.badges) state.badges = [];
-  if(!state.badges.find(b=>b.id===id)){
-    state.badges.push({id, icon, name});
-    saveState();
-    renderBadges();
-    showToast('🏆','شارة جديدة: '+name, msg,'achievement');
-  }
-}
+function showToast(icon, title, msg, type='info') { const container = document.getElementById('toast-container'); const toast = document.createElement('div'); toast.className = `toast ${type}`; toast.innerHTML = `<div class="toast-icon">${icon}</div><div class="toast-body"><div class="toast-title">${title}</div><div class="toast-msg">${msg}</div></div>`; container.appendChild(toast); setTimeout(() => { toast.classList.add('removing'); setTimeout(() => toast.remove(), 300); }, 4000); }
 
-function renderBadges() {
-  const area = document.getElementById('badges-area');
-  const list = document.getElementById('badges-list-panel');
-  if(!state.badges || state.badges.length===0){
-    area.innerHTML = '';
-    list.innerHTML = '<div style="font-size:12px;color:var(--text-muted);text-align:center;padding:10px">لا توجد شارات بعد — ابدأ التداول!</div>';
-    return;
-  }
-  area.innerHTML = state.badges.map(b=>`<span class="badge-chip" title="${b.name}">${b.icon} ${b.name}</span>`).join('');
-  list.innerHTML = `<div style="display:flex;flex-direction:column;gap:8px">` +
-    state.badges.map(b=>`<div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="font-size:18px">${b.icon}</span><span>${b.name}</span></div>`).join('') +
-    '</div>';
-}
-
-// ================================================================
-// TOAST SYSTEM
-// ================================================================
-function showToast(icon, title, msg, type='info') {
-  const container = document.getElementById('toast-container');
-  const toast = document.createElement('div');
-  toast.className = `toast ${type}`;
-  toast.innerHTML = `
-    <div class="toast-icon">${icon}</div>
-    <div class="toast-body">
-      <div class="toast-title">${title}</div>
-      <div class="toast-msg">${msg}</div>
-    </div>
-  `;
-  container.appendChild(toast);
-  setTimeout(() => {
-    toast.classList.add('removing');
-    setTimeout(() => toast.remove(), 300);
-  }, 4000);
-}
-
-// ================================================================
-// REPORT MODAL
-// ================================================================
 function showReport() {
-  const total = state.totalTrades||0;
-  const winning = state.winningTrades||0;
-  const slPct = total>0 ? Math.round((state.slTradeCount/total)*100) : 0;
-  const scenarios = state.scenariosCompleted||0;
-  const badges = (state.badges||[]).length;
-  const pnl = state.balance - 100000;
-
-  let readiness = 0;
-  if(total >= 5) readiness += 20;
-  if(slPct >= 70) readiness += 30;
-  if(scenarios >= 2) readiness += 20;
-  if(badges >= 2) readiness += 15;
-  if(winning/Math.max(total,1) >= 0.5) readiness += 15;
-  readiness = Math.min(100, readiness);
-
+  const total = state.totalTrades||0; const winning = state.winningTrades||0; const slPct = total>0 ? Math.round((state.slTradeCount/total)*100) : 0; const scenarios = state.scenariosCompleted||0; const badges = (state.badges||[]).length; const pnl = state.balance - 100000;
+  let readiness = 0; if(total >= 5) readiness += 20; if(slPct >= 70) readiness += 30; if(scenarios >= 2) readiness += 20; if(badges >= 2) readiness += 15; if(winning/Math.max(total,1) >= 0.5) readiness += 15; readiness = Math.min(100, readiness);
   const gradColor = readiness >= 70 ? 'var(--green)' : readiness >= 40 ? 'var(--gold)' : 'var(--red)';
-
-  document.getElementById('report-content').innerHTML = `
-    <div class="report-card"><div class="report-val" style="color:var(--accent)">${total}</div><div class="report-label">إجمالي الصفقات المنفذة</div></div>
-    <div class="report-card"><div class="report-val" style="color:${slPct>=70?'var(--green)':'var(--red)'}">${slPct}%</div><div class="report-label">نسبة الصفقات مع Stop Loss</div></div>
-    <div class="report-card"><div class="report-val" style="color:var(--blue)">${scenarios}</div><div class="report-label">سيناريوهات تم اجتيازها</div></div>
-    <div class="report-card"><div class="report-val" style="color:var(--gold)">${badges}</div><div class="report-label">شارات الإنجاز المكتسبة</div></div>
-    <div class="report-card"><div class="report-val" style="color:${pnl>=0?'var(--green)':'var(--red)'}">${pnl>=0?'+':''}$${Math.abs(pnl).toFixed(0)}</div><div class="report-label">إجمالي الربح/الخسارة</div></div>
-    <div class="report-card"><div class="report-val">${total>0?Math.round(winning/total*100):0}%</div><div class="report-label">نسبة الصفقات الرابحة</div></div>
-  `;
-
-  document.getElementById('readiness-pct').textContent = readiness+'%';
-  document.getElementById('readiness-fill').style.background = `linear-gradient(90deg, ${gradColor}, var(--accent))`;
-  setTimeout(()=>{ document.getElementById('readiness-fill').style.width = readiness+'%'; }, 100);
-
-  let rec, recColor;
-  if(readiness >= 70) {
-    rec = '🟢 لديك مؤشرات إيجابية قوية! تطبيق وقف الخسارة بانتظام وإتمام عدة سيناريوهات يدل على نضج في التفكير. تذكر: لا يزال التداول بالأموال الحقيقية يتطلب تعلماً إضافياً ومعرفة عميقة بالأدوات التي ستتداول بها.';
-    recColor = 'var(--green)';
-  } else if(readiness >= 40) {
-    rec = '🟡 بدأت تفهم المفاهيم الأساسية لكن تحتاج المزيد من التدريب. ركز على وضع وقف الخسارة في كل صفقة، وتجربة السيناريوهات المختلفة. لا تتسرع في التداول بأموال حقيقية.';
-    recColor = 'var(--gold)';
-  } else {
-    rec = '🔴 لا تزال في مرحلة التعلم الأساسية. تحتاج تنفيذ المزيد من الصفقات الافتراضية مع تطبيق إدارة المخاطر. الاستعجال في التداول الحقيقي قد يكلفك خسائر كبيرة. استمر في التدريب.';
-    recColor = 'var(--red)';
-  }
+  document.getElementById('report-content').innerHTML = `<div class="report-card"><div class="report-val" style="color:var(--accent)">${total}</div><div class="report-label">إجمالي الصفقات المنفذة</div></div><div class="report-card"><div class="report-val" style="color:${slPct>=70?'var(--green)':'var(--red)'}">${slPct}%</div><div class="report-label">نسبة الصفقات مع Stop Loss</div></div><div class="report-card"><div class="report-val" style="color:var(--blue)">${scenarios}</div><div class="report-label">سيناريوهات تم اجتيازها</div></div><div class="report-card"><div class="report-val" style="color:var(--gold)">${badges}</div><div class="report-label">شارات الإنجاز المكتسبة</div></div><div class="report-card"><div class="report-val" style="color:${pnl>=0?'var(--green)':'var(--red)'}">${pnl>=0?'+':''}$${Math.abs(pnl).toFixed(0)}</div><div class="report-label">إجمالي الربح/الخسارة</div></div><div class="report-card"><div class="report-val">${total>0?Math.round(winning/total*100):0}%</div><div class="report-label">نسبة الصفقات الرابحة</div></div>`;
+  document.getElementById('readiness-pct').textContent = readiness+'%'; document.getElementById('readiness-fill').style.background = `linear-gradient(90deg, ${gradColor}, var(--accent))`; setTimeout(()=>{ document.getElementById('readiness-fill').style.width = readiness+'%'; }, 100);
+  let rec, recColor; if(readiness >= 70) { rec = '🟢 لديك مؤشرات إيجابية قوية! تطبيق وقف الخسارة بانتظام وإتمام عدة سيناريوهات يدل على نضج في التفكير. تذكر: لا يزال التداول بالأموال الحقيقية يتطلب تعلماً إضافياً ومعرفة عميقة بالأدوات التي ستتداول بها.'; recColor = 'var(--green)'; } else if(readiness >= 40) { rec = '🟡 بدأت تفهم المفاهيم الأساسية لكن تحتاج المزيد من التدريب. ركز على وضع وقف الخسارة في كل صفقة، وتجربة السيناريوهات المختلفة. لا تتسرع في التداول بأموال حقيقية.'; recColor = 'var(--gold)'; } else { rec = '🔴 لا تزال في مرحلة التعلم الأساسية. تحتاج تنفيذ المزيد من الصفقات الافتراضية مع تطبيق إدارة المخاطر. الاستعجال في التداول الحقيقي قد يكلفك خسائر كبيرة. استمر في التدريب.'; recColor = 'var(--red)'; }
   document.getElementById('recommendation').innerHTML = `<div class="rec-title" style="color:${recColor}">توصيتنا</div><div class="rec-text">${rec}</div>`;
-
   document.getElementById('report-modal').classList.remove('hidden');
 }
-
-function closeReport() {
-  document.getElementById('report-modal').classList.add('hidden');
-}
+function closeReport() { document.getElementById('report-modal').classList.add('hidden'); }
 function updateUI() { updateBalance(); updateStats(); renderBadges(); }
 function setTF(btn, tf) { document.querySelectorAll('.timeframe-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); generateHistoricalData(); }
 setTimeout(updateLeverage, 100);
-// ================================================================
-// RESET FUNCTION – العودة إلى المرحلة الأولى يدوياً
-// ================================================================
+
 function resetToStart() {
-  // إنشاء نافذة تأكيد
-  const modal = document.createElement('div');
-  modal.className = 'modal-overlay';
-  modal.style.zIndex = '3000';
-  modal.innerHTML = `
-    <div class="modal-box" style="max-width:450px;text-align:center">
-      <div style="font-size:48px;margin-bottom:16px">⚠️</div>
-      <div class="modal-title" style="font-size:20px">إعادة تعيين التقدم بالكامل</div>
-      <div class="modal-subtitle" style="margin-bottom:24px">
-        سيتم حذف جميع بياناتك:<br>
-        • المراحل المكتملة<br>
-        • الرصيد الافتراضي والصفقات<br>
-        • الشارات والإنجازات<br>
-        • نتائج التقييم<br><br>
-        <strong style="color:var(--red)">لا يمكن التراجع عن هذا الإجراء!</strong>
-      </div>
-      <div style="display:flex;gap:12px;justify-content:center">
-        <button class="btn btn-ghost" onclick="this.closest('.modal-overlay').remove()">إلغاء</button>
-        <button class="btn btn-red" onclick="performReset()" style="background:var(--red)">نعم، إعادة تعيين</button>
-      </div>
-    </div>
-  `;
+  const modal = document.createElement('div'); modal.className = 'modal-overlay'; modal.style.zIndex = '3000';
+  modal.innerHTML = `<div class="modal-box" style="max-width:450px;text-align:center"><div style="font-size:48px;margin-bottom:16px">⚠️</div><div class="modal-title" style="font-size:20px">إعادة تعيين التقدم بالكامل</div><div class="modal-subtitle" style="margin-bottom:24px">سيتم حذف جميع بياناتك:<br>• المراحل المكتملة<br>• الرصيد الافتراضي والصفقات<br>• الشارات والإنجازات<br>• نتائج التقييم<br><br><strong style="color:var(--red)">لا يمكن التراجع عن هذا الإجراء!</strong></div><div style="display:flex;gap:12px;justify-content:center"><button class="btn btn-ghost" onclick="this.closest('.modal-overlay').remove()">إلغاء</button><button class="btn btn-red" onclick="performReset()" style="background:var(--red)">نعم، إعادة تعيين</button></div></div>`;
   document.body.appendChild(modal);
 }
 
 function performReset() {
-  // إزالة نافذة التأكيد
   document.querySelectorAll('.modal-overlay').forEach(el => el.remove());
-
-  // 1. مسح localStorage
   localStorage.removeItem(STATE_KEY);
-
-  // 2. إعادة تعيين المتغيرات العامة
-  state = {
-    stage: 0,
-    sectionsCompleted: [],
-    userLevel: 0,
-    balance: 100000,
-    openPositions: [],
-    closedPositions: [],
-    badges: [],
-    totalTrades: 0,
-    winningTrades: 0,
-    losingTrades: 0,
-    slTradeCount: 0,
-    scenariosCompleted: 0,
-    consecutiveSL: 0,
-    assessmentScore: 0,
-  };
-  
-  // 3. إعادة تعيين متغيرات المراحل
-  s1MapsClicked = 0;
-  s1PlatformSelected = false;
-  s1LeverMoved = false;
-  currentScenario = 0;
-  scenarioAnswers = [];
-  scenarioScore = 0;
-  positionId = 0;
-  Object.keys(badgesList).forEach(k => delete badgesList[k]);
-
-  // 4. إعادة تعيين أسعار السوق الافتراضية
-  currentPrice = 189.50;
-  openPrice = 189.50;
-  marketPrices = {
-    aapl: 189.50, btc: 67400, eur: 1.0850, gold: 2340, saudi: 12240
-  };
-  flashCrashActive = false;
-  scenarioIndex = 0;
-
-  // 5. إخفاء جميع الواجهات وإظهار المرحلة الأولى
-  document.getElementById('stage3-app').style.display = 'none';
-  document.getElementById('stage2-overlay').classList.add('hidden');
-  document.getElementById('stage1-overlay').classList.remove('hidden');
-  
-  // إعادة تهيئة المحتوى في المرحلة الأولى
-  drawInvestmentChart();
-  updateLeverage();
-  updateStage1UI();
-  showSection(1); // عرض القسم الأول
-  
-  // 6. عرض رسالة تأكيد
+  state = { stage: 0, sectionsCompleted: [], userLevel: 0, balance: 100000, openPositions: [], closedPositions: [], badges: [], totalTrades: 0, winningTrades: 0, losingTrades: 0, slTradeCount: 0, scenariosCompleted: 0, consecutiveSL: 0, assessmentScore: 0 };
+  s1MapsClicked = 0; s1PlatformSelected = false; s1LeverMoved = false; currentScenario = 0; scenarioAnswers = []; scenarioScore = 0; positionId = 0; Object.keys(badgesList).forEach(k => delete badgesList[k]); s5Completed = false; s6QuizPassed = false; s7Completed = false;
+  currentPrice = 189.50; openPrice = 189.50; marketPrices = { aapl: 189.50, btc: 67400, eur: 1.0850, gold: 2340, saudi: 12240 }; flashCrashActive = false; scenarioIndex = 0;
+  document.getElementById('stage3-app').style.display = 'none'; document.getElementById('stage2-overlay').classList.add('hidden'); document.getElementById('stage1-overlay').classList.remove('hidden');
+  drawInvestmentChart(); updateLeverage(); updateStage1UI(); showSection(1);
   showToast('🔄', 'تمت إعادة التعيين', 'تم حذف جميع البيانات والعودة إلى البداية', 'achievement');
 }
 </script>
