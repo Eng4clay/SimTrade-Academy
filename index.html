@@ -1612,43 +1612,37 @@ function showTradingApp() {
 
 function restoreState() { updateBalance(); renderPositions(); renderBadges(); updateStats(); }
 
-function initTradingChart() {
+ function initTradingChart() {
   const container = document.getElementById('trading-chart');
   if (!container) {
     console.error('Container not found');
     return;
   }
-  // إذا فشل تحميل المكتبة، استخدم رسم بياني بسيط
-if (typeof LightweightCharts === 'undefined') {
-  container.innerHTML = `
-    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;background:var(--bg-elevated);border-radius:var(--radius);padding:20px">
-      <div style="font-size:48px;margin-bottom:16px">📊</div>
-      <div style="color:var(--text-primary);margin-bottom:8px">الرسم البياني المتقدم غير متاح</div>
-      <div style="color:var(--text-muted);font-size:12px;text-align:center">يمكنك متابعة التداول، الأسعار يتم تحديثها بشكل طبيعي</div>
-      <div style="margin-top:16px;font-family:monospace;color:var(--accent)">السعر الحالي: $${currentPrice || '---'}</div>
-    </div>
-  `;
-  return;
-}
   
-  // تأكد أن المكتبة تم تحميلها
+  // إذا فشل تحميل المكتبة، استخدم رسم بياني بسيط واخرج من الدالة
   if (typeof LightweightCharts === 'undefined') {
-    console.log('Waiting for LightweightCharts to load...');
-    container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-muted)">⏳ جاري تحميل الرسم البياني...</div>';
-    setTimeout(initTradingChart, 500);
+    console.log('LightweightCharts not available, using fallback display');
+    container.innerHTML = `
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;background:var(--bg-elevated);border-radius:var(--radius);padding:20px">
+        <div style="font-size:48px;margin-bottom:16px">📊</div>
+        <div style="color:var(--text-primary);margin-bottom:8px">الرسم البياني المتقدم غير متاح</div>
+        <div style="color:var(--text-muted);font-size:12px;text-align:center">يمكنك متابعة التداول، الأسعار يتم تحديثها بشكل طبيعي</div>
+        <div style="margin-top:16px;font-family:monospace;color:var(--accent)">السعر الحالي: $${currentPrice || '---'}</div>
+      </div>
+    `;
+    return;
+  }
+  
+  // تأكد أن العنصر له أبعاد واضحة
+  const rect = container.getBoundingClientRect();
+  if (rect.width === 0 || rect.height === 0) {
+    console.log('Container not visible yet, retrying...');
+    container.style.height = '350px';
+    setTimeout(initTradingChart, 100);
     return;
   }
   
   try {
-    // تأكد أن العنصر له أبعاد واضحة
-    const rect = container.getBoundingClientRect();
-    if (rect.width === 0 || rect.height === 0) {
-      console.log('Container not visible yet, retrying...');
-      container.style.height = '350px';
-      setTimeout(initTradingChart, 100);
-      return;
-    }
-    
     // إنشاء الرسم البياني
     chart = LightweightCharts.createChart(container, {
       layout: { 
@@ -1698,9 +1692,7 @@ if (typeof LightweightCharts === 'undefined') {
     
   } catch(e) { 
     console.error('Chart init failed:', e); 
-    container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--red)">⚠️ خطأ في تحميل الرسم البياني</div>';
-    // محاولة إعادة التهيئة بعد ثانية
-    setTimeout(initTradingChart, 1000);
+    container.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:12px"><span style="font-size:32px">⚠️</span><div style="color:var(--red)">خطأ في تحميل الرسم البياني</div><button class="btn btn-ghost" onclick="location.reload()" style="margin-top:8px">إعادة المحاولة</button></div>';
   }
 }
 
